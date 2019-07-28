@@ -4,7 +4,7 @@ spring:
   application:
     name: item-service
   datasource:
-    url: jdbc:mysql://localhost:3306/leyou
+    url: jdbc:mysql://localhost:3306/leyou?useUnicode=true&characterEncoding=utf8
     username: root
     password: root
     hikari:
@@ -17,3 +17,7 @@ eureka:
   instance:
     prefer-ip-address: true
     ip-address: 127.0.0.1
+#打印日志
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
