@@ -36,4 +36,17 @@ public class CategoryService {
         return categoryList;
 
     }
+
+    /**
+     * 根据ids查询商品分类
+     * @param ids
+     * @return
+     */
+    public List<Category> queryByIds(List<Long> ids) {
+        List<Category> categoryList = categoryMapper.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(categoryList)) {
+            throw new LeYouException(ExceptionEnum.CATEGORY_NOT_FOUND);
+        }
+        return categoryList;
+    }
 }

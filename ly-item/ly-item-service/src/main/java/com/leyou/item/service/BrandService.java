@@ -72,4 +72,13 @@ public class BrandService {
         }
 
     }
+
+    /**
+     * 根据id查询品牌
+     * @param id
+     * @return
+     */
+    public Brand queryById(Long id) {
+        return brandMapper.selectByPrimaryKey(id);
+    }
 }
