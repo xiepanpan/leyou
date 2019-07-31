@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "tb_spu")
 @Data
@@ -41,4 +42,9 @@ public class Spu {
      */
     @Transient
     private String categoryName;
+
+    @Transient
+    private List<Sku> skus;
+    @Transient
+    private SpuDetail spuDetail;
 }
