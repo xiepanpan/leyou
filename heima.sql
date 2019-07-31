@@ -1,57 +1,19 @@
-/*
-Navicat MySQL Data Transfer
 
-Source Server         : leyou
-Source Server Version : 50557
-Source Host           : localhost:3306
-Source Database       : newleyou
-
-Target Server Type    : MYSQL
-Target Server Version : 50557
-File Encoding         : 65001
-
-Date: 2019-03-15 14:52:29
-*/
 
 SET FOREIGN_KEY_CHECKS=0;
 
--- ----------------------------
--- Table structure for tb_address
--- ----------------------------
-DROP TABLE IF EXISTS `tb_address`;
-CREATE TABLE `tb_address` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `phone` varchar(15) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `zip_code` varchar(6) DEFAULT NULL,
-  `name` varchar(30) NOT NULL,
-  `tag` varchar(20) DEFAULT NULL COMMENT '地址别名',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of tb_address
--- ----------------------------
-INSERT INTO `tb_address` VALUES ('9', '456', '123', '123', '123', '123');
-INSERT INTO `tb_address` VALUES ('15', '222', '222', '222', '2222', '22');
-INSERT INTO `tb_address` VALUES ('16', '123', '1232323', '1233', '123', '2233223');
-INSERT INTO `tb_address` VALUES ('17', '13916914058', '长宁路491弄', '200050', 'w', '家里');
-
--- ----------------------------
--- Table structure for tb_brand
--- ----------------------------
 DROP TABLE IF EXISTS `tb_brand`;
 CREATE TABLE `tb_brand` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '品牌id',
-  `name` varchar(32) NOT NULL COMMENT '品牌名称',
-  `image` varchar(128) DEFAULT '' COMMENT '品牌图片地址',
+  `name` varchar(50) NOT NULL COMMENT '品牌名称',
+  `image` varchar(200) DEFAULT '' COMMENT '品牌图片地址',
   `letter` char(1) DEFAULT '' COMMENT '品牌的首字母',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=325406 DEFAULT CHARSET=utf8 COMMENT='品牌表，一个品牌下有多个商品（spu），一对多关系';
+) ENGINE=InnoDB AUTO_INCREMENT=325400 DEFAULT CHARSET=utf8 COMMENT='品牌表，一个品牌下有多个商品（spu），一对多关系';
 
--- ----------------------------
--- Records of tb_brand
--- ----------------------------
+
+INSERT INTO `tb_brand` VALUES ('1115', 'HTC', '', 'H');
 INSERT INTO `tb_brand` VALUES ('1528', 'LG', '', 'L');
 INSERT INTO `tb_brand` VALUES ('1912', 'NEC', '', 'N');
 INSERT INTO `tb_brand` VALUES ('2032', 'OPPO', 'http://img10.360buyimg.com/popshop/jfs/t2119/133/2264148064/4303/b8ab3755/56b2f385N8e4eb051.jpg', 'O');
@@ -65,7 +27,7 @@ INSERT INTO `tb_brand` VALUES ('6742', '飞利浦（PHILIPS）', 'http://img12.3
 INSERT INTO `tb_brand` VALUES ('7174', '富可视（InFocus）', '', 'F');
 INSERT INTO `tb_brand` VALUES ('7203', '富士通（Fujitsu）', '', 'F');
 INSERT INTO `tb_brand` VALUES ('7420', '格力（GREE）', '', 'G');
-INSERT INTO `tb_brand` VALUES ('7817', '海尔（Haier）', 'http://image.leyou.com/group1/M00/00/00/wKhSZFufmLeAektLAAAZT9-WCLY396.jpg', 'H');
+INSERT INTO `tb_brand` VALUES ('7817', '海尔（Haier）', 'http://image.leyou.com/group1/M00/00/00/wKg4ZVrYZcyAVOzoAAB846UcmLg013.png', 'H');
 INSERT INTO `tb_brand` VALUES ('7888', '海信（Hisense）', '', 'H');
 INSERT INTO `tb_brand` VALUES ('8214', '黑莓（BlackBerry）', '', 'H');
 INSERT INTO `tb_brand` VALUES ('8551', '华硕（ASUS）', '', 'H');
@@ -212,13 +174,9 @@ INSERT INTO `tb_brand` VALUES ('314866', '360手机', '', 'S');
 INSERT INTO `tb_brand` VALUES ('316578', '克里特（kreta）', '', 'k');
 INSERT INTO `tb_brand` VALUES ('316596', 'HOOLFINE', '', 'H');
 INSERT INTO `tb_brand` VALUES ('316618', 'RONXS', '', 'R');
+INSERT INTO `tb_brand` VALUES ('325396', '飞利浦（PHILIPS）', '', 'P');
 INSERT INTO `tb_brand` VALUES ('325398', '比亚兹（ESK）', '', 'B');
 INSERT INTO `tb_brand` VALUES ('325399', '亿色(ESR)', '', 'Y');
-INSERT INTO `tb_brand` VALUES ('325401', '八维', 'http://image.leyou.com/group1/M00/00/00/wKgfglw4MlWARpc7AABrYaARUaw060.jpg', 'B');
-INSERT INTO `tb_brand` VALUES ('325402', '1606A', 'http://image.leyou.com/group1/M00/00/00/wKgfglxmC-2ASGwrAABrYaARUaw245.jpg', 'A');
-INSERT INTO `tb_brand` VALUES ('325403', '1606S', 'http://image.leyou.com/group1/M00/00/00/wKgfglxmC-2ASGwrAABrYaARUaw245.jpg', 'A');
-INSERT INTO `tb_brand` VALUES ('325404', 'BBB', '', 'B');
-INSERT INTO `tb_brand` VALUES ('325405', '1803', 'http://image.leyou.com/group1/M00/00/00/wKgfglxmf2CAPcHUAABrYaARUaw803.jpg', 'A');
 
 -- ----------------------------
 -- Table structure for tb_category
@@ -226,17 +184,15 @@ INSERT INTO `tb_brand` VALUES ('325405', '1803', 'http://image.leyou.com/group1/
 DROP TABLE IF EXISTS `tb_category`;
 CREATE TABLE `tb_category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '类目id',
-  `name` varchar(32) NOT NULL COMMENT '类目名称',
+  `name` varchar(20) NOT NULL COMMENT '类目名称',
   `parent_id` bigint(20) NOT NULL COMMENT '父类目id,顶级类目填0',
   `is_parent` tinyint(1) NOT NULL COMMENT '是否为父节点，0为否，1为是',
   `sort` int(4) NOT NULL COMMENT '排序指数，越小越靠前',
   PRIMARY KEY (`id`),
   KEY `key_parent_id` (`parent_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1428 DEFAULT CHARSET=utf8 COMMENT='商品类目表，类目和商品(spu)是一对多关系，类目与品牌是多对多关系';
+) ENGINE=InnoDB AUTO_INCREMENT=1424 DEFAULT CHARSET=utf8 COMMENT='商品类目表，类目和商品(spu)是一对多关系，类目与品牌是多对多关系';
 
--- ----------------------------
--- Records of tb_category
--- ----------------------------
+
 INSERT INTO `tb_category` VALUES ('1', '图书、音像、电子书刊', '0', '1', '1');
 INSERT INTO `tb_category` VALUES ('2', '电子书刊', '1', '1', '1');
 INSERT INTO `tb_category` VALUES ('3', '电子书', '2', '0', '1');
@@ -296,7 +252,7 @@ INSERT INTO `tb_category` VALUES ('56', '科学与自然', '51', '0', '5');
 INSERT INTO `tb_category` VALUES ('57', '计算机与互联网', '51', '0', '6');
 INSERT INTO `tb_category` VALUES ('58', '电子通信', '51', '0', '7');
 INSERT INTO `tb_category` VALUES ('59', '教育', '1', '1', '10');
-INSERT INTO `tb_category` VALUES ('60', '中小学教辅12', '59', '0', '1');
+INSERT INTO `tb_category` VALUES ('60', '中小学教辅', '59', '0', '1');
 INSERT INTO `tb_category` VALUES ('61', '教育与考试', '59', '0', '2');
 INSERT INTO `tb_category` VALUES ('62', '外语学习', '59', '0', '3');
 INSERT INTO `tb_category` VALUES ('63', '大中专教材', '59', '0', '4');
@@ -653,6 +609,60 @@ INSERT INTO `tb_category` VALUES ('413', '延保服务', '411', '0', '2');
 INSERT INTO `tb_category` VALUES ('414', '维修保养', '411', '0', '3');
 INSERT INTO `tb_category` VALUES ('415', '电脑软件', '411', '0', '4');
 INSERT INTO `tb_category` VALUES ('416', '京东服务', '411', '0', '5');
+INSERT INTO `tb_category` VALUES ('417', '厨具', '0', '1', '7');
+INSERT INTO `tb_category` VALUES ('418', '烹饪锅具', '417', '1', '1');
+INSERT INTO `tb_category` VALUES ('419', '炒锅', '418', '0', '1');
+INSERT INTO `tb_category` VALUES ('420', '煎锅', '418', '0', '2');
+INSERT INTO `tb_category` VALUES ('421', '压力锅', '418', '0', '3');
+INSERT INTO `tb_category` VALUES ('422', '蒸锅', '418', '0', '4');
+INSERT INTO `tb_category` VALUES ('423', '汤锅', '418', '0', '5');
+INSERT INTO `tb_category` VALUES ('424', '奶锅', '418', '0', '6');
+INSERT INTO `tb_category` VALUES ('425', '锅具套装', '418', '0', '7');
+INSERT INTO `tb_category` VALUES ('426', '煲类', '418', '0', '8');
+INSERT INTO `tb_category` VALUES ('427', '水壶', '418', '0', '9');
+INSERT INTO `tb_category` VALUES ('428', '火锅', '418', '0', '10');
+INSERT INTO `tb_category` VALUES ('429', '刀剪菜板', '417', '1', '2');
+INSERT INTO `tb_category` VALUES ('430', '菜刀', '429', '0', '1');
+INSERT INTO `tb_category` VALUES ('431', '剪刀', '429', '0', '2');
+INSERT INTO `tb_category` VALUES ('432', '刀具套装', '429', '0', '3');
+INSERT INTO `tb_category` VALUES ('433', '砧板', '429', '0', '4');
+INSERT INTO `tb_category` VALUES ('434', '瓜果刀/刨', '429', '0', '5');
+INSERT INTO `tb_category` VALUES ('435', '多功能刀', '429', '0', '6');
+INSERT INTO `tb_category` VALUES ('436', '厨房配件', '417', '1', '3');
+INSERT INTO `tb_category` VALUES ('437', '保鲜盒', '436', '0', '1');
+INSERT INTO `tb_category` VALUES ('438', '烘焙/烧烤', '436', '0', '2');
+INSERT INTO `tb_category` VALUES ('439', '饭盒/提锅', '436', '0', '3');
+INSERT INTO `tb_category` VALUES ('440', '储物/置物架', '436', '0', '4');
+INSERT INTO `tb_category` VALUES ('441', '厨房DIY/小工具', '436', '0', '5');
+INSERT INTO `tb_category` VALUES ('442', '水具酒具', '417', '1', '4');
+INSERT INTO `tb_category` VALUES ('443', '塑料杯', '442', '0', '1');
+INSERT INTO `tb_category` VALUES ('444', '运动水壶', '442', '0', '2');
+INSERT INTO `tb_category` VALUES ('445', '玻璃杯', '442', '0', '3');
+INSERT INTO `tb_category` VALUES ('446', '陶瓷/马克杯', '442', '0', '4');
+INSERT INTO `tb_category` VALUES ('447', '保温杯', '442', '0', '5');
+INSERT INTO `tb_category` VALUES ('448', '保温壶', '442', '0', '6');
+INSERT INTO `tb_category` VALUES ('449', '酒杯/酒具', '442', '0', '7');
+INSERT INTO `tb_category` VALUES ('450', '杯具套装', '442', '0', '8');
+INSERT INTO `tb_category` VALUES ('451', '餐具', '417', '1', '5');
+INSERT INTO `tb_category` VALUES ('452', '餐具套装', '451', '0', '1');
+INSERT INTO `tb_category` VALUES ('453', '碗/碟/盘', '451', '0', '2');
+INSERT INTO `tb_category` VALUES ('454', '筷勺/刀叉', '451', '0', '3');
+INSERT INTO `tb_category` VALUES ('455', '一次性用品', '451', '0', '4');
+INSERT INTO `tb_category` VALUES ('456', '果盘/果篮', '451', '0', '5');
+INSERT INTO `tb_category` VALUES ('457', '酒店用品', '417', '1', '6');
+INSERT INTO `tb_category` VALUES ('458', '自助餐炉', '457', '0', '1');
+INSERT INTO `tb_category` VALUES ('459', '酒店餐具', '457', '0', '2');
+INSERT INTO `tb_category` VALUES ('460', '酒店水具', '457', '0', '3');
+INSERT INTO `tb_category` VALUES ('461', '茶具/咖啡具', '417', '1', '7');
+INSERT INTO `tb_category` VALUES ('462', '整套茶具', '461', '0', '1');
+INSERT INTO `tb_category` VALUES ('463', '茶杯', '461', '0', '2');
+INSERT INTO `tb_category` VALUES ('464', '茶壶', '461', '0', '3');
+INSERT INTO `tb_category` VALUES ('465', '茶盘茶托', '461', '0', '4');
+INSERT INTO `tb_category` VALUES ('466', '茶叶罐', '461', '0', '5');
+INSERT INTO `tb_category` VALUES ('467', '茶具配件', '461', '0', '6');
+INSERT INTO `tb_category` VALUES ('468', '茶宠摆件', '461', '0', '7');
+INSERT INTO `tb_category` VALUES ('469', '咖啡具', '461', '0', '8');
+INSERT INTO `tb_category` VALUES ('470', '其他', '461', '0', '9');
 INSERT INTO `tb_category` VALUES ('471', '个护化妆', '0', '1', '8');
 INSERT INTO `tb_category` VALUES ('472', '清洁用品', '471', '1', '1');
 INSERT INTO `tb_category` VALUES ('473', '纸品湿巾', '472', '0', '1');
@@ -990,6 +1000,69 @@ INSERT INTO `tb_category` VALUES ('804', '安全座椅', '718', '1', '10');
 INSERT INTO `tb_category` VALUES ('805', '提篮式', '804', '0', '1');
 INSERT INTO `tb_category` VALUES ('806', '安全座椅', '804', '0', '2');
 INSERT INTO `tb_category` VALUES ('807', '增高垫', '804', '0', '3');
+INSERT INTO `tb_category` VALUES ('808', '礼品箱包', '0', '1', '13');
+INSERT INTO `tb_category` VALUES ('809', '潮流女包', '808', '1', '1');
+INSERT INTO `tb_category` VALUES ('810', '钱包', '809', '0', '1');
+INSERT INTO `tb_category` VALUES ('811', '手拿包', '809', '0', '2');
+INSERT INTO `tb_category` VALUES ('812', '单肩包', '809', '0', '3');
+INSERT INTO `tb_category` VALUES ('813', '双肩包', '809', '0', '4');
+INSERT INTO `tb_category` VALUES ('814', '手提包', '809', '0', '5');
+INSERT INTO `tb_category` VALUES ('815', '斜挎包', '809', '0', '6');
+INSERT INTO `tb_category` VALUES ('816', '钥匙包', '809', '0', '7');
+INSERT INTO `tb_category` VALUES ('817', '卡包/零钱包', '809', '0', '8');
+INSERT INTO `tb_category` VALUES ('818', '精品男包', '808', '1', '2');
+INSERT INTO `tb_category` VALUES ('819', '男士钱包', '818', '0', '1');
+INSERT INTO `tb_category` VALUES ('820', '男士手包', '818', '0', '2');
+INSERT INTO `tb_category` VALUES ('821', '卡包名片夹', '818', '0', '3');
+INSERT INTO `tb_category` VALUES ('822', '商务公文包', '818', '0', '4');
+INSERT INTO `tb_category` VALUES ('823', '双肩包', '818', '0', '5');
+INSERT INTO `tb_category` VALUES ('824', '单肩/斜挎包', '818', '0', '6');
+INSERT INTO `tb_category` VALUES ('825', '钥匙包', '818', '0', '7');
+INSERT INTO `tb_category` VALUES ('826', '功能箱包', '808', '1', '3');
+INSERT INTO `tb_category` VALUES ('827', '电脑包', '826', '0', '1');
+INSERT INTO `tb_category` VALUES ('828', '拉杆箱', '826', '0', '2');
+INSERT INTO `tb_category` VALUES ('829', '旅行包', '826', '0', '3');
+INSERT INTO `tb_category` VALUES ('830', '旅行配件', '826', '0', '4');
+INSERT INTO `tb_category` VALUES ('831', '休闲运动包', '826', '0', '5');
+INSERT INTO `tb_category` VALUES ('832', '拉杆包', '826', '0', '6');
+INSERT INTO `tb_category` VALUES ('833', '登山包', '826', '0', '7');
+INSERT INTO `tb_category` VALUES ('834', '妈咪包', '826', '0', '8');
+INSERT INTO `tb_category` VALUES ('835', '书包', '826', '0', '9');
+INSERT INTO `tb_category` VALUES ('836', '相机包', '826', '0', '10');
+INSERT INTO `tb_category` VALUES ('837', '腰包/胸包', '826', '0', '11');
+INSERT INTO `tb_category` VALUES ('838', '礼品', '808', '1', '4');
+INSERT INTO `tb_category` VALUES ('839', '火机烟具', '838', '0', '1');
+INSERT INTO `tb_category` VALUES ('840', '礼品文具', '838', '0', '2');
+INSERT INTO `tb_category` VALUES ('841', '军刀军具', '838', '0', '3');
+INSERT INTO `tb_category` VALUES ('842', '收藏品', '838', '0', '4');
+INSERT INTO `tb_category` VALUES ('843', '工艺礼品', '838', '0', '5');
+INSERT INTO `tb_category` VALUES ('844', '创意礼品', '838', '0', '6');
+INSERT INTO `tb_category` VALUES ('845', '礼盒礼券', '838', '0', '7');
+INSERT INTO `tb_category` VALUES ('846', '鲜花绿植', '838', '0', '8');
+INSERT INTO `tb_category` VALUES ('847', '婚庆节庆', '838', '0', '9');
+INSERT INTO `tb_category` VALUES ('848', '京东卡', '838', '0', '10');
+INSERT INTO `tb_category` VALUES ('849', '美妆礼品', '838', '0', '11');
+INSERT INTO `tb_category` VALUES ('850', '礼品定制', '838', '0', '12');
+INSERT INTO `tb_category` VALUES ('851', '京东福卡', '838', '0', '13');
+INSERT INTO `tb_category` VALUES ('852', '古董文玩', '838', '0', '14');
+INSERT INTO `tb_category` VALUES ('853', '奢侈品', '808', '1', '5');
+INSERT INTO `tb_category` VALUES ('854', '箱包', '853', '0', '1');
+INSERT INTO `tb_category` VALUES ('855', '钱包', '853', '0', '2');
+INSERT INTO `tb_category` VALUES ('856', '服饰', '853', '0', '3');
+INSERT INTO `tb_category` VALUES ('857', '腰带', '853', '0', '4');
+INSERT INTO `tb_category` VALUES ('858', '太阳镜/眼镜框', '853', '0', '5');
+INSERT INTO `tb_category` VALUES ('859', '配件', '853', '0', '6');
+INSERT INTO `tb_category` VALUES ('860', '鞋靴', '853', '0', '7');
+INSERT INTO `tb_category` VALUES ('861', '饰品', '853', '0', '8');
+INSERT INTO `tb_category` VALUES ('862', '名品腕表', '853', '0', '9');
+INSERT INTO `tb_category` VALUES ('863', '高档化妆品', '853', '0', '10');
+INSERT INTO `tb_category` VALUES ('864', '婚庆', '808', '1', '6');
+INSERT INTO `tb_category` VALUES ('865', '婚嫁首饰', '864', '0', '1');
+INSERT INTO `tb_category` VALUES ('866', '婚纱摄影', '864', '0', '2');
+INSERT INTO `tb_category` VALUES ('867', '婚纱礼服', '864', '0', '3');
+INSERT INTO `tb_category` VALUES ('868', '婚庆服务', '864', '0', '4');
+INSERT INTO `tb_category` VALUES ('869', '婚庆礼品/用品', '864', '0', '5');
+INSERT INTO `tb_category` VALUES ('870', '婚宴', '864', '0', '6');
 INSERT INTO `tb_category` VALUES ('871', '食品饮料、保健食品', '0', '1', '14');
 INSERT INTO `tb_category` VALUES ('872', '进口食品', '871', '1', '1');
 INSERT INTO `tb_category` VALUES ('873', '饼干蛋糕', '872', '0', '1');
@@ -1543,13 +1616,8 @@ INSERT INTO `tb_category` VALUES ('1420', 'SUV（二手）', '1412', '0', '8');
 INSERT INTO `tb_category` VALUES ('1421', '跑车（二手）', '1412', '0', '9');
 INSERT INTO `tb_category` VALUES ('1422', '皮卡（二手）', '1412', '0', '10');
 INSERT INTO `tb_category` VALUES ('1423', '面包车（二手）', '1412', '0', '11');
-INSERT INTO `tb_category` VALUES ('1424', '新的节点', '74', '1', '4');
-INSERT INTO `tb_category` VALUES ('1426', '新的节点', '1424', '0', '1');
-INSERT INTO `tb_category` VALUES ('1427', '新的节点', '103', '0', '7');
 
--- ----------------------------
--- Table structure for tb_category_brand
--- ----------------------------
+
 DROP TABLE IF EXISTS `tb_category_brand`;
 CREATE TABLE `tb_category_brand` (
   `category_id` bigint(20) NOT NULL COMMENT '商品类目id',
@@ -1557,21 +1625,7 @@ CREATE TABLE `tb_category_brand` (
   PRIMARY KEY (`category_id`,`brand_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品分类和品牌的中间表，两者是多对多关系';
 
--- ----------------------------
--- Records of tb_category_brand
--- ----------------------------
-INSERT INTO `tb_category_brand` VALUES ('3', '325402');
-INSERT INTO `tb_category_brand` VALUES ('3', '325403');
-INSERT INTO `tb_category_brand` VALUES ('3', '325404');
-INSERT INTO `tb_category_brand` VALUES ('3', '325405');
-INSERT INTO `tb_category_brand` VALUES ('3', '325407');
-INSERT INTO `tb_category_brand` VALUES ('3', '325409');
-INSERT INTO `tb_category_brand` VALUES ('57', '325404');
-INSERT INTO `tb_category_brand` VALUES ('57', '325405');
-INSERT INTO `tb_category_brand` VALUES ('57', '325406');
-INSERT INTO `tb_category_brand` VALUES ('61', '325404');
-INSERT INTO `tb_category_brand` VALUES ('61', '325405');
-INSERT INTO `tb_category_brand` VALUES ('61', '325406');
+
 INSERT INTO `tb_category_brand` VALUES ('76', '1528');
 INSERT INTO `tb_category_brand` VALUES ('76', '1912');
 INSERT INTO `tb_category_brand` VALUES ('76', '2032');
@@ -1732,13 +1786,14 @@ INSERT INTO `tb_category_brand` VALUES ('76', '314866');
 INSERT INTO `tb_category_brand` VALUES ('76', '316578');
 INSERT INTO `tb_category_brand` VALUES ('76', '316596');
 INSERT INTO `tb_category_brand` VALUES ('76', '316618');
+INSERT INTO `tb_category_brand` VALUES ('76', '325396');
 INSERT INTO `tb_category_brand` VALUES ('76', '325397');
-INSERT INTO `tb_category_brand` VALUES ('76', '325408');
 INSERT INTO `tb_category_brand` VALUES ('84', '18374');
 INSERT INTO `tb_category_brand` VALUES ('86', '18374');
 INSERT INTO `tb_category_brand` VALUES ('90', '325398');
 INSERT INTO `tb_category_brand` VALUES ('90', '325399');
 INSERT INTO `tb_category_brand` VALUES ('94', '18374');
+INSERT INTO `tb_category_brand` VALUES ('105', '1115');
 INSERT INTO `tb_category_brand` VALUES ('105', '6742');
 INSERT INTO `tb_category_brand` VALUES ('105', '7817');
 INSERT INTO `tb_category_brand` VALUES ('105', '7888');
@@ -1755,75 +1810,30 @@ INSERT INTO `tb_category_brand` VALUES ('170', '6742');
 INSERT INTO `tb_category_brand` VALUES ('324', '18374');
 INSERT INTO `tb_category_brand` VALUES ('326', '18374');
 INSERT INTO `tb_category_brand` VALUES ('327', '18374');
-INSERT INTO `tb_category_brand` VALUES ('415', '325401');
 
--- ----------------------------
--- Table structure for tb_coupon
--- ----------------------------
-DROP TABLE IF EXISTS `tb_coupon`;
-CREATE TABLE `tb_coupon` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `amount` bigint(20) unsigned NOT NULL,
-  `threshold` bigint(20) DEFAULT NULL,
-  `end_time` datetime DEFAULT NULL,
-  `is_all` tinyint(1) NOT NULL DEFAULT '1',
-  `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of tb_coupon
--- ----------------------------
-INSERT INTO `tb_coupon` VALUES ('1', '10000', '100000', null, '1', '100元优惠券');
-INSERT INTO `tb_coupon` VALUES ('2', '20000', '100000', '2019-03-08 15:06:00', '0', '特惠200');
-INSERT INTO `tb_coupon` VALUES ('3', '10000', '100000', null, '1', '没人用的优惠券');
-INSERT INTO `tb_coupon` VALUES ('4', '30000', '200000', null, '0', '新的优惠券');
-
--- ----------------------------
--- Table structure for tb_coupon_goods
--- ----------------------------
-DROP TABLE IF EXISTS `tb_coupon_goods`;
-CREATE TABLE `tb_coupon_goods` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `coupon_id` bigint(20) unsigned NOT NULL,
-  `sku_id` bigint(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tb_coupon_goods
--- ----------------------------
-INSERT INTO `tb_coupon_goods` VALUES ('1', '2', '3355175');
-INSERT INTO `tb_coupon_goods` VALUES ('2', '2', '3604173');
-INSERT INTO `tb_coupon_goods` VALUES ('3', '2', '3728945');
-INSERT INTO `tb_coupon_goods` VALUES ('4', '2', '3924115');
-INSERT INTO `tb_coupon_goods` VALUES ('5', '4', '3924115');
-
--- ----------------------------
--- Table structure for tb_order
--- ----------------------------
 DROP TABLE IF EXISTS `tb_order`;
 CREATE TABLE `tb_order` (
   `order_id` bigint(20) NOT NULL COMMENT '订单id',
   `total_pay` bigint(20) NOT NULL COMMENT '总金额，单位为分',
   `actual_pay` bigint(20) NOT NULL COMMENT '实付金额。单位:分。如:20007，表示:200元7分',
-  `promotion_ids` varchar(256) COLLATE utf8_bin DEFAULT '',
+  `promotion_ids` varchar(255) COLLATE utf8_bin DEFAULT '',
   `payment_type` tinyint(1) unsigned zerofill NOT NULL COMMENT '支付类型，1、在线支付，2、货到付款',
-  `post_fee` bigint(20) NOT NULL DEFAULT '0' COMMENT '邮费。单位:分。如:20007，表示:200元7分',
+  `post_fee` bigint(20) NOT NULL COMMENT '邮费。单位:分。如:20007，表示:200元7分',
   `create_time` datetime DEFAULT NULL COMMENT '订单创建时间',
   `shipping_name` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '物流名称',
   `shipping_code` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '物流单号',
-  `user_id` varchar(32) COLLATE utf8_bin NOT NULL COMMENT '用户id',
-  `buyer_message` varchar(128) COLLATE utf8_bin DEFAULT NULL COMMENT '买家留言',
-  `buyer_nick` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '买家昵称',
+  `user_id` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '用户id',
+  `buyer_message` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '买家留言',
+  `buyer_nick` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '买家昵称',
   `buyer_rate` tinyint(1) DEFAULT NULL COMMENT '买家是否已经评价,0未评价，1已评价',
-  `receiver_state` varchar(128) COLLATE utf8_bin DEFAULT '' COMMENT '收获地址（省）',
-  `receiver_city` varchar(256) COLLATE utf8_bin DEFAULT '' COMMENT '收获地址（市）',
-  `receiver_district` varchar(256) COLLATE utf8_bin DEFAULT '' COMMENT '收获地址（区/县）',
-  `receiver_address` varchar(256) COLLATE utf8_bin DEFAULT '' COMMENT '收获地址（街道、住址等详细地址）',
-  `receiver_mobile` varchar(11) COLLATE utf8_bin DEFAULT NULL COMMENT '收货人手机',
-  `receiver_zip` varchar(16) COLLATE utf8_bin DEFAULT NULL COMMENT '收货人邮编',
-  `receiver` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '收货人',
+  `receiver_state` varchar(100) COLLATE utf8_bin DEFAULT '' COMMENT '收获地址（省）',
+  `receiver_city` varchar(255) COLLATE utf8_bin DEFAULT '' COMMENT '收获地址（市）',
+  `receiver_district` varchar(255) COLLATE utf8_bin DEFAULT '' COMMENT '收获地址（区/县）',
+  `receiver_address` varchar(255) COLLATE utf8_bin DEFAULT '' COMMENT '收获地址（街道、住址等详细地址）',
+  `receiver_mobile` varchar(12) COLLATE utf8_bin DEFAULT NULL COMMENT '收货人手机',
+  `receiver_zip` varchar(15) COLLATE utf8_bin DEFAULT NULL COMMENT '收货人邮编',
+  `receiver` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '收货人',
   `invoice_type` int(1) DEFAULT '0' COMMENT '发票类型(0无发票1普通发票，2电子发票，3增值税发票)',
   `source_type` int(1) DEFAULT '2' COMMENT '订单来源：1:app端，2：pc端，3：M端，4：微信端，5：手机qq端',
   PRIMARY KEY (`order_id`),
@@ -1831,360 +1841,54 @@ CREATE TABLE `tb_order` (
   KEY `buyer_nick` (`buyer_nick`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- ----------------------------
--- Records of tb_order
--- ----------------------------
-INSERT INTO `tb_order` VALUES ('1048108312895295488', '169900', '169900', '', '1', '0', '2018-10-05 15:11:09', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048139125951172608', '169900', '169900', '', '1', '0', '2018-10-05 17:13:36', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048139948508712960', '169900', '169900', '', '1', '0', '2018-10-05 17:16:52', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048143688498286592', '169900', '169900', '', '1', '0', '2018-10-05 17:31:44', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048143762250928128', '169900', '169900', '', '1', '0', '2018-10-05 17:32:01', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048144070410637312', '169900', '169900', '', '1', '0', '2018-10-05 17:33:15', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048150521682202624', '169900', '169900', '', '1', '0', '2018-10-05 17:58:53', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048152072622575616', '169900', '169900', '', '1', '0', '2018-10-05 18:05:02', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048180843689938944', '249900', '249900', '', '1', '0', '2018-10-05 19:59:22', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048180920340844544', '249900', '249900', '', '1', '0', '2018-10-05 19:59:40', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048429835241787392', '249900', '249900', '', '1', '0', '2018-10-06 12:28:46', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048791848090472448', '249900', '249900', '', '1', '0', '2018-10-07 12:27:17', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048791896744398848', '249900', '249900', '', '1', '0', '2018-10-07 12:27:28', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048792468914573312', '249900', '249900', '', '1', '0', '2018-10-07 12:29:45', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048797285095444480', '249900', '249900', '', '1', '0', '2018-10-07 12:48:53', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048798133263405056', '249900', '249900', '', '1', '0', '2018-10-07 12:52:15', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048798647954837504', '249900', '249900', '', '1', '0', '2018-10-07 12:54:18', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048800410233606144', '249900', '249900', '', '1', '0', '2018-10-07 13:01:18', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048801032290832384', '249900', '249900', '', '1', '0', '2018-10-07 13:03:47', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048801092453928960', '249900', '249900', '', '1', '0', '2018-10-07 13:04:01', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048828280339304448', '249900', '249900', '', '1', '0', '2018-10-07 14:52:03', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048829382673698816', '249900', '249900', '', '1', '0', '2018-10-07 14:56:26', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048831888489320448', '249900', '249900', '', '1', '0', '2018-10-07 15:06:23', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048832298239266816', '249900', '249900', '', '1', '0', '2018-10-07 15:08:01', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048833033576255488', '249900', '249900', '', '1', '0', '2018-10-07 15:10:56', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048833402637258752', '249900', '249900', '', '1', '0', '2018-10-07 15:12:24', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048834222883737600', '249900', '249900', '', '1', '0', '2018-10-07 15:15:40', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048835021936398336', '249900', '249900', '', '1', '0', '2018-10-07 15:18:50', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048856917990051840', '159900', '159900', '', '1', '0', '2018-10-07 16:45:51', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048859076135620608', '159900', '159900', '', '1', '0', '2018-10-07 16:54:25', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048859374887505920', '159900', '159900', '', '1', '0', '2018-10-07 16:55:36', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048860418807828480', '159900', '159900', '', '1', '0', '2018-10-07 16:59:45', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048860741450469376', '159900', '159900', '', '1', '0', '2018-10-07 17:01:02', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048861260302651392', '134800', '134800', '', '1', '0', '2018-10-07 17:03:06', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048861490276339712', '134800', '134800', '', '1', '0', '2018-10-07 17:04:01', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048862621815672832', '134800', '134800', '', '1', '0', '2018-10-07 17:08:31', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048864663632220160', '134800', '134800', '', '1', '0', '2018-10-07 17:16:37', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048864708028928000', '134800', '134800', '', '1', '0', '2018-10-07 17:16:48', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048865366538850304', '219900', '219900', '', '1', '0', '2018-10-07 17:19:25', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048865545040039936', '219900', '219900', '', '1', '0', '2018-10-07 17:20:08', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048890702529957888', '419900', '419900', '', '1', '0', '2018-10-07 19:00:06', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048890723556003840', '419900', '419900', '', '1', '0', '2018-10-07 19:00:11', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1048892003028439040', '132800', '132800', '', '1', '0', '2018-10-07 19:05:16', null, null, '28', null, 'zhangsan', '0', '上海', '上海', '浦东新区', '航头镇航头路18号传智播客 3号楼', '15800000000', '21000', '虎哥', '0', '1');
-INSERT INTO `tb_order` VALUES ('1100679830673817600', '5532800', '5532800', 'null', '1', '1000', '2019-02-27 16:51:35', null, null, '31', null, null, null, null, null, null, '八维', '13916914058', '200050', '八维', null, null);
-INSERT INTO `tb_order` VALUES ('1100680825285902336', '21760000', '21760000', 'null', '1', '1000', '2019-02-27 16:55:33', null, null, '31', null, null, null, null, null, null, '八维', '13916914058', '200050', '八维', null, null);
-INSERT INTO `tb_order` VALUES ('1101659577440534528', '429400', '409400', '2,null', '1', '1000', '2019-03-02 09:44:45', null, null, '31', null, null, null, null, null, null, '123', '123', '123', '123', null, null);
 
--- ----------------------------
--- Table structure for tb_order_detail
--- ----------------------------
 DROP TABLE IF EXISTS `tb_order_detail`;
 CREATE TABLE `tb_order_detail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单详情id ',
   `order_id` bigint(20) NOT NULL COMMENT '订单id',
   `sku_id` bigint(20) NOT NULL COMMENT 'sku商品id',
   `num` int(11) NOT NULL COMMENT '购买数量',
-  `title` varchar(256) NOT NULL COMMENT '商品标题',
-  `own_spec` varchar(1024) DEFAULT '' COMMENT '商品动态属性键值集',
+  `title` varchar(200) NOT NULL COMMENT '商品标题',
+  `own_spec` varchar(1000) DEFAULT '' COMMENT '商品动态属性键值集',
   `price` bigint(20) NOT NULL COMMENT '价格,单位：分',
-  `image` varchar(128) DEFAULT '' COMMENT '商品图片',
+  `image` varchar(200) DEFAULT '' COMMENT '商品图片',
   PRIMARY KEY (`id`),
   KEY `key_order_id` (`order_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8 COMMENT='订单详情表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单详情表';
 
--- ----------------------------
--- Records of tb_order_detail
--- ----------------------------
-INSERT INTO `tb_order_detail` VALUES ('22', '1048074573553209344', '10493538594', '1', '???HUAWEI? ??8 ?? ??? ???(4G RAM+64G ROM)??', '{\"4\":\"???\",\"12\":\"4GB\",\"13\":\"64GB\"}', '172900', 'http://image.leyou.com/images/14/7/1524297649749.jpg');
-INSERT INTO `tb_order_detail` VALUES ('23', '1048074573553209344', '13134026855', '1', '???HUAWEI? ??9 ?? ??? ???(6G RAM + 64G ROM)???', '{\"4\":\"???\",\"12\":\"6GB\",\"13\":\"64GB\"}', '212900', 'http://image.leyou.com/images/6/4/1524297493568.jpg');
-INSERT INTO `tb_order_detail` VALUES ('24', '1048074573553209344', '27359021522', '1', '???smartisan? ??38 ??  ??? 4GB 64GB', '{\"4\":\"???\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('25', '1048075102106816512', '10493538594', '1', '???HUAWEI? ??8 ?? ??? ???(4G RAM+64G ROM)??', '{\"4\":\"???\",\"12\":\"4GB\",\"13\":\"64GB\"}', '172900', 'http://image.leyou.com/images/14/7/1524297649749.jpg');
-INSERT INTO `tb_order_detail` VALUES ('26', '1048075102106816512', '13134026855', '1', '???HUAWEI? ??9 ?? ??? ???(6G RAM + 64G ROM)???', '{\"4\":\"???\",\"12\":\"6GB\",\"13\":\"64GB\"}', '212900', 'http://image.leyou.com/images/6/4/1524297493568.jpg');
-INSERT INTO `tb_order_detail` VALUES ('27', '1048075102106816512', '27359021522', '1', '???smartisan? ??38 ??  ??? 4GB 64GB', '{\"4\":\"???\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('28', '1048105939846172672', '10493538594', '1', '???HUAWEI? ??8 ?? ??? ???(4G RAM+64G ROM)??', '{\"4\":\"???\",\"12\":\"4GB\",\"13\":\"64GB\"}', '172900', 'http://image.leyou.com/images/14/7/1524297649749.jpg');
-INSERT INTO `tb_order_detail` VALUES ('29', '1048105939846172672', '16516997345', '1', '???MI? ??note3 ?? ?? ??? 6GB+64GB', '{\"4\":\"??\",\"12\":\"6GB\",\"13\":\"64GB\"}', '205900', 'http://image.leyou.com/images/1/8/1524297653008.jpg');
-INSERT INTO `tb_order_detail` VALUES ('30', '1048105939846172672', '27359021522', '1', '???smartisan? ??38 ??  ??? 4GB 64GB', '{\"4\":\"???\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('31', '1048108312895295488', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('32', '1048108312895295488', '27359021522', '1', '锤子（smartisan） 坚果38 手机  碳黑色 4GB 64GB', '{\"4\":\"碳黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('33', '1048139125951172608', '3250951', '2', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('34', '1048139125951172608', '27359021522', '1', '锤子（smartisan） 坚果38 手机  碳黑色 4GB 64GB', '{\"4\":\"碳黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('35', '1048139948508712960', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('36', '1048139948508712960', '27359021522', '1', '锤子（smartisan） 坚果38 手机  碳黑色 4GB 64GB', '{\"4\":\"碳黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('37', '1048143688498286592', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('38', '1048143688498286592', '11585593067', '1', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
-INSERT INTO `tb_order_detail` VALUES ('39', '1048143688498286592', '27359021522', '1', '锤子（smartisan） 坚果38 手机  碳黑色 4GB 64GB', '{\"4\":\"碳黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('40', '1048143762250928128', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('41', '1048143762250928128', '11585593067', '1', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
-INSERT INTO `tb_order_detail` VALUES ('42', '1048143762250928128', '27359021522', '1', '锤子（smartisan） 坚果38 手机  碳黑色 4GB 64GB', '{\"4\":\"碳黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('43', '1048144070410637312', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('44', '1048144070410637312', '11585593067', '1', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
-INSERT INTO `tb_order_detail` VALUES ('45', '1048144070410637312', '27359021522', '1', '锤子（smartisan） 坚果38 手机  碳黑色 4GB 64GB', '{\"4\":\"碳黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('46', '1048150521682202624', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('47', '1048150521682202624', '11585593067', '1', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
-INSERT INTO `tb_order_detail` VALUES ('48', '1048150521682202624', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('49', '1048150521682202624', '27359021522', '1', '锤子（smartisan） 坚果38 手机  碳黑色 4GB 64GB', '{\"4\":\"碳黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('50', '1048152072622575616', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('51', '1048152072622575616', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('52', '1048152072622575616', '21690477583', '1', '小米 红米5Plus 手机 金色 全网通(4G+64G)', '{\"4\":\"金色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '109900', 'http://image.leyou.com/images/2/11/1524297549175.jpg');
-INSERT INTO `tb_order_detail` VALUES ('53', '1048152072622575616', '27359021522', '1', '锤子（smartisan） 坚果38 手机  碳黑色 4GB 64GB', '{\"4\":\"碳黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '169900', 'http://image.leyou.com/images/9/11/1524297607702.jpg');
-INSERT INTO `tb_order_detail` VALUES ('54', '1048180843689938944', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('55', '1048180843689938944', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('56', '1048180920340844544', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('57', '1048180920340844544', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('58', '1048429835241787392', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('59', '1048429835241787392', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('60', '1048791848090472448', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('61', '1048791848090472448', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('62', '1048791848090472448', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('63', '1048791896744398848', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('64', '1048791896744398848', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('65', '1048791896744398848', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('66', '1048792468914573312', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('67', '1048792468914573312', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('68', '1048792468914573312', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('69', '1048797285095444480', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('70', '1048797285095444480', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('71', '1048797285095444480', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('72', '1048798133263405056', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('73', '1048798133263405056', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('74', '1048798133263405056', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('75', '1048798647954837504', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('76', '1048798647954837504', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('77', '1048798647954837504', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('78', '1048800410233606144', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('79', '1048800410233606144', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('80', '1048800410233606144', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('81', '1048801032290832384', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('82', '1048801032290832384', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('83', '1048801032290832384', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('84', '1048801092453928960', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('85', '1048801092453928960', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('86', '1048801092453928960', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('87', '1048828280339304448', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('88', '1048828280339304448', '14542067586', '1', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '127900', 'http://image.leyou.com/images/5/15/1524297684291.jpg');
-INSERT INTO `tb_order_detail` VALUES ('89', '1048828280339304448', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('90', '1048829382673698816', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('91', '1048829382673698816', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('92', '1048831888489320448', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('93', '1048831888489320448', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('94', '1048832298239266816', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('95', '1048832298239266816', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('96', '1048833033576255488', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('97', '1048833033576255488', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('98', '1048833402637258752', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('99', '1048833402637258752', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('100', '1048834222883737600', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('101', '1048834222883737600', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('102', '1048835021936398336', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('103', '1048835021936398336', '20067198287', '1', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '249900', 'http://image.leyou.com/images/15/3/1524297554402.jpg');
-INSERT INTO `tb_order_detail` VALUES ('104', '1048856917990051840', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('105', '1048859076135620608', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('106', '1048859374887505920', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('107', '1048860418807828480', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('108', '1048860741450469376', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('109', '1048861260302651392', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('110', '1048861260302651392', '11585593067', '1', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
-INSERT INTO `tb_order_detail` VALUES ('111', '1048861490276339712', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('112', '1048861490276339712', '11585593067', '1', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
-INSERT INTO `tb_order_detail` VALUES ('113', '1048862621815672832', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('114', '1048862621815672832', '11585593067', '1', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
-INSERT INTO `tb_order_detail` VALUES ('115', '1048864663632220160', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('116', '1048864663632220160', '11585593067', '1', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
-INSERT INTO `tb_order_detail` VALUES ('117', '1048864708028928000', '3250951', '1', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '159900', 'http://image.leyou.com/images/13/7/1524297563376.jpg');
-INSERT INTO `tb_order_detail` VALUES ('118', '1048864708028928000', '11585593067', '1', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
-INSERT INTO `tb_order_detail` VALUES ('119', '1048865366538850304', '10522143816', '1', '华为（HUAWEI） 华为 麦芒5 手机 香槟金 全网通(4G+64G)标配', '{\"4\":\"香槟金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '132800', 'http://image.leyou.com/images/13/1/1524297624866.jpg');
-INSERT INTO `tb_order_detail` VALUES ('120', '1048865366538850304', '26400483774', '1', '华为（HUAWEI） nova 3e 手机 幻夜黑 全网通（4G+128G）', '{\"4\":\"幻夜黑\",\"12\":\"4GB\",\"13\":\"64GB\"}', '219900', 'http://image.leyou.com/images/7/3/1524297671280.jpg');
-INSERT INTO `tb_order_detail` VALUES ('121', '1048865545040039936', '10522143816', '1', '华为（HUAWEI） 华为 麦芒5 手机 香槟金 全网通(4G+64G)标配', '{\"4\":\"香槟金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '132800', 'http://image.leyou.com/images/13/1/1524297624866.jpg');
-INSERT INTO `tb_order_detail` VALUES ('122', '1048865545040039936', '26400483774', '1', '华为（HUAWEI） nova 3e 手机 幻夜黑 全网通（4G+128G）', '{\"4\":\"幻夜黑\",\"12\":\"4GB\",\"13\":\"64GB\"}', '219900', 'http://image.leyou.com/images/7/3/1524297671280.jpg');
-INSERT INTO `tb_order_detail` VALUES ('123', '1048890702529957888', '18167356213', '1', '华为（HUAWEI） Mate10 手机 樱粉金色 全网通(6G+128G)', '{\"4\":\"樱粉金色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '419900', 'http://image.leyou.com/images/15/3/1524297654832.jpg');
-INSERT INTO `tb_order_detail` VALUES ('124', '1048890723556003840', '18167356213', '1', '华为（HUAWEI） Mate10 手机 樱粉金色 全网通(6G+128G)', '{\"4\":\"樱粉金色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '419900', 'http://image.leyou.com/images/15/3/1524297654832.jpg');
-INSERT INTO `tb_order_detail` VALUES ('125', '1048892003028439040', '10522143816', '1', '华为（HUAWEI） 华为 麦芒5 手机 香槟金 全网通(4G+64G)标配', '{\"4\":\"香槟金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '132800', 'http://image.leyou.com/images/13/1/1524297624866.jpg');
-INSERT INTO `tb_order_detail` VALUES ('126', '1100679830673817600', '10493538594', '32', '华为（HUAWEI） 荣耀8 手机 幻夜黑 全网通(4G RAM+64G ROM)标配', '{\"4\":\"幻夜黑\",\"12\":\"4GB\",\"13\":\"64GB\"}', '172900', 'http://image.leyou.com/images/14/7/1524297649749.jpg');
-INSERT INTO `tb_order_detail` VALUES ('127', '1100680825285902336', '10804373765', '200', '华为（HUAWEI） nova 手机 香槟金(白) 移动全网(4G+64G)', '{\"4\":\"香槟金(白)\",\"12\":\"4GB\",\"13\":\"64GB\"}', '108800', 'http://image.leyou.com/images/6/0/1524297482931.jpg');
-INSERT INTO `tb_order_detail` VALUES ('136', '1101659577440534528', '3924115', '2', '360手机 F4S 3GB+32GB 星空灰 移动定制版 移动联通电信4G手机 双卡双待', '{\"4\":\"星空灰\",\"12\":\"3GB\",\"13\":\"32GB\"}', '79900', 'http://image.leyou.com/images/4/11/1524297413085.jpg');
-INSERT INTO `tb_order_detail` VALUES ('137', '1101659577440534528', '11585593067', '2', '华为（HUAWEI） nova青春版 手机 魅海蓝 全网通4G(4G RAM+64G ROM)标配', '{\"4\":\"魅海蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '134800', 'http://image.leyou.com/images/6/13/1524297613232.jpg');
 
--- ----------------------------
--- Table structure for tb_order_status
--- ----------------------------
 DROP TABLE IF EXISTS `tb_order_status`;
 CREATE TABLE `tb_order_status` (
   `order_id` bigint(20) NOT NULL COMMENT '订单id',
-  `status` int(1) DEFAULT NULL COMMENT '状态：1、未付款 2、已付款,未发货 3、已发货,未确认 4、交易成功 5、交易关闭 6、已评价 7、已过期',
+  `status` int(1) DEFAULT NULL COMMENT '状态：1、未付款 2、已付款,未发货 3、已发货,未确认 4、交易成功 5、交易关闭 6、已评价',
   `create_time` datetime DEFAULT NULL COMMENT '订单创建时间',
   `payment_time` datetime DEFAULT NULL COMMENT '付款时间',
   `consign_time` datetime DEFAULT NULL COMMENT '发货时间',
   `end_time` datetime DEFAULT NULL COMMENT '交易完成时间',
   `close_time` datetime DEFAULT NULL COMMENT '交易关闭时间',
-  `comment_time` datetime DEFAULT NULL COMMENT '评价时间',
+  `comment_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '评价时间',
   PRIMARY KEY (`order_id`),
   KEY `status` (`status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单状态表';
 
--- ----------------------------
--- Records of tb_order_status
--- ----------------------------
-INSERT INTO `tb_order_status` VALUES ('1048074573553209344', '2', '2018-10-05 12:57:06', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048075102106816512', '1', '2018-10-05 12:59:11', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048105939846172672', '1', '2018-10-05 15:01:44', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048108312895295488', '7', '2018-10-05 15:11:10', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048139125951172608', '7', '2018-10-05 17:13:36', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048139948508712960', '7', '2018-10-05 17:16:52', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048143688498286592', '7', '2018-10-05 17:31:44', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048143762250928128', '7', '2018-10-05 17:32:01', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048144070410637312', '7', '2018-10-05 17:33:15', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048150521682202624', '7', '2018-10-05 17:58:53', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048152072622575616', '7', '2018-10-05 18:05:03', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048180843689938944', '1', '2018-10-05 19:59:23', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048180920340844544', '1', '2018-10-05 19:59:40', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048429835241787392', '1', '2018-10-06 12:28:46', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048791848090472448', '1', '2018-10-07 12:27:17', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048791896744398848', '1', '2018-10-07 12:27:28', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048792468914573312', '1', '2018-10-07 12:29:45', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048797285095444480', '1', '2018-10-07 12:48:54', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048798133263405056', '1', '2018-10-07 12:52:16', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048798647954837504', '1', '2018-10-07 12:54:19', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048800410233606144', '1', '2018-10-07 13:01:19', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048801032290832384', '1', '2018-10-07 13:03:47', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048801092453928960', '1', '2018-10-07 13:04:01', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048828280339304448', '1', '2018-10-07 14:52:03', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048829382673698816', '1', '2018-10-07 14:56:26', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048831888489320448', '1', '2018-10-07 15:06:24', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048832298239266816', '1', '2018-10-07 15:08:01', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048833033576255488', '1', '2018-10-07 15:10:56', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048833402637258752', '1', '2018-10-07 15:12:24', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048834222883737600', '1', '2018-10-07 15:15:40', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048835021936398336', '1', '2018-10-07 15:18:50', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048856917990051840', '1', '2018-10-07 16:45:51', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048859076135620608', '1', '2018-10-07 16:54:25', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048859374887505920', '1', '2018-10-07 16:55:37', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048860418807828480', '1', '2018-10-07 16:59:45', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048860741450469376', '1', '2018-10-07 17:01:02', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048861260302651392', '1', '2018-10-07 17:03:06', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048861490276339712', '1', '2018-10-07 17:04:01', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048862621815672832', '1', '2018-10-07 17:08:31', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048864663632220160', '1', '2018-10-07 17:16:38', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048864708028928000', '1', '2018-10-07 17:16:48', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048865366538850304', '1', '2018-10-07 17:19:25', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048865545040039936', '1', '2018-10-07 17:20:08', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048890702529957888', '1', '2018-10-07 19:00:06', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048890723556003840', '1', '2018-10-07 19:00:11', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1048892003028439040', '1', '2018-10-07 19:05:16', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1100679830673817600', '2', '2019-02-27 16:51:35', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1100680825285902336', '2', '2019-02-27 16:55:33', null, null, null, null, null);
-INSERT INTO `tb_order_status` VALUES ('1101659577440534528', '1', '2019-03-02 09:44:45', null, null, null, null, null);
 
--- ----------------------------
--- Table structure for tb_pay_log
--- ----------------------------
-DROP TABLE IF EXISTS `tb_pay_log`;
-CREATE TABLE `tb_pay_log` (
-  `order_id` bigint(20) NOT NULL COMMENT '订单号',
-  `total_fee` bigint(20) DEFAULT NULL COMMENT '支付金额（分）',
-  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
-  `transaction_id` varchar(32) DEFAULT NULL COMMENT '微信交易号码',
-  `status` tinyint(1) DEFAULT NULL COMMENT '交易状态，1 未支付, 2已支付, 3 已退款, 4 支付错误, 5 已关闭',
-  `pay_type` tinyint(1) DEFAULT NULL COMMENT '支付方式，1 微信支付, 2 货到付款',
-  `bank_type` varchar(16) DEFAULT NULL COMMENT '银行类型',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `pay_time` datetime DEFAULT NULL COMMENT '支付时间',
-  `closed_time` datetime DEFAULT NULL COMMENT '关闭时间',
-  `refund_time` datetime DEFAULT NULL COMMENT '退款时间',
-  PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tb_pay_log
--- ----------------------------
-INSERT INTO `tb_pay_log` VALUES ('1048180920340844544', '249900', '28', null, '0', '1', null, '2018-10-05 19:59:42', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048429835241787392', '249900', '28', null, '0', '1', null, '2018-10-06 12:28:47', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048791896744398848', '249900', '28', null, '0', '1', null, '2018-10-07 12:27:30', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048792468914573312', '249900', '28', null, '0', '1', null, '2018-10-07 12:29:45', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048833033576255488', '249900', '28', null, '0', '1', null, '2018-10-07 15:10:58', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048833402637258752', '249900', '28', null, '0', '1', null, '2018-10-07 15:12:25', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048834222883737600', '249900', '28', null, '0', '1', null, '2018-10-07 15:15:40', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048835021936398336', '249900', '28', null, '0', '1', null, '2018-10-07 15:18:51', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048856917990051840', '159900', '28', null, '0', '1', null, '2018-10-07 16:45:51', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048859076135620608', '159900', '28', null, '0', '1', null, '2018-10-07 16:54:26', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048859374887505920', '159900', '28', null, '0', '1', null, '2018-10-07 16:55:37', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048860418807828480', '159900', '28', null, '0', '1', null, '2018-10-07 16:59:46', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048860741450469376', '159900', '28', null, '0', '1', null, '2018-10-07 17:01:03', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048861260302651392', '134800', '28', null, '0', '1', null, '2018-10-07 17:03:07', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048861490276339712', '134800', '28', null, '0', '1', null, '2018-10-07 17:04:01', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048862621815672832', '134800', '28', null, '0', '1', null, '2018-10-07 17:08:31', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048864708028928000', '134800', '28', null, '0', '1', null, '2018-10-07 17:16:49', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048865366538850304', '219900', '28', null, '0', '1', null, '2018-10-07 17:19:26', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048865545040039936', '219900', '28', null, '0', '1', null, '2018-10-07 17:20:08', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048890723556003840', '419900', '28', null, '0', '1', null, '2018-10-07 19:00:12', null, null, null);
-INSERT INTO `tb_pay_log` VALUES ('1048892003028439040', '132800', '28', null, '0', '1', null, '2018-10-07 19:05:16', null, null, null);
-
--- ----------------------------
--- Table structure for tb_role
--- ----------------------------
-DROP TABLE IF EXISTS `tb_role`;
-CREATE TABLE `tb_role` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_type` int(4) NOT NULL DEFAULT '0' COMMENT '1:消费者 2：业务操作人员 3：管理员',
-  `role_desc` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tb_role
--- ----------------------------
-INSERT INTO `tb_role` VALUES ('1', '1', '消费者');
-INSERT INTO `tb_role` VALUES ('2', '2', '操作员');
-INSERT INTO `tb_role` VALUES ('3', '3', '管理员');
-
--- ----------------------------
--- Table structure for tb_role_user
--- ----------------------------
-DROP TABLE IF EXISTS `tb_role_user`;
-CREATE TABLE `tb_role_user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tb_role_user
--- ----------------------------
-INSERT INTO `tb_role_user` VALUES ('1', '1', '31');
-INSERT INTO `tb_role_user` VALUES ('2', '2', '31');
-INSERT INTO `tb_role_user` VALUES ('3', '1', '32');
-INSERT INTO `tb_role_user` VALUES ('4', '1', '31');
-INSERT INTO `tb_role_user` VALUES ('5', '2', '32');
-INSERT INTO `tb_role_user` VALUES ('6', '3', '33');
-
--- ----------------------------
--- Table structure for tb_sku
--- ----------------------------
 DROP TABLE IF EXISTS `tb_sku`;
 CREATE TABLE `tb_sku` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'sku id',
   `spu_id` bigint(20) NOT NULL COMMENT 'spu id',
-  `title` varchar(256) NOT NULL COMMENT '商品标题',
-  `images` varchar(1024) DEFAULT '' COMMENT '商品的图片，多个图片以‘,’分割',
+  `title` varchar(255) NOT NULL COMMENT '商品标题',
+  `images` varchar(1000) DEFAULT '' COMMENT '商品的图片，多个图片以‘,’分割',
   `price` bigint(15) NOT NULL DEFAULT '0' COMMENT '销售价格，单位为分',
-  `indexes` varchar(32) DEFAULT '' COMMENT '特有规格属性在spu属性模板中的对应下标组合',
-  `own_spec` varchar(1024) DEFAULT '' COMMENT 'sku的特有规格参数键值对，json格式，反序列化时请使用linkedHashMap，保证有序',
+  `indexes` varchar(100) DEFAULT '' COMMENT '特有规格属性在spu属性模板中的对应下标组合',
+  `own_spec` varchar(1000) DEFAULT '' COMMENT 'sku的特有规格参数键值对，json格式，反序列化时请使用linkedHashMap，保证有序',
   `enable` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有效，0无效，1有效',
   `create_time` datetime NOT NULL COMMENT '添加时间',
   `last_update_time` datetime NOT NULL COMMENT '最后修改时间',
   PRIMARY KEY (`id`),
   KEY `key_spu_id` (`spu_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=27359021734 DEFAULT CHARSET=utf8 COMMENT='sku表,该表表示具体的商品实体,如黑色的 64g的iphone 8';
+) ENGINE=InnoDB AUTO_INCREMENT=27359021548 DEFAULT CHARSET=utf8 COMMENT='sku表,该表表示具体的商品实体,如黑色的 64g的iphone 8';
 
--- ----------------------------
--- Records of tb_sku
--- ----------------------------
+
 INSERT INTO `tb_sku` VALUES ('2600242', '2', '华为 G9 青春版 白色 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/9/15/1524297313793.jpg', '84900', '0_0_0', '{\"4\":\"白色\",\"12\":\"3GB\",\"13\":\"16GB\"}', '1', '2018-04-21 15:55:14', '2018-04-21 15:55:14');
 INSERT INTO `tb_sku` VALUES ('2600248', '2', '华为 G9 青春版 金色 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/9/5/1524297314398.jpg', '84900', '1_0_0', '{\"4\":\"金色\",\"12\":\"3GB\",\"13\":\"16GB\"}', '1', '2018-04-21 15:55:14', '2018-04-21 15:55:14');
 INSERT INTO `tb_sku` VALUES ('2868393', '3', '三星 Galaxy C5（SM-C5000）4GB+32GB 枫叶金 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/12/15/1524297315534.jpg', '119900', '0_0_0', '{\"4\":\"金\",\"12\":\"4GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:55:16', '2018-04-21 15:55:16');
@@ -2192,7 +1896,7 @@ INSERT INTO `tb_sku` VALUES ('2868435', '3', '三星 Galaxy C5（SM-C5000）4GB+
 INSERT INTO `tb_sku` VALUES ('2895136', '3', '三星 Galaxy C5（SM-C5000）4GB+32GB 烟雨灰 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/15/15/1524297316945.jpg', '119900', '2_0_0', '{\"4\":\"灰\",\"12\":\"4GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:55:17', '2018-04-21 15:55:17');
 INSERT INTO `tb_sku` VALUES ('2895158', '3', '三星 Galaxy C5（SM-C5000）4GB+32GB 皎洁银 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/8/15/1524297317554.jpg', '119900', '3_0_0', '{\"4\":\"银\",\"12\":\"4GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:55:18', '2018-04-21 15:55:18');
 INSERT INTO `tb_sku` VALUES ('3234246', '7', '华为 G9 Plus 32GB 月光银 移动联通4G手机 双卡双待', 'http://image.leyou.com/images/13/7/1524297323037.jpg', '119900', '1_0_0', '{\"4\":\"月光银\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:55:23', '2018-04-21 15:55:23');
-INSERT INTO `tb_sku` VALUES ('3234250', '4', '华为 麦芒5 全网通 4GB+64GB版  香槟金 4GB 64GB', 'http://image.leyou.com/images/9/13/1524297318952.jpg', '139900', '0_0_0', '{\"4\":\"香槟金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:55:19', '2019-01-17 20:58:28');
+INSERT INTO `tb_sku` VALUES ('3234250', '4', '华为 麦芒5 全网通 4GB+64GB版 香槟金 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/9/13/1524297318952.jpg', '139900', '0_0_0', '{\"4\":\"香槟金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:55:19', '2018-04-21 15:55:19');
 INSERT INTO `tb_sku` VALUES ('3250951', '124', '努比亚（nubia）Z11 百合金 4GB+64GB 全网通 移动联通电信4G手机双卡双待', 'http://image.leyou.com/images/13/7/1524297563376.jpg', '159900', '1_1_0', '{\"4\":\"百合金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:59:23', '2018-04-21 15:59:23');
 INSERT INTO `tb_sku` VALUES ('3355143', '5', '华为 HUAWEI nova 4GB+64GB版 香槟金（白）移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/8/11/1524297319952.jpg', '139900', '0_0_0', '{\"4\":\"香槟金（白）\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:55:20', '2018-04-21 15:55:20');
 INSERT INTO `tb_sku` VALUES ('3355175', '5', '华为 HUAWEI nova 4GB+64GB版 玫瑰金 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/13/5/1524297320551.jpg', '149900', '1_0_0', '{\"4\":\"玫瑰金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:55:21', '2018-04-21 15:55:21');
@@ -2217,7 +1921,7 @@ INSERT INTO `tb_sku` VALUES ('3904041', '22', '小米 红米 4A 移动合约版 
 INSERT INTO `tb_sku` VALUES ('3915537', '40', '小米 红米Note4X 全网通版 3GB+32GB 蓝绿色 移动联通电信4G手机', 'http://image.leyou.com/images/6/8/1524297382545.jpg', '99900', '4_1_1', '{\"4\":\"蓝绿色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:56:23', '2018-04-21 15:56:23');
 INSERT INTO `tb_sku` VALUES ('3924115', '57', '360手机 F4S 3GB+32GB 星空灰 移动定制版 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/4/11/1524297413085.jpg', '79900', '1_1_1', '{\"4\":\"星空灰\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:56:53', '2018-04-21 15:56:53');
 INSERT INTO `tb_sku` VALUES ('3979765', '11', 'OPPO A57 3GB+32GB内存版 黑色 全网通4G手机 双卡双待', 'http://image.leyou.com/images/4/9/1524297329463.jpg', '109900', '2_0_0', '{\"4\":\"黑色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:55:29', '2018-04-21 15:55:29');
-INSERT INTO `tb_sku` VALUES ('3980563', '4', '华为 麦芒5 全网通 4GB+64GB版  苍穹灰 4GB 64GB', 'http://image.leyou.com/images/7/11/1524297319511.jpg', '159900', '1_0_0', '{\"4\":\"苍穹灰\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:55:20', '2019-01-17 20:58:28');
+INSERT INTO `tb_sku` VALUES ('3980563', '4', '华为 麦芒5 全网通 4GB+64GB版 苍穹灰 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/7/11/1524297319511.jpg', '159900', '1_0_0', '{\"4\":\"苍穹灰\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:55:20', '2018-04-21 15:55:20');
 INSERT INTO `tb_sku` VALUES ('4086223', '16', '锤子 坚果Pro 64GB 巧克力色 全网通 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/11/5/1524297337786.jpg', '139900', '2_0_1', '{\"4\":\"巧克力色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:55:38', '2018-04-21 15:55:38');
 INSERT INTO `tb_sku` VALUES ('4086227', '16', '锤子 坚果Pro 128GB 浅金色 全网通 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/4/1/1524297338494.jpg', '169900', '4_0_0', '{\"4\":\"浅金色\",\"12\":\"4GB\",\"13\":\"128GB\"}', '1', '2018-04-21 15:55:38', '2018-04-21 15:55:38');
 INSERT INTO `tb_sku` VALUES ('4093555', '23', '华为畅享7 Plus 3GB+32GB 灰色 移动联通电信4G手机 双卡双待', 'http://image.leyou.com/images/1/2/1524297352598.jpg', '129900', '5_1_1', '{\"4\":\"灰色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:55:53', '2018-04-21 15:55:53');
@@ -2565,6 +2269,8 @@ INSERT INTO `tb_sku` VALUES ('14236495927', '97', '华为（HUAWEI） 华为 畅
 INSERT INTO `tb_sku` VALUES ('14236495928', '97', '华为（HUAWEI） 华为 畅享6s 4G手机 粉色 全网通( 3G RAM+32G ROM)标配', 'http://image.leyou.com/images/15/0/1524297509044.jpg', '83800', '2_0_0', '{\"4\":\"粉色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:58:29', '2018-04-21 15:58:29');
 INSERT INTO `tb_sku` VALUES ('14236495929', '97', '华为（HUAWEI） 华为 畅享6s 4G手机 金色 全网通( 3G RAM+32G ROM)标配', 'http://image.leyou.com/images/12/13/1524297507968.jpg', '81800', '0_0_0', '{\"4\":\"金色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:58:28', '2018-04-21 15:58:28');
 INSERT INTO `tb_sku` VALUES ('14407063446', '178', '华为（HUAWEI） 荣耀 畅玩6 手机 金色 全网通(2G RAM+16G ROM)标配', 'http://image.leyou.com/images/8/11/1524297676297.jpg', '59900', '0_0_0', '{\"4\":\"金色\",\"12\":\"2GB\",\"13\":\"16GB\"}', '1', '2018-04-21 16:01:16', '2018-04-21 16:01:16');
+INSERT INTO `tb_sku` VALUES ('14509313726', '168', '小米（MI） 小米5X 手机 玫瑰金 全网通(4G RAM + 64G ROM)标准版', 'http://image.leyou.com/images/5/13/1524297657594.jpg', '124900', '0_0_0', '{\"4\":\"玫瑰金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:00:58', '2018-04-21 16:00:58');
+INSERT INTO `tb_sku` VALUES ('14509313727', '168', '小米（MI） 小米5X 手机 黑色 全网通(4G RAM + 64G ROM)标准版', 'http://image.leyou.com/images/9/3/1524297658599.jpg', '124900', '2_0_0', '{\"4\":\"黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:00:59', '2018-04-21 16:00:59');
 INSERT INTO `tb_sku` VALUES ('14542067586', '182', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+64GB', 'http://image.leyou.com/images/5/15/1524297684291.jpg', '127900', '1_0_0', '{\"4\":\"黑色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:01:24', '2018-04-21 16:01:24');
 INSERT INTO `tb_sku` VALUES ('14542067587', '182', '小米（MI） 小米5X 全网通4G智能手机 玫瑰金 4+64GB', 'http://image.leyou.com/images/11/9/1524297685078.jpg', '128900', '3_0_0', '{\"4\":\"玫瑰金 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:01:25', '2018-04-21 16:01:25');
 INSERT INTO `tb_sku` VALUES ('14542067588', '182', '小米（MI） 小米5X 全网通4G智能手机 金色 4+64GB', 'http://image.leyou.com/images/11/3/1524297685441.jpg', '127900', '4_0_0', '{\"4\":\"金色 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:01:25', '2018-04-21 16:01:25');
@@ -2575,6 +2281,7 @@ INSERT INTO `tb_sku` VALUES ('15027171956', '136', '小米（MI） 小米note3 �
 INSERT INTO `tb_sku` VALUES ('15225637946', '113', '小米（MI） 小米5X 手机 玫瑰金 全网通4G（4G RAM+64G ROM）高配版', 'http://image.leyou.com/images/13/7/1524297540023.jpg', '128800', '3_0_0', '{\"4\":\"玫瑰金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:59:00', '2018-04-21 15:59:00');
 INSERT INTO `tb_sku` VALUES ('15225637947', '113', '小米（MI） 小米5X 手机 黑色 全网通4G（4G RAM+64G ROM）高配版', 'http://image.leyou.com/images/1/3/1524297539098.jpg', '124900', '1_0_0', '{\"4\":\"黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:58:59', '2018-04-21 15:58:59');
 INSERT INTO `tb_sku` VALUES ('15225637949', '113', '小米（MI） 小米5X 手机 香槟金 全网通4G（4G RAM+64G ROM）高配版', 'http://image.leyou.com/images/10/5/1524297538535.jpg', '122800', '0_0_0', '{\"4\":\"香槟金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:58:59', '2018-04-21 15:58:59');
+INSERT INTO `tb_sku` VALUES ('15226090207', '168', '小米（MI） 小米5X 手机 金色 全网通 (4G +32G)标准版', 'http://image.leyou.com/images/5/11/1524297659002.jpg', '108900', '3_0_0', '{\"4\":\"金色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:00:59', '2018-04-21 16:00:59');
 INSERT INTO `tb_sku` VALUES ('15301488389', '99', '华为（HUAWEI） 荣耀9手机 知更鸟蓝 全网通4G (4G+64G) 标配', 'http://image.leyou.com/images/0/0/1524297512647.jpg', '199900', '3_0_0', '{\"4\":\"知更鸟蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:58:33', '2018-04-21 15:58:33');
 INSERT INTO `tb_sku` VALUES ('15381011179', '182', '小米（MI） 小米5X 全网通4G智能手机 黑色 4+32GB', 'http://image.leyou.com/images/11/11/1524297686211.jpg', '114900', '6_0_0', '{\"4\":\"黑色 4+32GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:01:26', '2018-04-21 16:01:26');
 INSERT INTO `tb_sku` VALUES ('15389829596', '182', '小米（MI） 小米5X 全网通4G智能手机 金色 4+32GB', 'http://image.leyou.com/images/11/15/1524297686596.jpg', '114900', '7_0_0', '{\"4\":\"金色 4+32GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:01:27', '2018-04-21 16:01:27');
@@ -2635,6 +2342,7 @@ INSERT INTO `tb_sku` VALUES ('18180585426', '128', '华为（HUAWEI） Mate10 Pr
 INSERT INTO `tb_sku` VALUES ('18180585427', '128', '华为（HUAWEI） Mate10 Pro 手机 摩卡金色 全网通4G(6G+128G)', 'http://image.leyou.com/images/0/2/1524297575644.jpg', '499900', '2_0_0', '{\"4\":\"摩卡金色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-04-21 15:59:36', '2018-04-21 15:59:36');
 INSERT INTO `tb_sku` VALUES ('18180585428', '128', '华为（HUAWEI） Mate10 Pro 手机 银钻灰色 全网通4G(6G+128G)', 'http://image.leyou.com/images/9/11/1524297575252.jpg', '499900', '1_0_0', '{\"4\":\"银钻灰色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-04-21 15:59:35', '2018-04-21 15:59:35');
 INSERT INTO `tb_sku` VALUES ('18662321833', '113', '小米（MI） 小米5X 手机 红色 全网通4G（4G RAM+64G ROM）高配版', 'http://image.leyou.com/images/1/13/1524297539461.jpg', '119900', '2_0_0', '{\"4\":\"红色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:58:59', '2018-04-21 15:58:59');
+INSERT INTO `tb_sku` VALUES ('18726688989', '168', '小米（MI） 小米5X 手机 红色 全网通(4G RAM + 64G ROM)标准版', 'http://image.leyou.com/images/11/5/1524297658128.jpg', '124900', '1_0_0', '{\"4\":\"红色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:00:58', '2018-04-21 16:00:58');
 INSERT INTO `tb_sku` VALUES ('18787246601', '105', '小米（MI） 红米note5 手机 金色 全网通（6RAM+64ROM）', 'http://image.leyou.com/images/3/3/1524297524041.jpg', '156800', '0_0_0', '{\"4\":\"金色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:58:44', '2018-04-21 15:58:44');
 INSERT INTO `tb_sku` VALUES ('19094839248', '182', '小米（MI） 小米5X 全网通4G智能手机 红色限量版 4+64GB', 'http://image.leyou.com/images/14/9/1524297683772.jpg', '129500', '0_0_0', '{\"4\":\"红色限量版 4+64GB\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:01:24', '2018-04-21 16:01:24');
 INSERT INTO `tb_sku` VALUES ('19158940698', '163', '魅族（MEIZU） 魅蓝note6 全网通4G手机 双卡双待 孔雀青 （3G RAM+32G ROM）', 'http://image.leyou.com/images/10/9/1524297648425.jpg', '81800', '3_0_0', '{\"4\":\"孔雀青\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 16:00:48', '2018-04-21 16:00:48');
@@ -2642,6 +2350,8 @@ INSERT INTO `tb_sku` VALUES ('19583343519', '76', '华为（HUAWEI） 荣耀V9Pl
 INSERT INTO `tb_sku` VALUES ('19923880260', '162', '小米（MI） 小米MAX2 手机 6.44英寸 大屏幕 黑色 全网通(4G RAM+64G ROM)', 'http://image.leyou.com/images/15/1/1524297646769.jpg', '129500', '1_0_0', '{\"4\":\"黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:00:47', '2018-04-21 16:00:47');
 INSERT INTO `tb_sku` VALUES ('20065600181', '139', '华为（HUAWEI） 荣耀 V9 Play手机 魅焰红 全网通(4G RAM+32G ROM)标配版', 'http://image.leyou.com/images/13/11/1524297597157.jpg', '105500', '3_0_0', '{\"4\":\"魅焰红\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:59:57', '2018-04-21 15:59:57');
 INSERT INTO `tb_sku` VALUES ('20067198287', '120', '华为（HUAWEI） 荣耀V10 手机 极光蓝 全网通标配版(4GB+64GB)', 'http://image.leyou.com/images/15/3/1524297554402.jpg', '249900', '0_0_0', '{\"4\":\"极光蓝\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:59:14', '2018-04-21 15:59:14');
+INSERT INTO `tb_sku` VALUES ('20347103098', '129', '小米（MI） 红米5 plus 手机 黑色 全网通4GB+64GB', 'http://image.leyou.com/images/13/5/1524297576554.jpg', '105900', '0_0_0', '{\"4\":\"黑色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:59:37', '2018-04-21 15:59:37');
+INSERT INTO `tb_sku` VALUES ('20347103099', '129', '小米（MI） 红米5 plus 手机 金色 全网通4GB+64GB', 'http://image.leyou.com/images/7/15/1524297577054.jpg', '109900', '1_0_0', '{\"4\":\"金色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:59:37', '2018-04-21 15:59:37');
 INSERT INTO `tb_sku` VALUES ('20408609440', '115', '小米（MI） 小米 红米note5A 手机 樱花粉 全网通(2G+16G)不含指纹识别 标配', 'http://image.leyou.com/images/3/0/1524297545518.jpg', '63900', '6_0_0', '{\"4\":\"樱花粉 全网通(2G+16G)不含指纹识别\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:59:06', '2018-04-21 15:59:06');
 INSERT INTO `tb_sku` VALUES ('20450803933', '114', '小米（MI） 小米5A 红米5A 手机 浅蓝色 全网通(2G+16G)标配', 'http://image.leyou.com/images/13/7/1524297541475.jpg', '55500', '2_0_0', '{\"4\":\"浅蓝色\",\"12\":\"2GB\",\"13\":\"16GB\"}', '1', '2018-04-21 15:59:01', '2018-04-21 15:59:01');
 INSERT INTO `tb_sku` VALUES ('20905561249', '169', '华为（HUAWEI） 荣耀V10手机 极光蓝 全网通(6GB+64GB)', 'http://image.leyou.com/images/0/12/1524297660674.jpg', '279900', '1_0_0', '{\"4\":\"极光蓝\",\"12\":\"6GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:01:01', '2018-04-21 16:01:01');
@@ -2673,6 +2383,8 @@ INSERT INTO `tb_sku` VALUES ('21678745124', '95', '华为（HUAWEI） 华为nova
 INSERT INTO `tb_sku` VALUES ('21681027023', '155', '魅族（MEIZU） 魅蓝S6 手机 月光银 全网通3G+32G', 'http://image.leyou.com/images/9/11/1524297629207.jpg', '99900', '2_0_0', '{\"4\":\"月光银\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 16:00:29', '2018-04-21 16:00:29');
 INSERT INTO `tb_sku` VALUES ('21681027025', '155', '魅族（MEIZU） 魅蓝S6 手机 磨砂黑 全网通3G+32G', 'http://image.leyou.com/images/2/0/1524297627929.jpg', '99900', '0_0_0', '{\"4\":\"磨砂黑\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 16:00:28', '2018-04-21 16:00:28');
 INSERT INTO `tb_sku` VALUES ('21681027027', '155', '魅族（MEIZU） 魅蓝S6 手机 香槟金 全网通3G+32G', 'http://image.leyou.com/images/5/3/1524297628675.jpg', '99900', '1_0_0', '{\"4\":\"香槟金\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 16:00:29', '2018-04-21 16:00:29');
+INSERT INTO `tb_sku` VALUES ('21685362090', '129', '小米（MI） 红米5 plus 手机 玫瑰金 全网通4GB+64GB', 'http://image.leyou.com/images/0/10/1524297577503.jpg', '109900', '2_0_0', '{\"4\":\"玫瑰金\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:59:38', '2018-04-21 15:59:38');
+INSERT INTO `tb_sku` VALUES ('21685362092', '129', '小米（MI） 红米5 plus 手机 浅蓝色 全网通4GB+64GB', 'http://image.leyou.com/images/2/2/1524297577945.jpg', '109900', '3_0_0', '{\"4\":\"浅蓝色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:59:38', '2018-04-21 15:59:38');
 INSERT INTO `tb_sku` VALUES ('21690477583', '117', '小米 红米5Plus 手机 金色 全网通(4G+64G)', 'http://image.leyou.com/images/2/11/1524297549175.jpg', '109900', '0_0_0', '{\"4\":\"金色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:59:09', '2018-04-21 15:59:09');
 INSERT INTO `tb_sku` VALUES ('21690477587', '117', '小米 红米5Plus 手机 浅蓝色 全网通(4G+64G)', 'http://image.leyou.com/images/3/0/1524297550545.jpg', '109900', '3_0_0', '{\"4\":\"浅蓝色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 15:59:11', '2018-04-21 15:59:11');
 INSERT INTO `tb_sku` VALUES ('21757928932', '119', '小米（MI） 红米5 Plus 手机 全面屏 金色 全网通（4G RAM+64G ROM）', 'http://image.leyou.com/images/10/15/1524297552483.jpg', '105900', '0_0_0', '{\"4\":\"金色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:59:12', '2018-04-21 15:59:12');
@@ -2684,6 +2396,8 @@ INSERT INTO `tb_sku` VALUES ('22036204247', '137', '小米（MI） 红米5 Plus 
 INSERT INTO `tb_sku` VALUES ('22071534211', '90', '华为（HUAWEI） 荣耀7X 畅玩7X 手机 幻夜黑 全网通标配版(4G RAM+32G ROM)', 'http://image.leyou.com/images/13/9/1524297487036.jpg', '124900', '0_0_0', '{\"4\":\"幻夜黑\",\"12\":\"4GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:58:07', '2018-04-21 15:58:07');
 INSERT INTO `tb_sku` VALUES ('22127120874', '119', '小米（MI） 红米5 Plus 手机 全面屏 黑色 全网通（4G RAM+64G ROM）', 'http://image.leyou.com/images/5/0/1524297553418.jpg', '107500', '2_0_0', '{\"4\":\"黑色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:59:13', '2018-04-21 15:59:13');
 INSERT INTO `tb_sku` VALUES ('22127120876', '119', '小米（MI） 红米5 Plus 手机 全面屏 蓝色 全网通（4G RAM+64G ROM）', 'http://image.leyou.com/images/5/8/1524297553858.jpg', '109900', '3_0_0', '{\"4\":\"蓝色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:59:14', '2018-04-21 15:59:14');
+INSERT INTO `tb_sku` VALUES ('22320392453', '118', '小米 note3 手机 亮黑色 全网通4G（6G+128G）尊享', 'http://image.leyou.com/images/6/5/1524297551060.jpg', '229900', '0_0_0', '{\"4\":\"亮黑色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-04-21 15:59:11', '2018-04-21 15:59:11');
+INSERT INTO `tb_sku` VALUES ('22365980105', '118', '小米 note3 手机 蓝色 全网通4G（6G+64G）高配', 'http://image.leyou.com/images/2/12/1524297551534.jpg', '209900', '1_0_0', '{\"4\":\"蓝色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-04-21 15:59:12', '2018-04-21 15:59:12');
 INSERT INTO `tb_sku` VALUES ('22779356479', '149', '华为（HUAWEI） 麦芒5手机（4G+64G）全网通高配版 4G手机 双卡双待 苍穹灰(4G+64G)高配版', 'http://image.leyou.com/images/5/5/1524297616861.jpg', '169900', '2_0_0', '{\"4\":\"苍穹灰(4G+64G)高配版\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-04-21 16:00:17', '2018-04-21 16:00:17');
 INSERT INTO `tb_sku` VALUES ('22863424466', '89', '华为（HUAWEI） 荣耀9青春版 全面屏手机 魅海蓝 全网通（4G RAM+64G ROM）尊享版', 'http://image.leyou.com/images/6/0/1524297485648.jpg', '159900', '1_0_0', '{\"4\":\"魅海蓝\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:58:06', '2018-04-21 15:58:06');
 INSERT INTO `tb_sku` VALUES ('22863424469', '89', '华为（HUAWEI） 荣耀9青春版 全面屏手机 珠光白 全网通（4G RAM+64G ROM）尊享版', 'http://image.leyou.com/images/15/7/1524297486059.jpg', '159900', '2_0_0', '{\"4\":\"珠光白\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-04-21 15:58:06', '2018-04-21 15:58:06');
@@ -2829,53 +2543,27 @@ INSERT INTO `tb_sku` VALUES ('27359021522', '145', '锤子（smartisan） 坚果
 INSERT INTO `tb_sku` VALUES ('27359021523', '145', '锤子（smartisan） 坚果38 手机  酒红色 4GB 64GB', 'http://image.leyou.com/images/8/14/1524297608290.jpg', '169900', '1_0_0', '{\"4\":\"酒红色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-06-12 10:12:13', '2018-06-12 10:12:13');
 INSERT INTO `tb_sku` VALUES ('27359021524', '145', '锤子（smartisan） 坚果38 手机  炫黑色特别版 4GB 64GB', 'http://image.leyou.com/images/1/5/1524297608684.jpg', '199900', '2_0_0', '{\"4\":\"炫黑色特别版\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-06-12 10:12:13', '2018-06-12 10:12:13');
 INSERT INTO `tb_sku` VALUES ('27359021525', '145', '锤子（smartisan） 坚果38 手机  炫红色特别版 4GB 64GB', 'http://image.leyou.com/images/5/11/1524297608996.jpg', '179900', '3_0_0', '{\"4\":\"炫红色特别版\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-06-12 10:12:13', '2018-06-12 10:12:13');
+INSERT INTO `tb_sku` VALUES ('27359021526', '141', '小米 MI 8 手机  陶瓷黑尊享版 6GB 128GB', 'http://image.leyou.com/images/10/7/1524297598540.jpg', '399900', '0_0_0', '{\"4\":\"陶瓷黑尊享版\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-06-12 10:47:27', '2018-06-12 10:47:27');
+INSERT INTO `tb_sku` VALUES ('27359021527', '141', '小米 MI 8 手机  亮蓝色 6GB 128GB', 'http://image.leyou.com/images/15/5/1524297599029.jpg', '309900', '1_0_0', '{\"4\":\"亮蓝色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-06-12 10:47:27', '2018-06-12 10:47:27');
+INSERT INTO `tb_sku` VALUES ('27359021528', '141', '小米 MI 8 手机  亮黑色 6GB 128GB', 'http://image.leyou.com/images/12/13/1524297599389.jpg', '279900', '2_0_0', '{\"4\":\"亮黑色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-06-12 10:47:27', '2018-06-12 10:47:27');
+INSERT INTO `tb_sku` VALUES ('27359021529', '141', '小米 MI 8 手机  亮白色 6GB 128GB', 'http://image.leyou.com/images/13/3/1524297599775.jpg', '289900', '3_0_0', '{\"4\":\"亮白色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-06-12 10:47:27', '2018-06-12 10:47:27');
 INSERT INTO `tb_sku` VALUES ('27359021545', '6', '魅族 PRO 香槟金 4GB 64GB', 'http://image.leyou.com/images/7/8/1524297320968.jpg', '129900', '0_0_0', '{\"4\":\"香槟金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-06-22 19:34:03', '2018-06-22 19:34:03');
 INSERT INTO `tb_sku` VALUES ('27359021546', '6', '魅族 PRO 深空灰 4GB 64GB', 'http://image.leyou.com/images/1/0/1524297321578.jpg', '169900', '1_0_0', '{\"4\":\"深空灰\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-06-22 19:34:03', '2018-06-22 19:34:03');
 INSERT INTO `tb_sku` VALUES ('27359021547', '6', '魅族 PRO 玫瑰金 4GB 64GB', 'http://image.leyou.com/images/1/0/1524297321974.jpg', '149900', '2_0_0', '{\"4\":\"玫瑰金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-06-22 19:34:03', '2018-06-22 19:34:03');
-INSERT INTO `tb_sku` VALUES ('27359021686', '194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待 深空灰 其他 64g', 'http://image.leyou.com/group1/M00/00/00/wKhSZFusPPuAXK2gAAJyYZAbhr8723.jpg,http://image.leyou.com/group1/M00/00/00/wKhSZFusPP-AfWotAAJyYZAbhr8534.jpg', '890000', '0_0_0', '{\"4\":\"深空灰\",\"12\":\"其他\",\"13\":\"64g\"}', '1', '2018-09-27 10:15:24', '2018-09-27 10:15:24');
-INSERT INTO `tb_sku` VALUES ('27359021687', '194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待 深空灰 其他 256', 'http://image.leyou.com/group1/M00/00/00/wKhSZFusPQaAPhrMAAJyYZAbhr8796.jpg,http://image.leyou.com/group1/M00/00/00/wKhSZFusPQmAM74oAAJyYZAbhr8091.jpg', '890000', '0_0_1', '{\"4\":\"深空灰\",\"12\":\"其他\",\"13\":\"256\"}', '1', '2018-09-27 10:15:24', '2018-09-27 10:15:24');
-INSERT INTO `tb_sku` VALUES ('27359021688', '194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待 深空灰 其他 512', 'http://image.leyou.com/group1/M00/00/00/wKhSZFusPTeAV-kKAAJyYZAbhr8306.jpg', '890000', '0_0_2', '{\"4\":\"深空灰\",\"12\":\"其他\",\"13\":\"512\"}', '1', '2018-09-27 10:15:24', '2018-09-27 10:15:24');
-INSERT INTO `tb_sku` VALUES ('27359021689', '194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待 金色 其他 64g', 'http://image.leyou.com/group1/M00/00/00/wKhSZFusPReAVKpwAAK0a3Ux2ro502.jpg', '890000', '1_0_0', '{\"4\":\"金色\",\"12\":\"其他\",\"13\":\"64g\"}', '1', '2018-09-27 10:15:24', '2018-09-27 10:15:24');
-INSERT INTO `tb_sku` VALUES ('27359021690', '194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待 金色 其他 256', 'http://image.leyou.com/group1/M00/00/00/wKhSZFuifvqAVUD4AAK0a3Ux2ro331.jpg', '890000', '1_0_1', '{\"4\":\"金色\",\"12\":\"其他\",\"13\":\"256\"}', '1', '2018-09-27 10:15:24', '2018-09-27 10:15:24');
-INSERT INTO `tb_sku` VALUES ('27359021691', '194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待 金色 其他 512', 'http://image.leyou.com/group1/M00/00/00/wKhSZFusPTKAIfZZAAK0a3Ux2ro299.jpg', '890000', '1_0_2', '{\"4\":\"金色\",\"12\":\"其他\",\"13\":\"512\"}', '1', '2018-09-27 10:15:24', '2018-09-27 10:15:24');
-INSERT INTO `tb_sku` VALUES ('27359021692', '194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待 银色 其他 64g', 'http://image.leyou.com/group1/M00/00/00/wKhSZFusPSOAO4xTAAJp4NAtzFo550.jpg', '890000', '2_0_0', '{\"4\":\"银色\",\"12\":\"其他\",\"13\":\"64g\"}', '1', '2018-09-27 10:15:24', '2018-09-27 10:15:24');
-INSERT INTO `tb_sku` VALUES ('27359021693', '194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待 银色 其他 256', 'http://image.leyou.com/group1/M00/00/00/wKhSZFusPSeAY1AMAAJp4NAtzFo664.jpg', '890000', '2_0_1', '{\"4\":\"银色\",\"12\":\"其他\",\"13\":\"256\"}', '1', '2018-09-27 10:15:24', '2018-09-27 10:15:24');
-INSERT INTO `tb_sku` VALUES ('27359021694', '194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待 银色 其他 512', 'http://image.leyou.com/group1/M00/00/00/wKhSZFusPSuATCbnAAJp4NAtzFo893.jpg', '890000', '2_0_2', '{\"4\":\"银色\",\"12\":\"其他\",\"13\":\"512\"}', '1', '2018-09-27 10:15:24', '2018-09-27 10:15:24');
-INSERT INTO `tb_sku` VALUES ('27359021703', '141', '小米 MI 6.1 手机  (更新） 陶瓷黑尊享版 6GB 128GB', 'http://image.leyou.com/images/10/7/1524297598540.jpg', '399900', '0_0_0', '{\"4\":\"陶瓷黑尊享版\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-09-28 10:15:52', '2018-09-28 10:15:52');
-INSERT INTO `tb_sku` VALUES ('27359021704', '141', '小米 MI 6.1 手机  (更新） 亮蓝色 6GB 128GB', 'http://image.leyou.com/images/15/5/1524297599029.jpg', '309900', '1_0_0', '{\"4\":\"亮蓝色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-09-28 10:15:52', '2018-09-28 10:15:52');
-INSERT INTO `tb_sku` VALUES ('27359021705', '141', '小米 MI 6.1 手机  (更新） 亮黑色 6GB 128GB', 'http://image.leyou.com/images/12/13/1524297599389.jpg', '279900', '2_0_0', '{\"4\":\"亮黑色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-09-28 10:15:52', '2018-09-28 10:15:52');
-INSERT INTO `tb_sku` VALUES ('27359021706', '141', '小米 MI 6.1 手机  (更新） 亮白色 6GB 128GB', 'http://image.leyou.com/images/13/3/1524297599775.jpg', '289900', '3_0_0', '{\"4\":\"亮白色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-09-28 10:15:52', '2018-09-28 10:15:52');
-INSERT INTO `tb_sku` VALUES ('27359021711', '118', '小米 note3 手机 (更新3） 亮黑色 6GB 128GB', 'http://image.leyou.com/images/6/5/1524297551060.jpg', '229900', '0_0_0', '{\"4\":\"亮黑色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-09-28 10:41:20', '2018-09-28 10:41:20');
-INSERT INTO `tb_sku` VALUES ('27359021712', '118', '小米 note3 手机 (更新3） 蓝色 6GB 128GB', 'http://image.leyou.com/images/2/12/1524297551534.jpg', '209900', '1_0_0', '{\"4\":\"蓝色\",\"12\":\"6GB\",\"13\":\"128GB\"}', '1', '2018-09-28 10:41:20', '2018-09-28 10:41:20');
-INSERT INTO `tb_sku` VALUES ('27359021721', '168', '小米（MI） 小米5X 手机 (更新3) 玫瑰金 4GB 64GB', 'http://image.leyou.com/images/5/13/1524297657594.jpg', '124900', '0_0_0', '{\"4\":\"玫瑰金\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-09-28 11:45:30', '2018-09-28 11:45:30');
-INSERT INTO `tb_sku` VALUES ('27359021722', '168', '小米（MI） 小米5X 手机 (更新3) 红色 4GB 64GB', 'http://image.leyou.com/images/11/5/1524297658128.jpg', '124900', '1_0_0', '{\"4\":\"红色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-09-28 11:45:30', '2018-09-28 11:45:30');
-INSERT INTO `tb_sku` VALUES ('27359021723', '168', '小米（MI） 小米5X 手机 (更新3) 黑色 4GB 64GB', 'http://image.leyou.com/images/9/3/1524297658599.jpg', '124900', '2_0_0', '{\"4\":\"黑色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-09-28 11:45:30', '2018-09-28 11:45:30');
-INSERT INTO `tb_sku` VALUES ('27359021724', '168', '小米（MI） 小米5X 手机 (更新3) 金色 4GB 64GB', 'http://image.leyou.com/images/5/11/1524297659002.jpg', '108900', '3_0_0', '{\"4\":\"金色\",\"12\":\"4GB\",\"13\":\"64GB\"}', '1', '2018-09-28 11:45:30', '2018-09-28 11:45:30');
-INSERT INTO `tb_sku` VALUES ('27359021725', '129', '小米（MI） 红米5 plus 手机 （更新） 黑色 3GB 32GB', 'http://image.leyou.com/images/13/5/1524297576554.jpg', '105900', '0_0_0', '{\"4\":\"黑色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-09-28 17:46:51', '2018-09-28 17:46:51');
-INSERT INTO `tb_sku` VALUES ('27359021726', '129', '小米（MI） 红米5 plus 手机 （更新） 金色 3GB 32GB', 'http://image.leyou.com/images/7/15/1524297577054.jpg', '109900', '1_0_0', '{\"4\":\"金色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-09-28 17:46:51', '2018-09-28 17:46:51');
-INSERT INTO `tb_sku` VALUES ('27359021727', '129', '小米（MI） 红米5 plus 手机 （更新） 玫瑰金 3GB 32GB', 'http://image.leyou.com/images/0/10/1524297577503.jpg', '109900', '2_0_0', '{\"4\":\"玫瑰金\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-09-28 17:46:51', '2018-09-28 17:46:51');
-INSERT INTO `tb_sku` VALUES ('27359021728', '129', '小米（MI） 红米5 plus 手机 （更新） 浅蓝色 3GB 32GB', 'http://image.leyou.com/images/2/2/1524297577945.jpg', '109900', '3_0_0', '{\"4\":\"浅蓝色\",\"12\":\"3GB\",\"13\":\"32GB\"}', '1', '2018-09-28 17:46:51', '2018-09-28 17:46:51');
-INSERT INTO `tb_sku` VALUES ('27359021729', '195', 'aaa 黑色 1G 100G', 'http://image.leyou.com/group1/M00/00/00/wKgfglxBPRSABRPgAABrYaARUaw911.jpg', '100000', '0_0_0', '{\"4\":\"黑色\",\"12\":\"1G\",\"13\":\"100G\"}', '1', '2019-01-18 10:42:33', '2019-01-18 10:42:33');
-INSERT INTO `tb_sku` VALUES ('27359021730', '196', 'cc 黑色 1G 100G', '', '100000', '0_0_0', '{\"4\":\"黑色\",\"12\":\"1G\",\"13\":\"100G\"}', '1', '2019-01-18 11:04:20', '2019-01-18 11:20:01');
-INSERT INTO `tb_sku` VALUES ('27359021731', '196', 'cc 白色 1G 100G', '', '200000', '1_0_0', '{\"4\":\"白色\",\"12\":\"1G\",\"13\":\"100G\"}', '1', '2019-01-18 11:04:20', '2019-01-18 11:20:01');
-INSERT INTO `tb_sku` VALUES ('27359021732', '197', '测试机 黑色 4G 200G', 'http://image.leyou.com/group1/M00/00/00/wKgfglxoGDyAQPhLAABrYaARUaw899.jpg', '100000', '0_0_0', '{\"4\":\"黑色\",\"12\":\"4G\",\"13\":\"200G\"}', '1', '2019-02-16 22:04:03', '2019-02-16 22:04:03');
-INSERT INTO `tb_sku` VALUES ('27359021733', '197', '测试机 黑色 8G 200G', 'http://image.leyou.com/group1/M00/00/00/wKgfglxoGFGAb9_NAABrYaARUaw274.jpg', '200000', '0_1_0', '{\"4\":\"黑色\",\"12\":\"8G\",\"13\":\"200G\"}', '1', '2019-02-16 22:04:03', '2019-02-16 22:04:03');
 
--- ----------------------------
--- Table structure for tb_spec_group
--- ----------------------------
+
+
+
 DROP TABLE IF EXISTS `tb_spec_group`;
 CREATE TABLE `tb_spec_group` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `cid` bigint(20) NOT NULL COMMENT '商品分类id，一个分类下有多个规格组',
-  `name` varchar(32) NOT NULL COMMENT '规格组的名称',
+  `name` varchar(50) NOT NULL COMMENT '规格组的名称',
   PRIMARY KEY (`id`),
   KEY `key_category` (`cid`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='规格参数的分组表，每个商品分类下有多个规格参数组';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='规格参数的分组表，每个商品分类下有多个规格参数组';
 
--- ----------------------------
--- Records of tb_spec_group
--- ----------------------------
+
 INSERT INTO `tb_spec_group` VALUES ('1', '76', '主体');
 INSERT INTO `tb_spec_group` VALUES ('2', '76', '基本信息');
 INSERT INTO `tb_spec_group` VALUES ('3', '76', '操作系统');
@@ -2887,43 +2575,25 @@ INSERT INTO `tb_spec_group` VALUES ('11', '76', '屏幕');
 INSERT INTO `tb_spec_group` VALUES ('12', '90', '主体');
 INSERT INTO `tb_spec_group` VALUES ('13', '90', '规格尺寸');
 INSERT INTO `tb_spec_group` VALUES ('14', '77', 'test');
-INSERT INTO `tb_spec_group` VALUES ('16', '334', '品牌');
-INSERT INTO `tb_spec_group` VALUES ('17', '334', '型号');
-INSERT INTO `tb_spec_group` VALUES ('18', '326', '主体');
-INSERT INTO `tb_spec_group` VALUES ('19', '326', '操作系统');
-INSERT INTO `tb_spec_group` VALUES ('20', '326', '处理器');
-INSERT INTO `tb_spec_group` VALUES ('21', '326', '内存');
-INSERT INTO `tb_spec_group` VALUES ('22', '326', '硬盘');
-INSERT INTO `tb_spec_group` VALUES ('23', '326', '显卡');
-INSERT INTO `tb_spec_group` VALUES ('24', '326', '显示器');
-INSERT INTO `tb_spec_group` VALUES ('25', '326', '通信');
-INSERT INTO `tb_spec_group` VALUES ('26', '326', '端口');
-INSERT INTO `tb_spec_group` VALUES ('27', '326', '电源');
-INSERT INTO `tb_spec_group` VALUES ('28', '76', 'test');
-INSERT INTO `tb_spec_group` VALUES ('29', '-100', '\'; drop database newleyou;');
 
--- ----------------------------
--- Table structure for tb_spec_param
--- ----------------------------
+
 DROP TABLE IF EXISTS `tb_spec_param`;
 CREATE TABLE `tb_spec_param` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `cid` bigint(20) NOT NULL COMMENT '商品分类id',
   `group_id` bigint(20) NOT NULL,
-  `name` varchar(256) NOT NULL COMMENT '参数名',
+  `name` varchar(255) NOT NULL COMMENT '参数名',
   `numeric` tinyint(1) NOT NULL COMMENT '是否是数字类型参数，true或false',
-  `unit` varchar(256) DEFAULT '' COMMENT '数字类型参数的单位，非数字类型可以为空',
+  `unit` varchar(255) DEFAULT '' COMMENT '数字类型参数的单位，非数字类型可以为空',
   `generic` tinyint(1) NOT NULL COMMENT '是否是sku通用属性，true或false',
   `searching` tinyint(1) NOT NULL COMMENT '是否用于搜索过滤，true或false',
-  `segments` varchar(1024) DEFAULT '' COMMENT '数值类型参数，如果需要搜索，则添加分段间隔值，如CPU频率间隔：0.5-1.0',
+  `segments` varchar(1000) DEFAULT '' COMMENT '数值类型参数，如果需要搜索，则添加分段间隔值，如CPU频率间隔：0.5-1.0',
   PRIMARY KEY (`id`),
   KEY `key_group` (`group_id`),
   KEY `key_category` (`cid`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='规格参数组下的参数名';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='规格参数组下的参数名';
 
--- ----------------------------
--- Records of tb_spec_param
--- ----------------------------
+
 INSERT INTO `tb_spec_param` VALUES ('1', '76', '1', '品牌', '0', '', '1', '0', '');
 INSERT INTO `tb_spec_param` VALUES ('2', '76', '1', '型号', '0', '', '1', '0', '');
 INSERT INTO `tb_spec_param` VALUES ('3', '76', '1', '上市年份', '1', '年', '1', '0', '');
@@ -2947,22 +2617,13 @@ INSERT INTO `tb_spec_param` VALUES ('20', '90', '12', '适用机型', '0', '', '
 INSERT INTO `tb_spec_param` VALUES ('21', '90', '13', '贴膜尺寸', '1', '英寸', '1', '1', '0-4.0,4.0-5.0,5.0-5.5,5.5-6.0,6.0-');
 INSERT INTO `tb_spec_param` VALUES ('22', '90', '13', '材质', '0', '', '1', '1', '');
 INSERT INTO `tb_spec_param` VALUES ('23', '90', '13', '类型', '0', '', '1', '1', '');
-INSERT INTO `tb_spec_param` VALUES ('27', '326', '18', '系列', '0', null, '1', '0', '');
-INSERT INTO `tb_spec_param` VALUES ('28', '326', '18', '型号', '0', null, '1', '0', '');
-INSERT INTO `tb_spec_param` VALUES ('29', '326', '18', '颜色', '0', null, '1', '1', '');
-INSERT INTO `tb_spec_param` VALUES ('30', '326', '18', '平台', '0', null, '1', '0', '');
-INSERT INTO `tb_spec_param` VALUES ('31', '326', '19', '操作系统', '0', null, '1', '0', '');
-INSERT INTO `tb_spec_param` VALUES ('32', '326', '19', '操作系统说明', '0', null, '1', '0', '');
-INSERT INTO `tb_spec_param` VALUES ('33', '76', '1', 'test', '0', '', '1', '1', '');
 
--- ----------------------------
--- Table structure for tb_spu
--- ----------------------------
+
 DROP TABLE IF EXISTS `tb_spu`;
 CREATE TABLE `tb_spu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'spu id',
-  `title` varchar(128) NOT NULL DEFAULT '' COMMENT '标题',
-  `sub_title` varchar(256) DEFAULT '' COMMENT '子标题',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
+  `sub_title` varchar(255) DEFAULT '' COMMENT '子标题',
   `cid1` bigint(20) NOT NULL COMMENT '1级类目id',
   `cid2` bigint(20) NOT NULL COMMENT '2级类目id',
   `cid3` bigint(20) NOT NULL COMMENT '3级类目id',
@@ -2972,15 +2633,13 @@ CREATE TABLE `tb_spu` (
   `create_time` datetime DEFAULT NULL COMMENT '添加时间',
   `last_update_time` datetime DEFAULT NULL COMMENT '最后修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=utf8 COMMENT='spu表，该表描述的是一个抽象性的商品，比如 iphone8';
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8 COMMENT='spu表，该表描述的是一个抽象性的商品，比如 iphone8';
 
--- ----------------------------
--- Records of tb_spu
--- ----------------------------
-INSERT INTO `tb_spu` VALUES ('2', '华为 G9 青春版 ', '骁龙芯片！3GB运行内存！索尼1300万摄像头！<a href=\'https://sale.jd.com/act/DhKrOjXnFcGL.html\' target=\'_blank\'>华为新品全面上线，更多优惠猛戳》》</a>', '74', '75', '76', '0', '1', '1', null, '2019-01-17 20:54:21');
-INSERT INTO `tb_spu` VALUES ('3', '三星 Galaxy C5（SM-C5000）4GB+32GB ', '5.2英寸AMOLED屏，800+1600万像素，金属机身，小巧便捷，续航能力强大！<a href=\'https://sale.jd.com/act/T15MnRgiasWe8L.html\' target=\'_blank\'>三星S9震撼上市详情猛戳>></a>', '74', '75', '76', '0', '1', '1', null, '2019-01-17 20:39:57');
-INSERT INTO `tb_spu` VALUES ('4', '华为 麦芒5 全网通 4GB+64GB版 ', '光学防抖，持久续航！后置1600万像素，金属机身！<a href=\'http://item.jd.com/5148371.html?from_saf=1\' target=\'_blank\'>全面屏麦芒6低至2099元！</a>', '74', '75', '76', '0', '1', '1', '2018-04-21 15:55:20', '2019-01-17 20:58:28');
-INSERT INTO `tb_spu` VALUES ('5', '华为 HUAWEI nova 4GB+64GB版 ', '4K高清视频拍摄！美颜自拍！DTS音效！<a href=\'http://item.jd.com/5963064.html?from_saf=1\' target=\'_blank\'>nova2S白条3期免息！</a>', '74', '75', '76', '0', '1', '1', null, '2019-01-17 20:22:06');
+
+INSERT INTO `tb_spu` VALUES ('2', '华为 G9 青春版 ', '骁龙芯片！3GB运行内存！索尼1300万摄像头！<a href=\'https://sale.jd.com/act/DhKrOjXnFcGL.html\' target=\'_blank\'>华为新品全面上线，更多优惠猛戳》》</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:55:15', '2018-06-18 10:36:12');
+INSERT INTO `tb_spu` VALUES ('3', '三星 Galaxy C5（SM-C5000）4GB+32GB ', '5.2英寸AMOLED屏，800+1600万像素，金属机身，小巧便捷，续航能力强大！<a href=\'https://sale.jd.com/act/T15MnRgiasWe8L.html\' target=\'_blank\'>三星S9震撼上市详情猛戳>></a>', '74', '75', '76', '15127', '1', '1', '2018-04-21 15:55:18', '2018-04-21 15:55:18');
+INSERT INTO `tb_spu` VALUES ('4', '华为 麦芒5 全网通 4GB+64GB版 ', '光学防抖，持久续航！后置1600万像素，金属机身！<a href=\'http://item.jd.com/5148371.html?from_saf=1\' target=\'_blank\'>全面屏麦芒6低至2099元！</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:55:20', '2018-04-21 15:55:20');
+INSERT INTO `tb_spu` VALUES ('5', '华为 HUAWEI nova 4GB+64GB版 ', '4K高清视频拍摄！美颜自拍！DTS音效！<a href=\'http://item.jd.com/5963064.html?from_saf=1\' target=\'_blank\'>nova2S白条3期免息！</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:55:21', '2018-04-21 15:55:21');
 INSERT INTO `tb_spu` VALUES ('6', '魅族 PRO', '5.2英寸！500万+1200万像素！<a href=\'https://sale.jd.com/act/InqRKmz0tg.html\' target=\'_blank\'>魅蓝6秒杀大促，直降至599抢购！</a>', '74', '75', '76', '12669', '1', '1', '2018-04-21 15:55:22', '2018-06-22 19:34:03');
 INSERT INTO `tb_spu` VALUES ('7', '华为 G9 Plus 32GB ', '高清大屏，长续航，骁龙芯片，表里不凡！<a href=\'https://sale.jd.com/act/DhKrOjXnFcGL.html\' target=\'_blank\'>华为新品全面上线，更多优惠猛戳》》</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:55:23', '2018-04-21 15:55:23');
 INSERT INTO `tb_spu` VALUES ('8', '华为 畅享6 ', '轻薄有型，电力十足！5英寸AMOLED屏幕，4100mAh大容量电池！<a  target=\"_blank\"  href=\"https://sale.jd.com/act/DhKrOjXnFcGL.html\">华为新品全面上线，更多优惠猛戳》》</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:55:25', '2018-04-21 15:55:25');
@@ -3093,7 +2752,7 @@ INSERT INTO `tb_spu` VALUES ('114', '小米（MI） 小米5A 红米5A 手机 ', 
 INSERT INTO `tb_spu` VALUES ('115', '小米（MI） 小米 红米note5A 手机 ', '【64G少量到货】1600万柔光自拍，高通骁龙处理器，2+1卡槽设计！<a href=\"https://item.jd.com/18787246601.html\" target=\"_blank\">爆款红米note5！</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:06', '2018-04-21 15:59:06');
 INSERT INTO `tb_spu` VALUES ('116', '小米（MI） 红米Note5 全面屏 手机 ', '送耳机+壳膜+指环扣   游戏手机 \"吃鸡\"利器 王者荣耀  AI美颜双摄！<a href=\"https://item.jd.com/21676582422.html\" target=\"_blank\">红米5plus</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:09', '2018-04-21 15:59:09');
 INSERT INTO `tb_spu` VALUES ('117', '小米 红米5Plus 手机 ', '【全网通不混发丨原装防摔壳】18:9全面屏丨骁龙8核处理器→<a href=\"https://item.jd.com/21117453994.html\" target=\"_blank\">新品红米note5，1499元</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:11', '2018-04-21 15:59:11');
-INSERT INTO `tb_spu` VALUES ('118', '小米 note3 手机 (更新3）', '全网通版不混发丨含原装壳丨人脸解锁丨美颜+后置1200万丨快充丨NFC→<a href=\"http://item.jd.com/21117453994.html\" target=\"_blank\">新品红米note5</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:12', '2018-09-28 10:41:20');
+INSERT INTO `tb_spu` VALUES ('118', '小米 note3 手机 ', '全网通版不混发丨含原装壳丨人脸解锁丨美颜+后置1200万丨快充丨NFC→<a href=\"http://item.jd.com/21117453994.html\" target=\"_blank\">新品红米note5</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:12', '2018-04-21 15:59:12');
 INSERT INTO `tb_spu` VALUES ('119', '小米（MI） 红米5 Plus 手机 全面屏 ', '【全网通，谢绝阉割版】全面屏，骁龙625处理器！<a href=\"https://item.jd.com/21759433312.html\" target=\"_blank\">全面屏-骁龙636-看新品-红米NOTE5</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:14', '2018-04-21 15:59:14');
 INSERT INTO `tb_spu` VALUES ('120', '华为（HUAWEI） 荣耀V10 手机 ', '【荣耀旗舰】【下单赠壳膜】麒麟970！2000万AI变焦双摄<a href=\"https://item.jd.com/25882037762.html\" target=\"_blank\">【荣耀畅玩7C】</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:59:16', '2018-04-21 15:59:16');
 INSERT INTO `tb_spu` VALUES ('121', '魅族 魅蓝Note5 全网通公开版 3GB+32GB ', '4000mAh真快充！金属指纹大运存！<a href=\'https://sale.jd.com/act/InqRKmz0tg.html\' target=\'_blank\'>魅蓝6秒杀大促，直降至599抢购！</a>', '74', '75', '76', '12669', '1', '1', '2018-04-21 15:59:18', '2018-04-21 15:59:18');
@@ -3104,7 +2763,7 @@ INSERT INTO `tb_spu` VALUES ('125', 'vivo X20 全面屏 双摄美颜拍照手机
 INSERT INTO `tb_spu` VALUES ('126', 'vivo X9s Plus 全网通 美颜拍照手机 4GB+64GB ', '【3期免息，购机送好礼】旗舰产品，超高性价比！前置柔光拍摄！照亮你的美！部分地区有货，速来抢购！<a href=\'https://sale.jd.com/act/YwJvQOrbPKaLE2.html\' target=\'_blank\'>更多精彩请点击>></a>', '74', '75', '76', '25591', '1', '1', '2018-04-21 15:59:32', '2018-04-21 15:59:32');
 INSERT INTO `tb_spu` VALUES ('127', '努比亚（nubia）Z17 无边框 ', '旗舰无边框！8GB＋64GB大内存！2300万＋1200万变焦双摄！极速闪充！<a  target=\"_blank\"  href=\"http://item.jd.com/6994622.html?from_saf=1\">红魔游戏手机火热预约中</a>', '74', '75', '76', '27094', '1', '1', '2018-04-21 15:59:34', '2018-04-21 15:59:34');
 INSERT INTO `tb_spu` VALUES ('128', '华为（HUAWEI） Mate10 Pro 手机 ', '送华为原装视窗保护套+华为原装蓝牙音箱+品胜10000毫安电源+乐心运动手环！<a href=\"http://item.jd.com/18167356217.html\" target=\"_blank\">mate10</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:59:36', '2018-04-21 15:59:36');
-INSERT INTO `tb_spu` VALUES ('129', '小米（MI） 红米5 plus 手机 （更新）', '18:9全面屏，4000mAh大电池，骁龙八核处理器！<a href=\"https://item.jd.com/21685362089.html\" target=\"_blank\">32G金色限时8XX秒！</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:38', '2018-09-28 17:46:51');
+INSERT INTO `tb_spu` VALUES ('129', '小米（MI） 红米5 plus 手机 ', '18:9全面屏，4000mAh大电池，骁龙八核处理器！<a href=\"https://item.jd.com/21685362089.html\" target=\"_blank\">32G金色限时8XX秒！</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:38', '2018-04-21 15:59:38');
 INSERT INTO `tb_spu` VALUES ('130', '小米（MI） 小米MIX2S 手机 ', '新品现货发售！全面屏陶瓷手机，高通处理器845，AI双摄双核极速对焦！<a href=\"https://item.jd.com/18787246601.html\" target=\"_blank\">爆款红米note5</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:39', '2018-04-21 15:59:39');
 INSERT INTO `tb_spu` VALUES ('131', '华为（HUAWEI） 华为nova2手机 ', '【移动版支持全网与全网版不做混发、请放心购买】<a href=\"https://item.jd.com/26397633043.html\" target=\"_blank\">【新品现货nova3e】</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:59:42', '2018-04-21 15:59:42');
 INSERT INTO `tb_spu` VALUES ('132', '华为（HUAWEI） 华为nova青春版 手机 ', '【现货速发，京东配送】麒麟658！柔光护眼屏！双面弧面玻璃！<a href=\"https://item.jd.com/26510592706.html\" target=\"_blank\">华为P20震撼上市！</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:59:44', '2018-04-21 15:59:44');
@@ -3116,7 +2775,7 @@ INSERT INTO `tb_spu` VALUES ('137', '小米（MI） 红米5 Plus 全网通4G 移
 INSERT INTO `tb_spu` VALUES ('138', '小米（MI） 小米 MIX2S 全面屏 游戏手机 双卡双待 ', '【推荐256G黑色现货速发 白色预订30天发货】高通处理器845，AI双摄双核极速对焦', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:56', '2018-04-21 15:59:56');
 INSERT INTO `tb_spu` VALUES ('139', '华为（HUAWEI） 荣耀 V9 Play手机 ', '科技美学，北欧极简设计<a href=\"https://item.jd.com/15936740403.html\" target=\"_blank\">【荣耀全面屏→荣耀7x】</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 15:59:57', '2018-04-21 15:59:57');
 INSERT INTO `tb_spu` VALUES ('140', '小米（MI） 小米MIX2S 全面屏手机 ', '高通处理器845，AI双摄，支持无线快充 <a href=\"https://item.jd.com/26262075570.html\" target=\"_blank\">红米note5</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 15:59:58', '2018-04-21 15:59:58');
-INSERT INTO `tb_spu` VALUES ('141', '小米 MI 6.1 手机  (更新）', '含原装壳丨变焦双摄丨骁龙处理器丨NFC丨<a href=\"https://item.jd.com/22320392453.html\" target=\"_blank\">小米note3骁龙八核处理器</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 16:00:00', '2018-09-28 10:15:52');
+INSERT INTO `tb_spu` VALUES ('141', '小米 MI 6.1 手机  ', '含原装壳丨变焦双摄丨骁龙处理器丨NFC丨<a href=\"https://item.jd.com/22320392453.html\" target=\"_blank\">小米note3骁龙八核处理器</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 16:00:00', '2018-05-24 20:47:40');
 INSERT INTO `tb_spu` VALUES ('142', '小米（MI） 红米note5 手机 ', '【赠多重好礼】 游戏手机 王者荣耀 吃鸡 AI双摄逆光暗光更出色/<a href=\"https://item.jd.com/21676464002.html\" target=\"_blank\">红米5plus推广中</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 16:00:02', '2018-04-21 16:00:02');
 INSERT INTO `tb_spu` VALUES ('143', '华为（HUAWEI） 荣耀9青春版 手机 ', '【下单赠钢化膜】全屏四摄正反都美<a href=\"https://item.jd.com/25882037762.html\" target=\"_blank\">【选“C”没错→荣耀畅玩7C】</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 16:00:06', '2018-04-21 16:00:06');
 INSERT INTO `tb_spu` VALUES ('144', '华为（HUAWEI） 华为 畅享6S 手机 ', '指纹识别！金属机身！3+32大内存骁龙八核长续航！<a href=\"https://item.jd.com/16097496669.html\" target=\"_blank\">中兴A3特惠促销，下单有礼</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 16:00:08', '2018-04-21 16:00:08');
@@ -3143,7 +2802,7 @@ INSERT INTO `tb_spu` VALUES ('164', '华为（HUAWEI） 荣耀8 手机 ', '【�
 INSERT INTO `tb_spu` VALUES ('165', '小米（MI） 小米note3 手机 ', '赠壳膜全国联保京东配送/屏四曲面陶瓷机身骁龙835<a href=\"https://item.jd.com/16716408877.html\" target=\"_blank\">小米MIX2点击购买</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 16:00:54', '2018-04-21 16:00:54');
 INSERT INTO `tb_spu` VALUES ('166', '华为（HUAWEI） Mate10 手机 ', '送华为原装视窗保护套+华为原装蓝牙耳机+乐心运动手环+钢化膜等！<a href=\"https://item.jd.com/18180585426.html\" target=\"_blank\">mate10pro</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 16:00:56', '2018-04-21 16:00:56');
 INSERT INTO `tb_spu` VALUES ('167', '华为（HUAWEI） 畅享6S 移动联通电信4G手机 ', '【正品国行,全新原封】骁龙芯片！金属机身！享看又享玩！<a href=\"https://item.jd.com/12207790357.html\" target=\"_blank\">荣耀8青春热卖中！</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 16:00:57', '2018-04-21 16:00:57');
-INSERT INTO `tb_spu` VALUES ('168', '小米（MI） 小米5X 手机 (更新3)', '【爆款低价 移动/公开全网通不做混发，请放心购买！】5.5”屏幕，变焦双摄！<a href=\"https://item.jd.com/12068579160.html\" target=\"_blank\">戳戳小米6~</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 16:00:59', '2018-09-28 11:45:30');
+INSERT INTO `tb_spu` VALUES ('168', '小米（MI） 小米5X 手机 ', '【爆款低价 移动/公开全网通不做混发，请放心购买！】5.5”屏幕，变焦双摄！<a href=\"https://item.jd.com/12068579160.html\" target=\"_blank\">戳戳小米6~</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 16:00:59', '2018-04-21 16:00:59');
 INSERT INTO `tb_spu` VALUES ('169', '华为（HUAWEI） 荣耀V10手机 ', '【下单立减】送荣耀自拍杆+荣耀2合1数据线+荣耀手机支架+壳膜套装!<a href=\"https://item.jd.com/25749144099.html\" target=\"_blank\">荣耀畅玩7X</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 16:01:02', '2018-04-21 16:01:02');
 INSERT INTO `tb_spu` VALUES ('170', '魅族（MEIZU） 魅族 魅蓝A5 4G手机 双卡双待 ', '魅族新品千元机', '74', '75', '76', '12669', '1', '1', '2018-04-21 16:01:03', '2018-04-21 16:01:03');
 INSERT INTO `tb_spu` VALUES ('171', '华为（HUAWEI） 华为P20 Pro 全面屏 手机 ', '【全国多仓发货】送价值158元原装礼盒（自拍杆+数据线+指环扣）+原装耳机！<a href=\"https://item.jd.com/13039618422.html\" target=\"_blank\">抢华为P20</a>', '74', '75', '76', '8557', '1', '1', '2018-04-21 16:01:05', '2018-04-21 16:01:05');
@@ -3158,32 +2817,24 @@ INSERT INTO `tb_spu` VALUES ('179', '华为（HUAWEI） 荣耀7C 畅玩7C手机 
 INSERT INTO `tb_spu` VALUES ('180', '魅族（MEIZU） pro 6 plus手机 移动联通版 ', '【现货 劲爆价促销】<a href=\"https://item.jd.com/25109782095.html\" target=\"_blank\">魅蓝6 低至649元 评价更有好礼送</a>', '74', '75', '76', '12669', '1', '1', '2018-04-21 16:01:21', '2018-04-21 16:01:21');
 INSERT INTO `tb_spu` VALUES ('181', 'vivo Y75 全面屏手机 4GB+32GB 移动联通电信4G手机 双卡双待 ', '<a href=\"https://sale.jd.com/act/vGWKogOy2nbPpQ.html\" target=\"_blank\">vivo X21新一代全面屏·6+128G大内存·AI智慧拍照·照亮你的美·现货抢购中</a>', '74', '75', '76', '25591', '1', '1', '2018-04-21 16:01:24', '2018-04-21 16:01:24');
 INSERT INTO `tb_spu` VALUES ('182', '小米（MI） 小米5X 全网通4G智能手机 ', '骁龙 八核CPU处理器 5.5英寸屏幕<a href=\"https://item.jd.com/26438399057.html\" target=\"_blank\">【小米新品】~红米note5 AI智能双摄</a>', '74', '75', '76', '18374', '1', '1', '2018-04-21 16:01:27', '2018-04-21 16:01:27');
-INSERT INTO `tb_spu` VALUES ('194', 'Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待', '', '74', '75', '76', '14026', '0', '1', '2018-09-19 11:40:13', '2018-09-27 10:15:24');
-INSERT INTO `tb_spu` VALUES ('195', 'aaa', 'aaa', '74', '75', '76', '14026', '1', '1', '2019-01-18 10:42:33', '2019-01-18 10:42:33');
-INSERT INTO `tb_spu` VALUES ('196', 'cc', 'cc', '74', '75', '76', '3177', '1', '1', '2019-01-18 11:04:20', '2019-01-18 11:20:01');
-INSERT INTO `tb_spu` VALUES ('197', '测试机', '测试', '74', '75', '76', '2505', '0', '1', '2019-02-16 22:04:03', '2019-02-16 22:04:03');
 
--- ----------------------------
--- Table structure for tb_spu_detail
--- ----------------------------
+
 DROP TABLE IF EXISTS `tb_spu_detail`;
 CREATE TABLE `tb_spu_detail` (
   `spu_id` bigint(20) NOT NULL,
   `description` text COMMENT '商品描述信息',
-  `generic_spec` varchar(2048) NOT NULL DEFAULT '' COMMENT '通用规格参数数据',
-  `special_spec` varchar(1024) NOT NULL COMMENT '特有规格参数及可选值信息，json格式',
-  `packing_list` varchar(1024) DEFAULT '' COMMENT '包装清单',
-  `after_service` varchar(1024) DEFAULT '' COMMENT '售后服务',
+  `generic_spec` varchar(3000) NOT NULL DEFAULT '' COMMENT '通用规格参数数据',
+  `special_spec` varchar(1000) NOT NULL COMMENT '特有规格参数及可选值信息，json格式',
+  `packing_list` varchar(1000) DEFAULT '' COMMENT '包装清单',
+  `after_service` varchar(1000) DEFAULT '' COMMENT '售后服务',
   PRIMARY KEY (`spu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of tb_spu_detail
--- ----------------------------
-INSERT INTO `tb_spu_detail` VALUES ('2', '<p><img src=\"//img20.360buyimg.com/vc/jfs/t5893/141/6838703316/1369626/15c9d88f/596c753aN075ee827.jpg\"></p>', '{\"1\":\"其它\",\"2\":\"G9青春版（全网通版）\",\"3\":2016,\"5\":143,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙617（msm8952）\",\"10\":\"八核\",\"11\":1.5,\"14\":5.2,\"15\":\"1920*1080(FHD)\",\"16\":800,\"17\":1300,\"18\":3000}', '{\"4\":[\"白色\",\"金色\",\"玫瑰金\"],\"12\":[\"3GB\"],\"13\":[\"16GB\"]}', '手机（电池内置）*1，中式充电器*1，数据线*1，半入耳式线控耳机*1，华为手机凭证*1，快速指南*1，取卡针*1，屏幕保护膜（出厂已贴）*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
-INSERT INTO `tb_spu_detail` VALUES ('3', '<p class=\"ql-align-center\">  <img src=\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2941/353/1432469497/41808/4509b71f/57870a39N36dccd66.jpg\" height=\"150\" width=\"750\">  <img src=\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2599/185/2071779239/112061/a7d7b34f/5754e156N97acd9e5.jpg\"></p><p class=\"ql-align-center\"><img src=\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2737/345/1987734434/1880171/e25dedc4/5753c41bN41b2e2a3.jpg\"></p>', '{\"1\":\"三星（SAMSUNG）\",\"2\":\"SM-C5000\",\"3\":2016,\"5\":143,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙617（msm8952）\",\"10\":\"八核\",\"11\":1.5,\"14\":5.2,\"15\":\"1920*1080(FHD)\",\"16\":800,\"17\":1600,\"18\":2600}', '{\"4\":[\"金\",\"粉\",\"灰\",\"银\"],\"12\":[\"4GB\"],\"13\":[\"32GB\"]}', '', '本产品全国联保，享受三包服务，质保期为：一年质保');
-INSERT INTO `tb_spu_detail` VALUES ('4', '<p><br></p><p><img src=\"//img30.360buyimg.com/jgsq-productsoa/jfs/t15580/105/2328716889/962262/b778acbc/5aa224a3N9285a3bf.jpg\"></p>', '{\"1\":\"华为（HUAWEI）\",\"2\":\"华为麦芒5（HUAWEI MLA-AL10）\",\"3\":2016,\"5\":160,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":2,\"14\":5.5,\"15\":\"1920*1080(FHD)\",\"16\":800,\"17\":1600,\"18\":3340}', '{\"4\":[\"香槟金\",\"苍穹灰\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机×1、耳机×1、快速指南×1、USB 线×1、充电器×1、卡针×1、三包凭证×1', '本产品全国联保，享受三包服务，质保期为：一年质保');
-INSERT INTO `tb_spu_detail` VALUES ('5', '<p><img src=\"//img20.360buyimg.com/vc/jfs/t16516/5/2472169724/1799332/3a3aa95f/5ab070c8N2128df52.jpg\"></p>', '{\"1\":\"其它\",\"2\":\"CAZ-AL10\",\"3\":2016,\"5\":146,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":2,\"14\":5,\"15\":\"1920*1080(FHD)\",\"16\":800,\"17\":1200,\"18\":3020}', '{\"4\":[\"香槟金（白）\",\"玫瑰金\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机X1、充电器X1、USB 线X1、快速指南X1、售后服务手册X1、取卡针X1、耳机X1', '本产品全国联保，享受三包服务，质保期为：一年质保');
+
+INSERT INTO `tb_spu_detail` VALUES ('2', '<div class=\"content_tpl\"><div class=\"formwork\">\n<div class=\"formwork_img\"><img src=\"//img20.360buyimg.com/vc/jfs/t5893/141/6838703316/1369626/15c9d88f/596c753aN075ee827.jpg\" /></div>\n</div></div><br/>', '{\"1\":\"其它\",\"2\":\"G9青春版（全网通版）\",\"3\":2016.0,\"5\":143,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙617（msm8952）\",\"10\":\"八核\",\"11\":1.5,\"14\":5.2,\"15\":\"1920*1080(FHD)\",\"16\":800.0,\"17\":1300.0,\"18\":3000.0}', '{\"4\":[\"白色\",\"金色\",\"玫瑰金\"],\"12\":[\"3GB\"],\"13\":[\"16GB\"]}', '手机（电池内置）*1，中式充电器*1，数据线*1，半入耳式线控耳机*1，华为手机凭证*1，快速指南*1，取卡针*1，屏幕保护膜（出厂已贴）*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
+INSERT INTO `tb_spu_detail` VALUES ('3', '<table width=\"750\" align=\"center\"> \n <tbody>\n  <tr> \n   <td><img src=\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2941/353/1432469497/41808/4509b71f/57870a39N36dccd66.jpg\" width=\"750\" height=\"150\" border=\"0\" usemap=\"#Maplk\" /></td> \n  </tr>\n </tbody>\n</table>\n<map name=\"Maplk\"><area shape=\"rect\" coords=\"368,74,584,133\" href=\"//sale.jd.com/act/i2XHqvhoAsU1.html\" target=\"_blank\"></area></map>\n<div style=\"text-align: center;\"></div>\n<div style=\"text-align: center;\">\n <img src=\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2599/185/2071779239/112061/a7d7b34f/5754e156N97acd9e5.jpg\" style=\"widows: auto;\" alt=\"\" />\n</div>\n<div style=\"text-align: center;\">\n <img src=\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2737/345/1987734434/1880171/e25dedc4/5753c41bN41b2e2a3.jpg\" alt=\"\" />\n <br />\n</div><br/>', '{\"1\":\"三星（SAMSUNG）\",\"2\":\"SM-C5000\",\"3\":2016.0,\"5\":143,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙617（msm8952）\",\"10\":\"八核\",\"11\":1.5,\"14\":5.2,\"15\":\"1920*1080(FHD)\",\"16\":800.0,\"17\":1600.0,\"18\":2600}', '{\"4\":[\"金\",\"粉\",\"灰\",\"银\"],\"12\":[\"4GB\"],\"13\":[\"32GB\"]}', '', '本产品全国联保，享受三包服务，质保期为：一年质保');
+INSERT INTO `tb_spu_detail` VALUES ('4', '<div class=\"content_tpl\"> <div class=\"formwork\">  <div class=\"formwork_img\">   <br />   <div class=\"content_tpl\">    <div class=\"formwork\">     <div class=\"formwork_img\"><img src=\"//img30.360buyimg.com/jgsq-productsoa/jfs/t15580/105/2328716889/962262/b778acbc/5aa224a3N9285a3bf.jpg\" alt=\"\" /><br /></div>    </div>   </div>  </div> </div></div><br/>', '{\"1\":\"华为（HUAWEI）\",\"2\":\"华为麦芒5（HUAWEI MLA-AL10）\",\"3\":2016.0,\"5\":160,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":2.0,\"14\":5.5,\"15\":\"1920*1080(FHD)\",\"16\":800.0,\"17\":1600.0,\"18\":3340.0}', '{\"4\":[\"香槟金\",\"苍穹灰\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机×1、耳机×1、快速指南×1、USB 线×1、充电器×1、卡针×1、三包凭证×1', '本产品全国联保，享受三包服务，质保期为：一年质保');
+INSERT INTO `tb_spu_detail` VALUES ('5', '<div class=\"content_tpl\"><div class=\"formwork\">\n<div class=\"formwork_img\"><img src=\"//img20.360buyimg.com/vc/jfs/t16516/5/2472169724/1799332/3a3aa95f/5ab070c8N2128df52.jpg\" /></div>\n</div></div><br/>', '{\"1\":\"其它\",\"2\":\"CAZ-AL10\",\"3\":2016.0,\"5\":146,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":2.0,\"14\":5.0,\"15\":\"1920*1080(FHD)\",\"16\":800.0,\"17\":1200.0,\"18\":3020}', '{\"4\":[\"香槟金（白）\",\"玫瑰金\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机X1、充电器X1、USB 线X1、快速指南X1、售后服务手册X1、取卡针X1、耳机X1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('6', '<p><img src=\"//img20.360buyimg.com/vc/jfs/t3403/31/1225411196/55695/9189428d/582051ceN5adcad6a.png\" height=\"150\" width=\"750\">   <img src=\"//img20.360buyimg.com/vc/jfs/t3397/247/1042171259/160243/4e74aaba/581b08e6N4af04269.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3331/259/1048440160/173089/cc72dda9/581b08e8Nf77d540c.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3319/264/1037574550/296601/9adc3ea5/581b08eaN3ce30aa9.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3325/230/937833172/345037/f56c228b/581b08edN149f398d.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3559/270/1040360519/134493/df80b553/581b08eeN5eee8b48.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3517/314/1062742839/255001/c7042cea/581b090cNd81afac7.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3814/285/779572430/226216/5f2878de/581b090cN2c0e73cc.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3631/351/1048650623/443793/5ddadfa/581b090eN652bc591.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3670/268/1066795038/252317/3a7296ad/581b0910Nc96395f4.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3442/283/1051245135/327127/8706c464/581b0912Nda79b681.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3553/1/1037449681/167040/4725a1a2/581b0932N9176c29d.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3613/47/979361029/131300/2451b188/581b0932N529d7e12.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t3418/82/1022373597/228912/8c3971d5/581b095eN0188896b.jpg\"> <img src=\"//img20.360buyimg.com/vc/jfs/t9001/87/1898023886/137763/269a8a68/59c0b72cN0ef24354.jpg\"></p>', '{\"1\":\"魅族（MEIZU）\",\"2\":\"魅族PRO 6s\",\"3\":2016,\"5\":163,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"联发科（MTK）\",\"9\":\"X25（MT6797T）\",\"10\":\"十核\",\"11\":2.5,\"14\":5.2,\"15\":\"1920*1080\",\"16\":500,\"17\":1200,\"18\":3060}', '{\"4\":[\"香槟金\",\"深空灰\",\"玫瑰金\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '主机 x 1、电源适配器 x 1、保修证书 x 1、SIM卡顶针 x 1、数据线 x 1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('7', '<div class=\"content_tpl\"><div class=\"formwork\">\n<div class=\"formwork_img\"><img src=\"//img20.360buyimg.com/vc/jfs/t4213/90/1925235383/1883395/257851f6/58ca51bfNab5c7d9d.jpg\" /></div>\n</div></div><br/>', '{\"1\":\"其它\",\"2\":\"MLA-TL10（移动定制版）\",\"3\":2016.0,\"5\":160.0,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":2.0,\"14\":5.5,\"15\":\"1920*1080(FHD)\",\"16\":800.0,\"17\":1600.0,\"18\":3340.0}', '{\"4\":[\"铂雅金\",\"月光银\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '手机X1、耳机X1、快速指南X1、USB 线X1、充电器X1、卡针X1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('8', '<img src=\"//img20.360buyimg.com/vc/jfs/t3751/30/415375912/2179075/303d1c97/58097341N988dbbcb.jpg\" alt=\"\" /><br/>', '{\"1\":\"其它\",\"2\":\"畅享6\",\"3\":2016.0,\"5\":145,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"联发科（MTK）\",\"9\":\"mt6750\",\"10\":\"八核\",\"11\":1.5,\"14\":5.0,\"15\":\"1280×720（HD）\",\"16\":500.0,\"17\":1300.0,\"18\":4100}', '{\"4\":[\"金色\",\"白色\"],\"12\":[\"3GB\"],\"13\":[\"16GB\"]}', '手机（含电池）X1、充电器X1、USB线X1、TPU保护套X1、快速指南X1、售后服务手册X1', '本产品全国联保，享受三包服务，质保期为：一年质保');
@@ -3296,7 +2947,7 @@ INSERT INTO `tb_spu_detail` VALUES ('114', '<span style=\"font-size:x-large;\"><
 INSERT INTO `tb_spu_detail` VALUES ('115', '<div style=\"text-align: center;\"><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16303/206/1763885924/335528/cb430f87/5a5eb2beN3053d803.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7852/207/1743026564/262882/45c6d84a/59a0e061Nd3a49468.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7483/257/1780958956/349861/c5b6d66/59a0e05cNcf3b1e4c.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7477/204/1743066172/454543/e7da538d/59a0e05cN5a28de99.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t8200/100/487529489/762262/1a712ee5/59a8d323N70ef7ec0.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t8368/110/479907558/899355/4123dae2/59a8d323N870d2ba9.jpg\" alt=\"\" /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7633/328/1477538479/322784/cef0ac5e/599d4404Nafe796e0.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7528/342/1462942199/160464/d333dde2/599d43f2N69707ff7.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7333/213/1471700044/197012/28e3f0bc/599d4401N5842e8e0.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7825/290/1462950804/217911/7a89c796/599d4404Nf14d07b5.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7699/32/1500730440/241658/edcb5891/599d4406N3c99620c.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7621/351/1483443639/189660/f8fc320e/599d4407N5b69f885.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7744/8/1499042832/200185/80ebc7b/599d4408Nd3637bd6.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7624/98/1451504612/142312/d133aedd/599d4408Ndb6a9877.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7540/5/1477832370/122631/630274c6/599d440bN847996d9.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7456/37/1469449447/165556/9011de60/599d4409N11095c65.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7531/24/1467713581/156240/1ccccabb/599d4408N8a2b79fa.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7648/53/1500636022/208062/e0a99bb0/599d440cNd92bb880.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7693/79/1467031602/165455/62f47da9/599d440bN95bd1c65.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7645/67/1470900678/147951/2a0df47d/599d440cN2f1799bd.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7942/26/1500133291/133698/88ef7dd5/599d4404N86b3fab4.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7600/38/1476584362/291594/5b0afd15/599d440fN7d8449e8.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7867/282/1497022763/143845/a3436990/599d4410N3d393e4f.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7333/282/1466255596/212816/f94814ce/599d4407N8be46227.jpg\" alt=\"\" /><br /></div>                        <br/>', '{\"1\":\"小米（MI）\",\"2\":\"红米note5\",\"3\":2017.0,\"5\":153,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙435（MSM8940）\",\"10\":\"八核\",\"11\":1.4,\"14\":5.5,\"15\":\"其他\",\"16\":1600.0,\"17\":1300.0,\"18\":3080.0}', '{\"4\":[\"香槟金 全网通(3G+32G)支持指纹识别\",\"铂银灰 移动全网(4G+64G)支持指纹识别\",\"铂银灰 全网通(3G+32G)支持指纹识别\",\"香槟金 移动全网(4G+64G)支持指纹识别\",\"樱花粉 全网通(3G+32G)支持指纹识别\",\"香槟金 全网通(2G+16G)不含指纹识别\",\"樱花粉 全网通(2G+16G)不含指纹识别\",\"铂银灰 全网通(2G+16G)不含指纹识别\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '手机主机*1、电源适配器*1、数据线*1、三包凭证/入门指南*1、插针*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('116', '<span style=\"font-size:medium;\">温馨提示：因我司多仓发货，可能会出现赠品分开到货的情况。如您发现无赠品，可联系在线客服！<img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16873/267/1495010581/672390/9cf73b46/5acc62e4Nc47b59ef.jpg\" /><img alt=\"\" src=\"//img11.360buyimg.com/imgzone/jfs/t17968/349/1498007220/410475/941c2afc/5acc62e4Ndfd5ee0d.jpg\" /><img alt=\"\" src=\"//img14.360buyimg.com/imgzone/jfs/t17143/202/1453095227/563256/e76c6faa/5acc62e2N9c10e32e.jpg\" /><img alt=\"\" src=\"//img20.360buyimg.com/imgzone/jfs/t19123/337/1499174142/203793/bc184b7e/5acc62e5N4700c043.jpg\" /><img alt=\"\" src=\"//img13.360buyimg.com/imgzone/jfs/t16915/262/1518060829/440437/e7a43cee/5acc62dbNd604abdc.jpg\" /></span><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t14494/320/2634076482/564586/4e4a38ff/5aab87bdN23e81210.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16753/121/844581779/314761/1487083e/5aab87bdN4ad80b64.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16570/264/2296558584/96860/eaed9191/5aab87bdN9dec8e2c.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16459/52/2473355331/595176/4e88b8ed/5aab87beN5f450941.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16834/133/843070793/457627/c69dc3ca/5aab87bfN5251217c.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t18649/348/829083418/341913/a77330bf/5aab87bfN879ab0d2.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t15961/31/2426189116/408597/2001d947/5aab87bfNe4b07212.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t15271/166/2671042217/555535/224d1d7a/5aab87c0N002aea55.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16945/122/844670770/427406/1eea3e3e/5aab87c0Nc3197944.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16972/111/827091615/489589/40d02f34/5aab87c1N64341b33.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t18652/358/846057234/336176/ca7b153/5aab87c1N110c592a.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t14671/325/2586173550/301335/47dbb1fd/5aab87c2N2e828c66.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t17509/36/843699169/333628/3f007830/5aab87c2Nc71968c5.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t14698/338/2543746264/191033/d886864d/5aab87c3Nb3166ff5.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t14596/157/2572004480/138033/8f6176cc/5aab87c2Na651bf6a.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t17527/300/788527758/412896/5712fab8/5aab87c4N288166b7.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t15589/8/2506226370/421624/3da56ec2/5aab88a9N542a14be.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t17407/113/811564411/127541/2039b2c9/5aab87c3N55a1de87.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t12799/147/1896077960/183216/20cd981d/5aab87c4N701e88cb.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t18394/153/835500121/110996/ae367b62/5aab87c4N82db0e4c.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t18370/168/822391628/284453/3076cf9b/5aab87e0Nf7929bf4.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16075/31/2405424468/287256/7af754bd/5aab87e0Nd65aa4da.jpg\" /><br/>', '{\"1\":\"小米（MI）\",\"2\":\"红米note5\",\"3\":2018.0,\"5\":\"181\",\"6\":\"其它\",\"7\":\"\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.8,\"14\":5.99,\"15\":\"2160*1080\",\"16\":1300.0,\"17\":1200,\"18\":4000.0}', '{\"4\":[\"黑色\",\"金色\",\"玫瑰金\",\"魔力蓝\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '请输入...', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('117', '<table width=\"750\" height=\"0\" id=\"__01\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tbody><tr><td><img width=\"750\" height=\"727\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t15535/314/166019978/92542/78da6e73/5a28fabcN4a0817e0.jpg?t=1512635304846\" /></td></tr>        <tr><td><img width=\"750\" height=\"580\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t16741/38/162207515/95843/1f1a6102/5a608fe1N8cdcde7c.jpg?t=1516277739370\" /></td></tr><tr><td><img width=\"750\" height=\"524\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t17860/25/158535375/123186/55c50696/5a608fe1N190fea83.jpg?t=1516277739370\" /></td></tr><tr><td><img width=\"750\" height=\"523\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t17911/30/157023447/85537/653d9d7b/5a608fe1Na4eff86e.jpg?t=1516277739370\" /></td></tr><tr><td><img width=\"750\" height=\"440\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t19333/36/162512144/71947/fbf170e7/5a608fe1Nd0bef462.jpg?t=1516277739370\" /></td></tr><tr><td><img width=\"750\" height=\"607\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t15202/328/272513555/123547/926a51a1/5a28fab7N7c25db93.jpg?t=1512635304846\" /></td></tr><tr><td><img width=\"750\" height=\"491\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t14350/245/291076750/81953/3e9f86c3/5a28fa8eNea789315.jpg?t=1512635304846\" /></td></tr><tr><td><img width=\"750\" height=\"450\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t15976/272/151985834/86444/17b933c1/5a28fabcNe6334007.jpg?t=1512635304846\" /></td></tr><tr><td><img width=\"750\" height=\"498\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t16159/264/51600674/70002/60dd4f37/5a28fab5N3c78cdc3.jpg?t=1512635304846\" /></td></tr><tr><td><img width=\"750\" height=\"547\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t15499/42/170205058/75640/e9bb9a45/5a28fabcNae4e83ef.jpg?t=1512635304846\" /></td></tr><tr><td><img width=\"750\" height=\"1007\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t13672/237/1745340051/261432/a6fa5022/5a28fabcNc3580574.jpg?t=1512635304846\" /></td></tr><tr><td><img width=\"750\" height=\"967\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t16024/50/160062837/224089/f758e58b/5a28fabcN51809621.jpg?t=1512635304846\" /></td></tr><tr><td><img width=\"750\" height=\"507\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t14935/133/283677055/57615/49b1ff84/5a28fab9N1275b0fa.jpg?t=1512635304846\" /></td></tr><tr><td><img width=\"750\" height=\"485\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t16576/94/82689190/62273/cd89f4fd/5a28fabcNdbd22931.jpg?t=1512635304846\" /></td></tr><tr><td><img width=\"750\" height=\"732\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t14962/14/286199504/94568/96ced77b/5a28fabaN09fe3eb5.jpg?t=1512635304846\" /></td></tr></tbody></table><br/>', '{\"1\":\"小米（MI）\",\"2\":\"红米5Plus\",\"3\":2017.0,\"5\":180,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":1.8,\"14\":5.99,\"15\":\"2160*1080\",\"16\":500.0,\"17\":1200.0,\"18\":4000.0}', '{\"4\":[\"金色\",\"黑色\",\"玫瑰金\",\"浅蓝色\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机*1，电源适配器*1，USB数据线*1，三包凭证/入门指南*1，插针*1，保护壳*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
-INSERT INTO `tb_spu_detail` VALUES ('118', '<p><img src=\"https://img10.360buyimg.com/imgzone/jfs/t10732/311/2455056078/118117/27811e0b/59f706e2N835efce2.jpg?t=1510325866392\" height=\"850\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8215/253/1111579944/55011/6c602ef2/59b6713dNe11fddfe.jpg?t=1505128825296\" height=\"360\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8479/121/1217327496/99022/e5425a57/59b6714aNff4918b2.jpg?t=1505128830029\" height=\"646\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7270/111/2873334109/117786/a871bff3/59b6714dNfeef5cf7.jpg?t=1505128830029\" height=\"827\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8272/6/1205640654/129696/a76e6e61/59b6714dN301d89da.jpg?t=1505128830029\" height=\"557\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t9328/360/1225500615/57942/98d920a1/59b6713dN802a2b4a.jpg?t=1505128830029\" height=\"566\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8227/29/1211831092/92503/1a173c76/59b6714dNe176b29e.jpg?t=1505128830029\" height=\"469\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8101/38/1213119903/92329/ac44ed2/59b6714aN01d9b26e.jpg?t=1505128830029\" height=\"800\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8716/22/1235765844/75374/fa9f3c0d/59b67870N5b1a9b53.jpg?t=1505130632599\" height=\"528\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t9376/32/1189212928/147465/54784edb/59b67148Nb5531c6a.jpg?t=1505128830029\" height=\"692\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7690/90/2892476581/134721/7e4d6cc/59b6714dN49501d1a.jpg?t=1505128830029\" height=\"636\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8155/364/1260052786/137549/5cae8fe5/59b6714dNf6698254.jpg?t=1505128830029\" height=\"863\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7381/53/2854068612/158531/60fcad7d/59b6714dN37a32de6.jpg?t=1505128830029\" height=\"987\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t9043/21/1234570823/210547/8a2236d2/59b6714dN8b049e26.jpg?t=1505128830029\" height=\"827\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8290/350/1209038673/276379/66db2fe7/59b6714bN312f3611.jpg?t=1505128830029\" height=\"886\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t9256/353/1238792210/172437/dd30f634/59b67142N25a11c51.jpg?t=1505128830029\" height=\"897\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7627/169/2864680412/199406/9dc45ac1/59b67149N7115e28e.jpg?t=1505128830029\" height=\"974\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8323/44/1238760597/177590/86b8dc0f/59b67137N3e2311c7.jpg?t=1505128830029\" height=\"851\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8431/40/1232938686/169525/c6f213c1/59b67143N696b9cbf.jpg?t=1505128830029\" height=\"959\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t8617/97/1257642307/122642/980bc923/59b67137N1cf2dedd.jpg?t=1505128830029\" height=\"836\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7234/324/2903969177/97510/3e0eb704/59b6714eN24bec38b.jpg?t=1505128830029\" height=\"825\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7315/24/2935623316/113463/f06b8050/59b67152N55c61a9c.jpg?t=1505128830029\" height=\"539\" width=\"750\"><img src=\"//img10.360buyimg.com/imgzone/jfs/t15838/20/2469101872/29571/44c7b808/5aa647baN45e1346c.jpg?t=1520846787209\" height=\"210\" width=\"750\"><img src=\"//img10.360buyimg.com/imgzone/jfs/t16942/157/766770904/121530/873adf69/5aa647baN431f71d1.jpg?t=1520846787209\" height=\"677\" width=\"750\"><img src=\"//img10.360buyimg.com/imgzone/jfs/t19018/203/782211041/79021/3c675146/5aa647baN5adacf7b.jpg?t=1520846787209\" height=\"661\" width=\"750\"><img src=\"//img10.360buyimg.com/imgzone/jfs/t16264/53/2398192378/47009/d1fcca9d/5aa647baNab5b967a.jpg?t=1520846787209\" height=\"667\" width=\"750\"><img src=\"//img10.360buyimg.com/imgzone/jfs/t19702/260/779188427/63514/a6023d6e/5aa647baNcf12ae9a.jpg?t=1520846787209\" height=\"693\" width=\"750\"><img src=\"//img10.360buyimg.com/imgzone/jfs/t17902/191/773252546/62296/1205bfdf/5aa647baN286dc425.jpg?t=1520846787209\" height=\"686\" width=\"750\"><img src=\"//img10.360buyimg.com/imgzone/jfs/t18514/185/1728309269/108473/6f836dc6/5ad57184N73cf091d.jpg?t=1523937668595\" height=\"450\" width=\"750\"></p>', '{\"1\":\"小米（MI）\",\"2\":\"Note3\",\"3\":2017,\"5\":163,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙660（MSM8976Plus）\",\"10\":\"八核\",\"11\":2,\"14\":5.5,\"15\":\"1920*1080\",\"16\":1600,\"17\":1200,\"18\":3500}', '{\"4\":[\"亮黑色\",\"蓝色\"],\"12\":[\"6GB\"],\"13\":[\"128GB\"]}', '手机*1，电源适配器*1，USB Type-C数据线*1，Type-C TO AUDIO转接线*1， 三包凭证（入门指南）*1， 插针*1、高透软胶保护套*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
+INSERT INTO `tb_spu_detail` VALUES ('118', '<table width=\"750\" height=\"15525\" id=\"__01\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tbody><tr><td><img width=\"750\" height=\"850\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t10732/311/2455056078/118117/27811e0b/59f706e2N835efce2.jpg?t=1510325866392\" /></td></tr><tr><td><img width=\"750\" height=\"360\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8215/253/1111579944/55011/6c602ef2/59b6713dNe11fddfe.jpg?t=1505128825296\" /></td></tr><tr><td><img width=\"750\" height=\"646\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8479/121/1217327496/99022/e5425a57/59b6714aNff4918b2.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"827\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t7270/111/2873334109/117786/a871bff3/59b6714dNfeef5cf7.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"557\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8272/6/1205640654/129696/a76e6e61/59b6714dN301d89da.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"566\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t9328/360/1225500615/57942/98d920a1/59b6713dN802a2b4a.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"469\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8227/29/1211831092/92503/1a173c76/59b6714dNe176b29e.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"800\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8101/38/1213119903/92329/ac44ed2/59b6714aN01d9b26e.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"528\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8716/22/1235765844/75374/fa9f3c0d/59b67870N5b1a9b53.jpg?t=1505130632599\" /></td></tr><tr><td><img width=\"750\" height=\"692\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t9376/32/1189212928/147465/54784edb/59b67148Nb5531c6a.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"636\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t7690/90/2892476581/134721/7e4d6cc/59b6714dN49501d1a.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"863\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8155/364/1260052786/137549/5cae8fe5/59b6714dNf6698254.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"987\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t7381/53/2854068612/158531/60fcad7d/59b6714dN37a32de6.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"827\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t9043/21/1234570823/210547/8a2236d2/59b6714dN8b049e26.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"886\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8290/350/1209038673/276379/66db2fe7/59b6714bN312f3611.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"897\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t9256/353/1238792210/172437/dd30f634/59b67142N25a11c51.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"974\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t7627/169/2864680412/199406/9dc45ac1/59b67149N7115e28e.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"851\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8323/44/1238760597/177590/86b8dc0f/59b67137N3e2311c7.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"959\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8431/40/1232938686/169525/c6f213c1/59b67143N696b9cbf.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"836\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t8617/97/1257642307/122642/980bc923/59b67137N1cf2dedd.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"825\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t7234/324/2903969177/97510/3e0eb704/59b6714eN24bec38b.jpg?t=1505128830029\" /></td></tr><tr><td><img width=\"750\" height=\"539\" alt=\"\" src=\"https://img10.360buyimg.com/imgzone/jfs/t7315/24/2935623316/113463/f06b8050/59b67152N55c61a9c.jpg?t=1505128830029\" /></td></tr><tr><td><img src=\"//img10.360buyimg.com/imgzone/jfs/t15838/20/2469101872/29571/44c7b808/5aa647baN45e1346c.jpg?t=1520846787209\" width=\"750\" height=\"210\" alt=\"\" /></td></tr><tr><td><img src=\"//img10.360buyimg.com/imgzone/jfs/t16942/157/766770904/121530/873adf69/5aa647baN431f71d1.jpg?t=1520846787209\" width=\"750\" height=\"677\" alt=\"\" /></td></tr><tr><td><img src=\"//img10.360buyimg.com/imgzone/jfs/t19018/203/782211041/79021/3c675146/5aa647baN5adacf7b.jpg?t=1520846787209\" width=\"750\" height=\"661\" alt=\"\" /></td></tr><tr><td><img src=\"//img10.360buyimg.com/imgzone/jfs/t16264/53/2398192378/47009/d1fcca9d/5aa647baNab5b967a.jpg?t=1520846787209\" width=\"750\" height=\"667\" alt=\"\" /></td></tr><tr><td><img src=\"//img10.360buyimg.com/imgzone/jfs/t19702/260/779188427/63514/a6023d6e/5aa647baNcf12ae9a.jpg?t=1520846787209\" width=\"750\" height=\"693\" alt=\"\" /></td></tr><tr><td><img src=\"//img10.360buyimg.com/imgzone/jfs/t17902/191/773252546/62296/1205bfdf/5aa647baN286dc425.jpg?t=1520846787209\" width=\"750\" height=\"686\" alt=\"\" /></td></tr><tr><td><img src=\"//img10.360buyimg.com/imgzone/jfs/t18514/185/1728309269/108473/6f836dc6/5ad57184N73cf091d.jpg?t=1523937668595\" width=\"750\" height=\"450\" alt=\"\" /></td></tr></tbody></table><br/>', '{\"1\":\"小米（MI）\",\"2\":\"Note3\",\"3\":2017.0,\"5\":163,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙660（MSM8976Plus）\",\"10\":\"八核\",\"11\":2.0,\"14\":5.5,\"15\":\"1920*1080\",\"16\":1600.0,\"17\":1200.0,\"18\":3500.0}', '{\"4\":[\"亮黑色\",\"蓝色\"],\"12\":[\"6GB\"],\"13\":[\"128GB\"]}', '手机*1，电源适配器*1，USB Type-C数据线*1，Type-C TO AUDIO转接线*1， 三包凭证（入门指南）*1， 插针*1、高透软胶保护套*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('119', '<br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13333/316/2542678025/1071381/4bb9fb51/5a4311c5N9fd6eaf9.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t15913/134/946247277/917978/60ebc521/5a4311e5N9a7d374d.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14872/92/1040811715/348225/1b951b0/5a4311e4Ne40f76bb.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13219/37/2515184081/404487/c8a8e70c/5a4311e5N3e9f8083.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14794/184/1031712895/630153/385301ee/5a4311e4N04ecc218.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12877/348/2569501730/220737/1fa7c2f6/5a4311e4Ne717ff35.jpg\" /><br /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14287/128/2282878465/240121/5ff3df2b/5a9500c9N38c198a8.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t16594/83/806773892/656793/284e7b8d/5a4311e8Nba84855f.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13564/27/2442771501/440758/471d436/5a4311e9N7cdc3201.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t15571/4/918926048/804252/699d53c1/5a4311e9N4969d461.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t15247/322/829799316/682068/10e54f46/5a4311d6N2f839020.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13549/103/1151940078/702986/e28d9818/5a4311e7Ned81128f.jpg\" /><br/>', '{\"1\":\"小米（MI）\",\"2\":\"红米5 Plus\",\"3\":2017.0,\"5\":\"180\",\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":1.8,\"14\":5.99,\"15\":\"其他\",\"16\":500.0,\"17\":1200.0,\"18\":4000.0}', '{\"4\":[\"金色\",\"玫瑰金\",\"黑色\",\"蓝色\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '手机*1，电源适配器*1，USB数据线*1，三包凭证/入门指南*1，插针*1，保护壳*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('120', '<p><span style=\"font-size:large;color:#ff0000;\"><strong>温馨提示：由于不同仓库发货，配件可能与手机分开发出，若收到快递，没有配件，请稍候时日，可与客服联系。</strong></span><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t15949/1/630520428/1112665/1ad864f0/5a37a1e2N9928a8bd.jpg\" style=\"text-align: center;\" /></p><div><div style=\"text-align: center;\"><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12235/352/855807059/933454/37f4c27e/5a37a1deNb74ab29a.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13864/346/2164226668/902331/83b92ab/5a37a1deN746fa4f6.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13081/353/2232888295/559811/ce623e91/5a37a1deNeced0c32.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12403/89/2286321743/777353/ee8a45c4/5a37a1e0N689bad44.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13975/203/2263320605/644602/d261ad81/5a37a1e0N0cb4e0f7.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14599/270/766626937/273436/6daf0c3f/5a37a1bfN7e79ac68.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14443/332/774710610/587553/def89f84/5a37a1e2Nbbc55513.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12040/122/2272154634/804331/a1d27271/5a37a1e5N77f0d32f.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t15358/306/752089755/930452/a069ac8b/5a37a1e4N8a689ffc.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12439/286/2244513024/896471/2a4e85df/5a37a1e5N623cb4f0.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14893/10/764563982/560881/fc3b0410/5a37a1e2Nef5c6e28.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14077/125/2296237325/466413/545147ad/5a37a1e5Nc3242838.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13555/64/2115279961/458524/dc8cabd6/5a37a1c5N4a465c45.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14914/342/748574936/616930/212cbc6f/5a37a1e5N92091e68.jpg\" /><br /></div></div><br/>', '{\"1\":\"其它\",\"2\":\"荣耀V10\",\"3\":2017.0,\"5\":172,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"海思（Hisilicon）\",\"9\":\"--\",\"10\":\"其他\",\"11\":1.6,\"14\":5.99,\"15\":\"2160*1080\",\"16\":1300.0,\"17\":1600.0,\"18\":3750.0}', '{\"4\":[\"极光蓝\",\"幻夜黑\",\"沙滩金\",\"魅丽红\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机 x 1； 电池（内置）x 1； 快速指南 x 1；充电器 x 1；三包凭证 x 1；Type-C数据线 x 1；卡座捅针 x 1；TPU保护壳 x 1；荣耀宣传卡片 x 1。', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('121', '<div style=\"TEXT-ALIGN: center;\"> \n <img src=\"//img20.360buyimg.com/vc/jfs/t3109/148/4819632146/109621/9a4778e8/58588e37Nd86415d7.jpg\" /> \n <img id=\"detail-tag-id-1\" name=\"detail-tag-id-1\" alt=\"\" src=\"//img20.360buyimg.com/vc/jfs/t3412/192/2210743964/131432/cda591f5/58464d3cNcd113a26.jpg\" text=\"商品介绍\" /> \n <img src=\"//img20.360buyimg.com/vc/jfs/t3808/335/1932149364/194122/7d2d42ef/58464d3dNad3e2685.jpg\" /> \n <img src=\"//img20.360buyimg.com/vc/jfs/t3457/35/2106800846/262130/1948f7a6/58468249N73de141e.jpg\" /> \n <img src=\"//img20.360buyimg.com/vc/jfs/t3706/100/2252480739/149273/52a8b3da/58464d3eNbbbf078d.jpg\" /> \n <img src=\"//img20.360buyimg.com/vc/jfs/t3232/350/5094107703/286448/63f84b22/5861e0c4N43ac48a0.jpg\" /> \n <img src=\"//img20.360buyimg.com/vc/jfs/t3109/233/4461241758/292267/ae2a4475/58464d40Nfc23c1bf.jpg\" /> \n <img src=\"//img20.360buyimg.com/vc/jfs/t3793/294/2232611169/237247/dac9157/58464d41Nccf2a4ea.jpg\" /> \n <img id=\"detail-tag-id-2\" name=\"detail-tag-id-2\" alt=\"\" src=\"//img20.360buyimg.com/vc/jfs/t3508/273/2168285371/370320/9e3a90b1/58464d42N5daec99d.jpg\" text=\"系统展示\" /> \n <img id=\"detail-tag-id-3\" name=\"detail-tag-id-3\" alt=\"\" src=\"//img20.360buyimg.com/vc/jfs/t3787/276/2134761407/94396/5306b8dd/58464d42N7ffda9aa.jpg\" text=\"实拍图赏\" /> \n <img src=\"//img20.360buyimg.com/vc/jfs/t3217/217/4460315375/222279/707784bb/58464d43Nc7bb11d5.jpg\" /> \n <img src=\"//img20.360buyimg.com/vc/jfs/t3073/237/4508884950/266258/a742085/58464d4bN4c745cb0.jpg\" /> \n <img id=\"detail-tag-id-4\" name=\"detail-tag-id-4\" alt=\"\" src=\"//img20.360buyimg.com/vc/jfs/t3928/164/292326035/240440/d845de60/58466726Nd41f6ba0.jpg\" text=\"规格参数\" /> \n <img src=\"//img20.360buyimg.com/vc/jfs/t9724/153/8949280/135504/b1076ca2/59c356f4Nb88a9e2a.jpg\" /> \n <div> \n </div> \n</div><br/>', '{\"1\":\"魅族（MEIZU）\",\"2\":\"魅蓝Note5\",\"3\":2016.0,\"5\":\"175\",\"6\":\"其它\",\"7\":\"Android\",\"8\":\"联发科（MTK）\",\"9\":\"P10（mt6755M）\",\"10\":\"八核\",\"11\":1.8,\"14\":5.5,\"15\":\"1920*1080(FHD)\",\"16\":500.0,\"17\":1300.0,\"18\":4000.0}', '{\"4\":[\"星空灰\",\"香槟金\",\"冰川蓝\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '主机 x 1、电源适配器 x 1、保修证书 x 1、SIM卡顶针 x 1、数据线 x 1', '本产品全国联保，享受三包服务，质保期为：一年质保');
@@ -3307,7 +2958,7 @@ INSERT INTO `tb_spu_detail` VALUES ('125', '<div align=\"center\"> \n <img src=\
 INSERT INTO `tb_spu_detail` VALUES ('126', '<div align=\"center\"> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5911/290/4402927313/183758/eb2f31c8/59607fadN7036c66e.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5626/152/5373627277/83823/65cde84f/595e0c8eNbe8b8a81.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t6004/65/4098600171/62665/e6af5074/595e0c8eN0b6b88d6.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5947/50/4039646827/87056/aaeb8717/595e0c8eN5a6273d6.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5599/277/5346391205/53427/686e3471/595e0c83Nc3832cea.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5908/52/4188190915/105626/27a2fd76/595e0c8eN492c5398.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t14881/236/601708176/267471/5e59e5ed/5a327f8aN91a1915d.jpg\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5899/308/5337054584/61975/166a8f39/595e0c8eNe5ef2ee5.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5800/118/5375041030/98727/6f4f9e48/595e0c8eNfca06b9d.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5824/63/5388245648/62415/86ae71cb/595e0c8eNe2fefe8a.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5914/45/4135792643/84484/67afdddd/595e0c8fNd723f7fe.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t5695/64/5298342748/136452/3afe72b1/595e0c8fN34d033b6.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t6646/33/2308026285/127302/28636613/596081dfN69d1e3cd.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t6643/89/2219114989/135655/89d83c94/595e0d83Nfc0f518d.jpg\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t7789/217/1153212571/117895/cafb05c1/599a9788N11f8ff48.jpg\" alt=\"\" />\n <img src=\"//img10.360buyimg.com/imgzone/jfs/t18475/218/1131368177/736119/81b06259/5abd98dbNe6d0eb20.jpg\" />\n</div><br/>', '{\"1\":\"vivo\",\"2\":\"X9s Plus\",\"3\":2017.0,\"5\":183.2,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙653（MSM8976 Pro）\",\"10\":\"八核\",\"11\":2.2,\"14\":5.85,\"15\":\"1920*1080(FHD)\",\"16\":500.0,\"17\":1600.0,\"18\":4015}', '{\"4\":[\"金色\",\"磨砂黑\",\"玫瑰金\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '主机×1、耳机×1、数据线×1、充电器×1、保护壳×1、保修卡×1、取卡针×1、用户快速入门指南×1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('127', '<div style=\"width: 750px; margin: 0 auto;\"> \n <img src=\"//img20.360buyimg.com/cms/jfs/t7624/67/544965327/305317/659237bf/5993f112N144966a8.jpg\" width=\"750\" height=\"1220\" alt=\"\" /> \n <img src=\"//img20.360buyimg.com/imgzone/jfs/t16351/325/2617209943/222534/f772886c/5ab8a553N00005120.jpg\" width=\"750\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/cms/jfs/t7711/223/514704472/207103/5333dcd5/5993f10dNe9f6d743.jpg\" width=\"750\" height=\"763\" alt=\"\" /> \n <img src=\"//img12.360buyimg.com/cms/jfs/t7303/191/512282425/304835/898564e1/5993f114N3a8a0594.jpg\" width=\"750\" height=\"1243\" alt=\"\" /> \n <img src=\"//img14.360buyimg.com/cms/jfs/t7324/192/502682472/304747/a814a44f/5993f113N9e4d59ff.jpg\" width=\"750\" height=\"1834\" alt=\"\" /> \n <img src=\"//img14.360buyimg.com/cms/jfs/t7600/182/518510294/302438/53aa9620/5993f10aNcaa80132.jpg\" width=\"750\" height=\"1497\" alt=\"\" /> \n <img src=\"//img20.360buyimg.com/cms/jfs/t7348/195/503234790/295129/1dee824a/5993f114N8fcf7b91.jpg\" width=\"750\" height=\"1201\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t17116/189/1104037117/838453/63e9c0e8/5abb491eN687ebab9.png\" width=\"750\" height=\"786\" alt=\"\" /> \n <img src=\"//img30.360buyimg.com/cms/jfs/t7276/208/515394469/305827/a96e4453/5993f116N9c0152e5.jpg\" width=\"750\" height=\"1512\" alt=\"\" /> \n <img src=\"//img20.360buyimg.com/cms/jfs/t5911/328/9557295975/302446/7dcbffc3/5993f115N4a247cc8.jpg\" width=\"750\" height=\"903\" alt=\"\" /> \n <img src=\"//img30.360buyimg.com/cms/jfs/t7984/182/514302696/295035/3b2fb6ec/5993f115Nf4f9f0ae.jpg\" width=\"750\" height=\"1297\" alt=\"\" /> \n <img src=\"//img13.360buyimg.com/cms/jfs/t7603/199/509197757/297631/2f3fa208/5993f105N2a8f5ac6.jpg\" width=\"750\" height=\"1441\" alt=\"\" /> \n <img src=\"//img10.360buyimg.com/imgzone/jfs/t18874/37/29673331/49220/c188385e/5a5869dcNcea8bb44.jpg\" width=\"100%\" alt=\"\" /> \n</div><br/>', '{\"1\":\"努比亚（nubia）\",\"2\":\"nubia Z17（NX563J）\",\"3\":2017.0,\"5\":173.0,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙835（MSM8998）\",\"10\":\"八核\",\"11\":2.4,\"14\":5.5,\"15\":\"1920*1080(FHD)\",\"16\":1600.0,\"17\":1200.0,\"18\":3200.0}', '{\"4\":[\"曜石黑\",\"黑金\",\"烈焰红\",\"旭日金\"],\"12\":[\"8GB\",\"6GB\"],\"13\":[\"64GB\",\"128GB\"]}', '手机x1； 电源适配器x1； USB数据线x1； 手机保修证书x1； 取卡器x1； 耳机转接线x1； 公益基金卡x1。', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('128', '<div><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t11119/238/2306263220/100553/6ae5d19c/5a1576f5Nf455644d.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12250/362/860854060/589272/3af6f2ea/5a157cb2Ne599710d.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12223/102/864011263/361880/e8532aa6/5a157cb1N1949048b.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t11302/90/2340856361/603124/d29484cd/5a157d10N4ab2391a.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13651/256/847174069/661320/6df197d5/5a157cd0Nd2e721d8.jpg\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t13498/341/1127208630/506777/8781196e/5a1a272dN423b1e7b.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t13150/69/1073678841/400733/e9800b1f/5a1a2726Ne8be28ea.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7735/261/3775155522/741755/850b94fa/5a1a272dN428e5fe7.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t11497/109/2530511596/645936/812a76b1/5a1a272dNfe423e96.jpg\" alt=\"\" /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12397/319/865019556/824578/701d46f7/5a157da3N08ca9ac2.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13774/216/863166305/574902/1e0ab0cb/5a157da7Nf24597e0.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13591/180/853021322/214190/68b1ef70/5a157da5N3c4408dc.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13930/190/870657279/289805/96d1e4e0/5a157da5Nd649f71d.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12241/219/868528742/250637/28578795/5a157da5Nc0801200.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12733/212/889588870/351710/43afcb3b/5a157da6Nb3f6404b.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13084/191/868533306/210481/eec20f18/5a157da0Nbcc734f8.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12775/203/852268870/265470/7476ecd4/5a157d97N60740131.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t11344/253/2302052760/404016/f0d698d6/5a157dcbN498e7ede.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12718/235/871273695/355969/51512a11/5a157dbbNb0589327.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12361/236/850966289/981022/f5878d22/5a157dbcN598e4746.jpg\" /><br /></div><br/>', '{\"1\":\"其它\",\"2\":\"BLA-AL00\",\"3\":2017.0,\"5\":178.0,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"其他\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.4,\"14\":6.0,\"15\":\"其他\",\"16\":800.0,\"17\":1200.0,\"18\":4000.0}', '{\"4\":[\"宝石蓝色\",\"银钻灰色\",\"摩卡金色\",\"樱粉金色\"],\"12\":[\"6GB\"],\"13\":[\"128GB\"]}', '请输入...', '本产品全国联保，享受三包服务，质保期为：一年质保');
-INSERT INTO `tb_spu_detail` VALUES ('129', '<p><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16144/84/143324042/297348/908a4401/5a2916caNbf117ba1.jpg\"></p><p><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16363/180/148580260/772271/d9594d30/5a2916caN296cf9db.jpg\"></p><p><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14881/231/287910781/582193/4ed81d6f/5a2916caNb98ebb93.jpg\"></p><p><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t12229/218/1741621505/767967/d65c2474/5a2916caNdccf6558.jpg\"></p><p><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14893/77/277465600/642325/bfd5910/5a2916caN5749a362.jpg\"></p><p><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t13774/258/1788066429/814285/516063d1/5a2916caN31f08f92.jpg\"></p><p><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t12415/364/1769978317/244119/3a545a6b/5a2916caN3d8ffd22.jpg\"></p>', '{\"1\":\"小米（MI）\",\"2\":\"红米5plus\",\"3\":2017,\"5\":180,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":2,\"14\":5.99,\"15\":\"其他\",\"16\":500,\"17\":1200,\"18\":4000}', '{\"4\":[\"黑色\",\"金色\",\"玫瑰金\",\"浅蓝色\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '暂无', '本产品全国联保，享受三包服务，质保期为：一年质保');
+INSERT INTO `tb_spu_detail` VALUES ('129', '<img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16144/84/143324042/297348/908a4401/5a2916caNbf117ba1.jpg\" id=\"1\" alt=\"\" style=\"text-align: center;\" /><br style=\"text-align: center;\" /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16363/180/148580260/772271/d9594d30/5a2916caN296cf9db.jpg\" id=\"1\" alt=\"\" style=\"text-align: center;\" /><br style=\"text-align: center;\" /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14881/231/287910781/582193/4ed81d6f/5a2916caNb98ebb93.jpg\" id=\"1\" alt=\"\" style=\"text-align: center;\" /><br style=\"text-align: center;\" /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t12229/218/1741621505/767967/d65c2474/5a2916caNdccf6558.jpg\" id=\"1\" alt=\"\" style=\"text-align: center;\" /><br style=\"text-align: center;\" /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14893/77/277465600/642325/bfd5910/5a2916caN5749a362.jpg\" id=\"1\" alt=\"\" style=\"text-align: center;\" /><br style=\"text-align: center;\" /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t13774/258/1788066429/814285/516063d1/5a2916caN31f08f92.jpg\" id=\"1\" alt=\"\" style=\"text-align: center;\" /><br style=\"text-align: center;\" /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t12415/364/1769978317/244119/3a545a6b/5a2916caN3d8ffd22.jpg\" id=\"1\" alt=\"\" style=\"text-align: center;\" /><br/>', '{\"1\":\"小米（MI）\",\"2\":\"红米5plus\",\"3\":2017.0,\"5\":180,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":2.0,\"14\":5.99,\"15\":\"其他\",\"16\":500.0,\"17\":1200.0,\"18\":4000.0}', '{\"4\":[\"黑色\",\"金色\",\"玫瑰金\",\"浅蓝色\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '暂无', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('130', '<br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16699/146/1729259696/477716/5de97396/5ad58b4eN97083c6d.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19528/329/1716730827/610458/247d4c19/5ad58b4bNf0fe6d7f.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19090/35/1764093004/511653/41d534f8/5ad58b4eN574e0b5d.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t18556/360/1719940269/495599/351103a1/5ad58b4dN555ea514.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16930/294/1746789248/428780/d98a0314/5ad58b4dNf37435cb.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t18622/352/1533536841/317264/4440f647/5acf0480N5de16675.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19198/61/1595755859/355324/34fa0412/5acf0480N24ef5a52.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16846/231/1592398024/287208/6892fc03/5acf0480Nc3db2510.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16735/47/1576809940/401595/afaa436a/5acf0480N74bbec07.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19627/60/1600204479/141982/775a2859/5acf0480Nbe2cfb85.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t18544/57/1510600724/132721/23ec10ba/5acf0480Nbd3f7439.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17917/215/1532964618/144506/f08c8e1b/5acf0480N41531ee5.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19516/27/1539619181/74840/46276a6d/5acf0480N06c6cf1e.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19765/355/1601231983/456411/e1f3bae2/5acf0480N66418ea4.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t18190/310/1577866615/143562/4238ec64/5acf0480Nede6a3d8.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19213/36/1591652663/423577/7a6941c4/5acf0480N16adc29c.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17155/4/1620048324/67871/64dd4531/5acf0480N42b1235c.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19234/324/1557201115/316374/95489644/5acf0480N756526c9.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17341/320/1545504281/212270/b7773aec/5acf0480N53f7b0d2.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19447/328/1572477273/354356/ad527576/5acf047eN21b91d32.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17989/94/1537959581/248299/d2f7b7a0/5acf0480N9a65c9b3.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17323/219/1549978775/209805/758032fe/5acf0480N95773f15.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16915/214/1582413344/200380/1c8d134b/5acf0480N6b518db4.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t19546/48/1554489407/141891/53f6dad5/5acf0480Ne450753f.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17689/335/1566555661/128127/fb228e1f/5acf0480N27714e26.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7564/172/4232241312/181616/6d23014c/5acf0480N22b9cb4a.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17545/38/1583513070/268001/6576211/5acf0480N19da85ec.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t18466/325/1569756080/137693/8690cf61/5acf0480N4a43bbad.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t18292/39/1564816213/177412/c3205fa8/5acf0480Nb5936e2e.jpg\" id=\"1\" alt=\"\" /><br /><br/>', '{\"1\":\"其它\",\"2\":\"小米MIX2S\",\"3\":2018.0,\"5\":189.0,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"--\",\"10\":\"八核\",\"11\":2.0,\"14\":5.99,\"15\":\"其他\",\"16\":500.0,\"17\":1200,\"18\":3400.0}', '{\"4\":[\"黑色\",\"白色\"],\"12\":[\"6GB\"],\"13\":[\"64GB\"]}', '暂无', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('131', '<br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16072/31/401578488/45867/75c572d1/5a30a3f9Na89fbe5d.jpg\" alt=\"\" /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5590/172/2478744866/1366396/a4cf4dd9/5930da20Nefae7cd3.jpg\" alt=\"\" />><br /><br /><br />                        <br/>', '{\"1\":\"华为（HUAWEI）\",\"2\":\"0\",\"3\":2017.0,\"5\":189,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"海思（Hisilicon）\",\"9\":\"其他\",\"10\":\"八核\",\"11\":2.0,\"14\":5.0,\"15\":\"其他\",\"16\":2000.0,\"17\":1800,\"18\":3400}', '{\"4\":[\"曜石黑\",\"流光金\",\"极光蓝\",\"草木绿\",\"玫瑰金\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '暂无', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('132', '<br /><div style=\"text-align: center;\"><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17848/121/33812573/1636188/da4578ba/5a588cebN9ff3603c.jpg\" alt=\"\" /></div><br/>', '{\"1\":\"其它\",\"2\":\"WAS-AL00\",\"3\":2017.0,\"5\":146,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"海思（Hisilicon）\",\"9\":\"--\",\"10\":\"八核\",\"11\":2.1,\"14\":5.2,\"15\":\"其它\",\"16\":800.0,\"17\":1200.0,\"18\":3000.0}', '{\"4\":[\"魅海蓝\",\"幻夜黑\",\"铂光金\",\"珍珠白\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机（带电池）、充电器、耳机、数据线、快速指南、三包凭证、取卡针、PC透明壳', '本产品全国联保，享受三包服务，质保期为：一年质保');
@@ -3319,7 +2970,7 @@ INSERT INTO `tb_spu_detail` VALUES ('137', '<br /><img src=\"//img30.360buyimg.c
 INSERT INTO `tb_spu_detail` VALUES ('138', '<style>/*C-B*/\n\n.ssd-module-wrap {width: 750px; margin: 0 auto; position: relative; text-align: left; background-color: #ffffff; }\n.ssd-module-wrap .ssd-module,.ssd-module-wrap .ssd-module-heading{ width: 750px; position:relative; overflow: hidden;  }\n.ssd-module{background-repeat:no-repeat; background-position:left top; background-size:100% 100%;}\n.ssd-module .ssd-widget-pic,.ssd-module .ssd-widget-text,.ssd-module .ssd-widget-line,.ssd-module-wrap .ssd-widget-rectangle,.ssd-module-wrap .ssd-widget-circle,.ssd-module-wrap .ssd-widget-triangle,.ssd-module-wrap .ssd-widget-table{ position: absolute; overflow: hidden; }\n.ssd-module-wrap .ssd-widget-table table{width: 100%;}\n.ssd-module-wrap .ssd-widget-table th,.ssd-module-wrap .ssd-widget-table td{position:relative;}\n.ssd-module .ssd-widget-pic img{display: block; width:100%; height:100% }\n.ssd-module .ssd-widget-text{ position: absolute; overflow: hidden;}\n.ssd-module .ssd-widget-text span{display:block;overflow:hidden; width:100%;  height:100%; padding:0; margin: 0; word-break:break-all; word-wrap:break-word; white-space:normal;}\n.ssd-module .ssd-widget-link{ position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: transparent;z-index:100 }\n.ssd-module-wrap .ssd-widget-text{ line-height: 1.5; }\n.ssd-module-wrap .ssd-cell-text{position:absolute;top:0;left:0;right:0;width: 100%;height: 100%;overflow: auto;}\n.ssd-module-heading{background-repeat:no-repeat; background-position:left center; background-size:100% 100%; }\n.ssd-module-heading .ssd-module-heading-layout{display:inline-block;}\n.ssd-module-heading .ssd-widget-heading-ch{float: left;display: inline-block;margin-left: 15px; margin-right:6px; height: 100%;}\n.ssd-module-heading .ssd-widget-heading-en{float: left;display: inline-block;margin-left: 6px; margin-right:15px; height: 100%;}\n.ssd-module-wrap .ssd-widget-rectangle{box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;}\n\n/*C-E*/.ssd-module-wrap .M15238540228411{height:717px; background-size:100% 100%; width:750px; background-color:#cbcbcb; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t19684/268/1770235477/227003/6b81834/5ad83669N2f1defb9.jpg)}\n.ssd-module-wrap .M15229176321721{height:1254px; background-size:100% 100%; width:750px; background-color:#d7d7d7; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t17857/1/1493152691/581479/5362bf27/5acc4869Ncde5319f.jpg)}\n.ssd-module-wrap .M15229177890502{height:1254px; background-size:100% 100%; width:750px; background-color:#f2f2f2; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t18283/251/1515468233/559545/7ff1bbb1/5acc4869Naa7d6bd7.jpg)}\n.ssd-module-wrap .M15229178011713{height:1254px; background-size:100% 100%; width:750px; background-color:#b3b3b3; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t16957/20/1514729973/545307/c86c8870/5acc4869N1f7b531e.jpg)}\n.ssd-module-wrap .M15223256305951{height:1232px; background-size:100% 100%; width:750px; background-color:#cbcbcb; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t18361/121/1078414883/198677/e28b77bc/5abc5c7aNb7178df6.jpg)}\n.ssd-module-wrap .M15228456396291{height:574px; background-size:100% 100%; width:750px; background-color:#f2f2f2; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t18436/334/1315156503/194112/3334a0ff/5ac4c7acN3937836a.jpg)}\n.ssd-module-wrap .M15228456520292{height:490px; background-size:100% 100%; width:750px; background-color:#b3b3b3; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t16933/175/1355976184/69624/526fb9e2/5ac4c7acN94fae172.jpg)}\n.ssd-module-wrap .M15228456658363{height:488px; background-size:100% 100%; width:750px; background-color:#d7d7d7; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t19645/238/1305143228/153119/a330e717/5ac4c7acN72d9d777.jpg)}\n.ssd-module-wrap .M15228456767804{height:506px; background-size:100% 100%; width:750px; background-color:#b3b3b3; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t19402/293/1309586831/161249/481f70a6/5ac4c7acNa90b7a48.jpg)}\n.ssd-module-wrap .M15228456903805{height:490px; background-size:100% 100%; width:750px; background-color:#cbcbcb; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t17560/97/1257933509/149121/4635e3a3/5ac4c7acN88ef19ff.jpg)}\n.ssd-module-wrap .M15228457030926{height:425px; background-size:100% 100%; width:750px; background-color:#e9e9e9; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t18721/50/1143610436/97524/dfefd480/5abf45a9N5c9c6026.jpg)}\n.ssd-module-wrap .M15221473371051{height:1678px; background-size:100% 100%; width:750px; background-color:#e9e9e9; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t16438/142/2742751085/268845/bca07cae/5aba19e7N1f07c229.jpg)}\n.ssd-module-wrap .M15221473536752{height:2012px; background-size:100% 100%; width:750px; background-color:#cbcbcb; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t17776/233/1348521497/444362/d431e5c4/5ac82a47N46088552.jpg)}\n.ssd-module-wrap .M15221473558513{height:1636px; background-size:100% 100%; width:750px; background-color:#d7d7d7; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t18814/218/1383679725/214513/5d823c5e/5ac82ae2N901ee5c3.jpg)}\n.ssd-module-wrap .M15221474425294{height:1868px; background-size:100% 100%; width:750px; background-color:#cbcbcb; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t17671/235/1335942221/344165/ce3fd4ff/5ac82a46N5dc29e4a.jpg)}\n.ssd-module-wrap .M15221474446665{height:1975px; background-size:100% 100%; width:750px; background-color:#e9e9e9; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t18874/236/1102224363/292145/a38125a8/5aba19e8Nfdf2f284.jpg)}\n.ssd-module-wrap .M15221474467576{height:1981px; background-size:100% 100%; width:750px; background-color:#b3b3b3; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t17257/283/1117301250/278034/8447fcec/5aba19e8N63d8b97b.jpg)}\n.ssd-module-wrap .M15221474487867{height:1231px; background-size:100% 100%; width:750px; background-color:#d7d7d7; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t18283/182/1418323885/300698/6a9fd945/5ac9dc9fN16f77b46.jpg)}\n.ssd-module-wrap .M15221474507798{height:1896px; background-size:100% 100%; width:750px; background-color:#cbcbcb; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t17521/176/1118211824/158685/f2c9c898/5aba19e9N631bd931.jpg)}\n.ssd-module-wrap .M15221474527549{height:1764px; background-size:100% 100%; width:750px; background-color:#b3b3b3; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t19009/342/1429411861/250620/b2c799a1/5ac9dd4fN537e45a4.jpg)}\n.ssd-module-wrap .M152214745474510{height:1093px; background-size:100% 100%; width:750px; background-color:#d7d7d7; background-image:url(https://img30.360buyimg.com/imgzone/jfs/t16504/121/2587866914/102485/2f89e8d8/5aba19e9Ne2ec0ba3.jpg)}\n</style><br/><div cssurl=\'//sku-market-gw.jd.com/css/pc/11417187867.css?t=1524120584701\'></div><div id=\'zbViewModulesH\'  value=\'25818\'></div><input id=\'zbViewModulesHeight\' type=\'hidden\' value=\'25818\'/><div skudesign=\"100010\"></div><div class=\"ssd-module-wrap\" >\n    <div class=\"ssd-module M15238540228411 animate-M15238540228411\">\n        </div>\n<div class=\"ssd-module M15229176321721 animate-M15229176321721\">\n        </div>\n<div class=\"ssd-module M15229177890502 animate-M15229177890502\">\n        </div>\n<div class=\"ssd-module M15229178011713 animate-M15229178011713\">\n        </div>\n<div class=\"ssd-module M15223256305951 animate-M15223256305951\">\n        </div>\n<div class=\"ssd-module M15228456396291 animate-M15228456396291\">\n        </div>\n<div class=\"ssd-module M15228456520292 animate-M15228456520292\">\n        </div>\n<div class=\"ssd-module M15228456658363 animate-M15228456658363\">\n        </div>\n<div class=\"ssd-module M15228456767804 animate-M15228456767804\">\n        </div>\n<div class=\"ssd-module M15228456903805 animate-M15228456903805\">\n        </div>\n<div class=\"ssd-module M15228457030926 animate-M15228457030926\">\n        </div>\n<div class=\"ssd-module M15221473371051 animate-M15221473371051\">\n        </div>\n<div class=\"ssd-module M15221473536752 animate-M15221473536752\">\n        </div>\n<div class=\"ssd-module M15221473558513 animate-M15221473558513\">\n        </div>\n<div class=\"ssd-module M15221474425294 animate-M15221474425294\">\n        </div>\n<div class=\"ssd-module M15221474446665 animate-M15221474446665\">\n        </div>\n<div class=\"ssd-module M15221474467576 animate-M15221474467576\">\n        </div>\n<div class=\"ssd-module M15221474487867 animate-M15221474487867\">\n        </div>\n<div class=\"ssd-module M15221474507798 animate-M15221474507798\">\n        </div>\n<div class=\"ssd-module M15221474527549 animate-M15221474527549\">\n        </div>\n<div class=\"ssd-module M152214745474510 animate-M152214745474510\">\n        </div>\n\n</div><!-- 2018-04-19 02:27:31 --> <br/><script></script><br/>', '{\"1\":\"小米（MI）\",\"2\":\"MIX2S\",\"3\":2018.0,\"5\":189,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"--\",\"10\":\"八核\",\"11\":2.54,\"14\":5.99,\"15\":\"2160*1080\",\"16\":500.0,\"17\":1200,\"18\":3400.0}', '{\"4\":[\"黑色\",\"白色\"],\"12\":[\"6GB\"],\"13\":[\"64GB\"]}', '请输入...', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('139', '<br /><div align=\"center\"><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t9577/55/1325810030/930826/fddedcaf/59df4afdN2bbacef3.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t10330/2/1322388887/1013445/18a6daae/59df4b00Neb5ef93b.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t10192/121/1323506380/24785/1ab2d295/59df4aedN32725f05.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t9967/139/1276118400/1042208/61ce961/59df4b00Na59c16b0.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14254/61/629196760/403960/322d8d33/5a333d53N8e899cd9.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t15538/364/513895743/381336/7d6e1b06/5a333d5aNd3266fa2.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13966/324/2137697185/794328/db34edba/5a333d5aN10cff14e.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t16549/227/434607261/796978/be0df6ad/5a333d59Ndd48114b.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12121/252/2140873978/1276650/fcfb4280/5a333d5cNbe7b66ff.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12514/241/2137939641/812383/a51a5678/5a333d5cN9e6f3464.jpg\" /><br /><img id=\"1\" alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13792/235/2113499638/456500/de16317e/5a333d5bNd5b6b589.jpg\" /><br /></div><br/>', '{\"1\":\"其它\",\"2\":\"JMM-AL10\",\"3\":2017.0,\"5\":145,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"联发科（MTK）\",\"9\":\"mt6750\",\"10\":\"八核\",\"11\":1.6,\"14\":5.2,\"15\":\"其他\",\"16\":800.0,\"17\":1300.0,\"18\":3200}', '{\"4\":[\"极光蓝\",\"幻夜黑\",\"铂光金\",\"魅焰红\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '请输入...', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('140', '<img src=\"//img11.360buyimg.com/imgzone/jfs/t18778/74/1385731079/610458/247d4c19/5acc637fN0e143382.jpg\" alt=\"\" /><img src=\"//img11.360buyimg.com/imgzone/jfs/t18013/364/1465750186/511653/41d534f8/5acc637eNa4988573.jpg\" alt=\"\" /><img src=\"//img20.360buyimg.com/imgzone/jfs/t19213/296/1509684037/495599/351103a1/5acc637fNad054668.jpg\" alt=\"\" /><img src=\"//img12.360buyimg.com/imgzone/jfs/t19075/328/1501830629/428780/d98a0314/5acc637dNfba9623b.jpg\" alt=\"\" /><img src=\"//img13.360buyimg.com/imgzone/jfs/t19525/297/1470485837/203162/acf0209b/5acc637fN78f8c941.jpg\" alt=\"\" /><img src=\"//img12.360buyimg.com/imgzone/jfs/t17062/117/1534694604/249494/11c82634/5acc6380Nb98eadcc.jpg\" alt=\"\" /><img src=\"//img13.360buyimg.com/imgzone/jfs/t18199/344/1505481596/340393/63014bbf/5acc6380Nd1db25b4.jpg\" alt=\"\" /><img src=\"//img12.360buyimg.com/imgzone/jfs/t16147/26/2688414625/317264/4440f647/5aba131cNf1797bd1.jpg\" alt=\"\" /><img src=\"//img13.360buyimg.com/imgzone/jfs/t16384/102/2640830894/355324/34fa0412/5aba131cN42d3f9d2.jpg\" alt=\"\" /><img src=\"//img30.360buyimg.com/imgzone/jfs/t18373/261/1054520355/251560/dbef8948/5aba131cN2b41c987.jpg\" alt=\"\" /><img src=\"//img12.360buyimg.com/imgzone/jfs/t18421/235/1073136884/401595/afaa436a/5aba131bN61d25f04.jpg\" alt=\"\" /><img src=\"//img14.360buyimg.com/imgzone/jfs/t16198/48/2693476001/141982/775a2859/5aba131dNc3a0c3ce.jpg\" alt=\"\" /><img src=\"//img30.360buyimg.com/imgzone/jfs/t18544/365/1061697981/132721/23ec10ba/5aba131dNd50be7ee.jpg\" alt=\"\" /><img src=\"//img12.360buyimg.com/imgzone/jfs/t18985/306/1104174529/141324/1f4a4c39/5abc5f26N8cb2a0c2.jpg\" alt=\"\" /><img src=\"//img20.360buyimg.com/imgzone/jfs/t18511/351/1134424212/74840/46276a6d/5abc5f28N7f03ed43.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t19171/251/1063236332/456411/e1f3bae2/5aba131dN201e6790.jpg\" alt=\"\" /><img src=\"//img11.360buyimg.com/imgzone/jfs/t15433/105/2534099009/131018/a5488958/5aba131dN61e2ff0d.jpg\" alt=\"\" /><img src=\"//img30.360buyimg.com/imgzone/jfs/t19048/273/1059209129/423577/7a6941c4/5aba131eNac960869.jpg\" alt=\"\" /><img src=\"//img11.360buyimg.com/imgzone/jfs/t16873/300/1078302882/67871/64dd4531/5aba131eN17103730.jpg\" alt=\"\" /><img src=\"//img30.360buyimg.com/imgzone/jfs/t19378/243/1121047023/316489/778121f2/5abc5f28Nbf00788a.jpg\" alt=\"\" /><img src=\"//img13.360buyimg.com/imgzone/jfs/t17911/235/1101243243/203566/3a1fb4de/5abc5f29N48474732.jpg\" alt=\"\" /><img src=\"//img20.360buyimg.com/imgzone/jfs/t16450/118/2675455760/354356/ad527576/5aba131eN9001927a.jpg\" alt=\"\" /><img src=\"//img20.360buyimg.com/imgzone/jfs/t17401/132/1136033887/248299/d2f7b7a0/5aba131eNdcc2e2d4.jpg\" alt=\"\" /><img src=\"//img12.360buyimg.com/imgzone/jfs/t19522/131/1013188712/209805/758032fe/5aba131fN30410e3b.jpg\" alt=\"\" /><img src=\"//img30.360buyimg.com/imgzone/jfs/t16984/352/1061693441/200380/1c8d134b/5aba131fN151e13d5.jpg\" alt=\"\" /><img src=\"//img13.360buyimg.com/imgzone/jfs/t18451/28/1115011976/141891/53f6dad5/5aba131fN98247f7f.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t18619/354/1068106797/128127/fb228e1f/5aba131fN62b4c9c0.jpg\" alt=\"\" /><img src=\"//img11.360buyimg.com/imgzone/jfs/t18115/291/1087003416/181616/6d23014c/5abc5f59Naa48bc1c.jpg\" alt=\"\" /><img src=\"//img12.360buyimg.com/imgzone/jfs/t19138/288/1113785956/268001/6576211/5aba132fNdabec4a4.jpg\" alt=\"\" /><img src=\"//img13.360buyimg.com/imgzone/jfs/t18490/217/1126953508/137693/8690cf61/5aba1331N83aecb50.jpg\" alt=\"\" /><img src=\"//img20.360buyimg.com/imgzone/jfs/t17068/47/1048460528/177412/c3205fa8/5aba1331Naf1ca6fc.jpg\" alt=\"\" /><br/>', '{\"1\":\"小米（MI）\",\"2\":\"MIX2S\",\"3\":2018.0,\"5\":\"189\",\"6\":\"其它\",\"7\":\"\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"其他\",\"10\":\"八核\",\"11\":2.1,\"14\":5.99,\"15\":\"2160*1080\",\"16\":500.0,\"17\":1200,\"18\":3400}', '{\"4\":[\"黑色\",\"白色\"],\"12\":[\"6GB\"],\"13\":[\"64GB\"]}', '手机主机*1、极简保护壳*1、电源适配器*1、USB Type-C 数据线*1、Type-C TO AUDIO 转接线*1、插针*1、三包凭证/入门指南*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
-INSERT INTO `tb_spu_detail` VALUES ('141', '<p>haha</p><p><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5995/1/7908464401/136614/51c2290d/5982a252N4a790bd1.jpg?t=1501733480589\" height=\"866\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5863/213/9039750883/30306/fde5971d/5982a252Na8f28026.jpg?t=1501733480589\" height=\"498\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5578/338/9037337052/66102/a82846a0/5982a252Nb1adfeec.jpg?t=1501733480589\" height=\"497\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5818/56/9081857043/61584/aafbbc04/5982a245Nbe37559a.jpg?t=1501733480589\" height=\"485\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7018/209/1552996323/87198/5749762a/5982a249N84154f22.jpg?t=1501733480589\" height=\"721\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5986/33/7980167593/63322/3982962e/5982a252Nd6ec5364.jpg?t=1501733480589\" height=\"454\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5857/174/9054258605/45119/515d8509/5982a251Nbc9583a1.jpg?t=1501733572961\" height=\"413\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7009/205/1569901050/192865/5f953f3e/5982a252N4b6661f1.jpg?t=1501733572961\" height=\"1254\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6763/197/1526580639/78238/cc50506a/5982a249N05c96621.jpg?t=1501733572961\" height=\"828\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5725/101/8989390398/102537/1dd15856/5982a252N0299a5db.jpg?t=1501733572961\" height=\"499\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6898/349/1546231822/177383/461d16f2/5982a244N6a3a6e5f.jpg?t=1501733572961\" height=\"932\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5770/356/9153659851/213088/636075da/5982a252Nae801bca.jpg?t=1501733572961\" height=\"1132\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6985/198/1511997574/192778/248b2aef/5982a252N9241ae7f.jpg?t=1501733572961\" height=\"1039\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5716/135/9089105362/97594/3780c3fb/5982a252N5077ed00.jpg?t=1501733572961\" height=\"615\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5668/99/9051614277/222334/9c40e22e/5982a244N1a441128.jpg?t=1501733572961\" height=\"1041\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7015/220/1543840410/77449/a0371158/5982a252Nc46e18d1.jpg?t=1501733572961\" height=\"581\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6040/127/7935047692/156834/710ae9e0/5982a252N94b877e8.jpg?t=1501733572961\" height=\"1042\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6997/233/1507927618/106944/b34776e0/5982a25aN33f834e9.jpg?t=1501733572961\" height=\"1040\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5755/27/9193565146/96849/67796937/5982a24dNf05d92bf.jpg?t=1501733572961\" height=\"796\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5707/251/9105152749/149455/c1518586/5982a25aN585ae286.jpg?t=1501733572961\" height=\"1029\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7093/344/631071984/317090/33075c50/5982a257N65657a49.jpg?t=1501733572961\" height=\"1384\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5731/334/9050019233/90211/d1592ff9/5982a25bN2acd1f9d.jpg?t=1501733572961\" height=\"767\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6766/246/1551505636/161499/55a52190/5982a25bN9d84e892.jpg?t=1501733572961\" height=\"1033\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5821/337/9054326197/56345/dac5fc6c/5982a25bN47c6c423.jpg?t=1501733572961\" height=\"780\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5707/302/9122975330/181932/7a3d50ab/5982a25bN5b05a771.jpg?t=1501733572961\" height=\"1218\" width=\"750\"><img src=\"//img10.360buyimg.com/imgzone/jfs/t18514/185/1728309269/108473/6f836dc6/5ad57184N73cf091d.jpg?t=1523937668595\" height=\"450\" width=\"750\"></p>', '{\"1\":\"小米（MI）\",\"2\":\"MI8\",\"3\":2017,\"5\":180,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙835（MSM8998）\",\"10\":\"八核\",\"11\":2.45,\"14\":5.15,\"15\":\"1920*1080\",\"16\":800,\"17\":1200,\"18\":3350}', '{\"4\":[\"陶瓷黑尊享版\",\"亮蓝色\",\"亮黑色\",\"亮白色\"],\"12\":[\"6GB\"],\"13\":[\"128GB\"]}', '手机*1，电源适配器*1，USB Type-C数据线*1，Type-C TO AUDIO转接线*1， 三包凭证（入门指南）*1， 插针*1、高透软胶保护套*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
+INSERT INTO `tb_spu_detail` VALUES ('141', '<p><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5995/1/7908464401/136614/51c2290d/5982a252N4a790bd1.jpg?t=1501733480589\" height=\"866\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5863/213/9039750883/30306/fde5971d/5982a252Na8f28026.jpg?t=1501733480589\" height=\"498\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5578/338/9037337052/66102/a82846a0/5982a252Nb1adfeec.jpg?t=1501733480589\" height=\"497\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5818/56/9081857043/61584/aafbbc04/5982a245Nbe37559a.jpg?t=1501733480589\" height=\"485\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7018/209/1552996323/87198/5749762a/5982a249N84154f22.jpg?t=1501733480589\" height=\"721\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5986/33/7980167593/63322/3982962e/5982a252Nd6ec5364.jpg?t=1501733480589\" height=\"454\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5857/174/9054258605/45119/515d8509/5982a251Nbc9583a1.jpg?t=1501733572961\" height=\"413\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7009/205/1569901050/192865/5f953f3e/5982a252N4b6661f1.jpg?t=1501733572961\" height=\"1254\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6763/197/1526580639/78238/cc50506a/5982a249N05c96621.jpg?t=1501733572961\" height=\"828\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5725/101/8989390398/102537/1dd15856/5982a252N0299a5db.jpg?t=1501733572961\" height=\"499\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6898/349/1546231822/177383/461d16f2/5982a244N6a3a6e5f.jpg?t=1501733572961\" height=\"932\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5770/356/9153659851/213088/636075da/5982a252Nae801bca.jpg?t=1501733572961\" height=\"1132\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6985/198/1511997574/192778/248b2aef/5982a252N9241ae7f.jpg?t=1501733572961\" height=\"1039\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5716/135/9089105362/97594/3780c3fb/5982a252N5077ed00.jpg?t=1501733572961\" height=\"615\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5668/99/9051614277/222334/9c40e22e/5982a244N1a441128.jpg?t=1501733572961\" height=\"1041\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7015/220/1543840410/77449/a0371158/5982a252Nc46e18d1.jpg?t=1501733572961\" height=\"581\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6040/127/7935047692/156834/710ae9e0/5982a252N94b877e8.jpg?t=1501733572961\" height=\"1042\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6997/233/1507927618/106944/b34776e0/5982a25aN33f834e9.jpg?t=1501733572961\" height=\"1040\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5755/27/9193565146/96849/67796937/5982a24dNf05d92bf.jpg?t=1501733572961\" height=\"796\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5707/251/9105152749/149455/c1518586/5982a25aN585ae286.jpg?t=1501733572961\" height=\"1029\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t7093/344/631071984/317090/33075c50/5982a257N65657a49.jpg?t=1501733572961\" height=\"1384\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5731/334/9050019233/90211/d1592ff9/5982a25bN2acd1f9d.jpg?t=1501733572961\" height=\"767\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t6766/246/1551505636/161499/55a52190/5982a25bN9d84e892.jpg?t=1501733572961\" height=\"1033\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5821/337/9054326197/56345/dac5fc6c/5982a25bN47c6c423.jpg?t=1501733572961\" height=\"780\" width=\"750\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t5707/302/9122975330/181932/7a3d50ab/5982a25bN5b05a771.jpg?t=1501733572961\" height=\"1218\" width=\"750\"><img src=\"//img10.360buyimg.com/imgzone/jfs/t18514/185/1728309269/108473/6f836dc6/5ad57184N73cf091d.jpg?t=1523937668595\" height=\"450\" width=\"750\"></p>', '{\"1\":\"小米（MI）\",\"2\":\"MI8\",\"3\":2017,\"5\":180,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙835（MSM8998）\",\"10\":\"八核\",\"11\":2.45,\"14\":5.15,\"15\":\"1920*1080\",\"16\":800,\"17\":1200,\"18\":3350}', '{\"4\":[\"陶瓷黑尊享版\",\"亮蓝色\",\"亮黑色\",\"亮白色\"],\"12\":[\"6GB\"],\"13\":[\"128GB\"]}', '手机*1，电源适配器*1，USB Type-C数据线*1，Type-C TO AUDIO转接线*1， 三包凭证（入门指南）*1， 插针*1、高透软胶保护套*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('142', '<div style=\"text-align: center;\"><br /></div><div style=\"text-align: center;\"><img src=\"//img12.360buyimg.com/popWaterMark/jfs/t17236/61/1259573118/111741/7010065d/5ac31135N3a7e9829.jpg\" alt=\"\" /></div><div style=\"text-align: center;\"><br /></div><div style=\"text-align: center;\"><img src=\"//img14.360buyimg.com/popWaterMark/jfs/t18592/226/1289504584/186772/4f076650/5ac31135Nb7b861a6.jpg\" alt=\"\" /></div><div style=\"text-align: center;\"><img src=\"//img13.360buyimg.com/popWaterMark/jfs/t19360/340/1295023566/117681/738ec622/5ac31135N271901af.jpg\" alt=\"\" /></div><div style=\"text-align: center;\"><img src=\"//img14.360buyimg.com/popWaterMark/jfs/t19480/81/1275279577/236182/8a65bd9c/5ac31151Na2fa87b5.jpg\" alt=\"\" /></div><div style=\"text-align: center;\"><img src=\"//img13.360buyimg.com/popWaterMark/jfs/t17632/282/1250403216/223058/39546266/5ac31151Nab9bd0e8.jpg\" alt=\"\" /></div><div style=\"text-align: center;\"><img src=\"//img12.360buyimg.com/popWaterMark/jfs/t17107/156/1292219183/175334/cf4b22d1/5ac31151Ncb112047.jpg\" alt=\"\" /></div><div style=\"text-align: center;\"><img src=\"//img11.360buyimg.com/popWaterMark/jfs/t16837/358/1224794622/243864/88336441/5ac31151N58a92530.jpg\" alt=\"\" /></div><div style=\"text-align: center;\"><img src=\"//img14.360buyimg.com/popWaterMark/jfs/t17521/4/1261152204/160578/7483a18a/5ac31151N6233c83d.jpg\" alt=\"\" /></div><div style=\"text-align: center;\"><img src=\"//img20.360buyimg.com/popWaterMark/jfs/t18364/236/1293030742/257923/ed98aca4/5ac31151N24548d95.jpg\" alt=\"\" /></div><div style=\"text-align: center;\"><img src=\"//img20.360buyimg.com/popWaterMark/jfs/t19009/52/1261014412/195436/b0795fff/5ac31151N6c225ad4.jpg\" alt=\"\" /></div><br/>', '{\"1\":\"小米（MI）\",\"2\":\"红米note5\",\"3\":2018.0,\"5\":181.0,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.8,\"14\":5.9,\"15\":\"其他\",\"16\":1300.0,\"17\":500.0,\"18\":4000.0}', '{\"4\":[\"黑色\",\"金色\",\"粉红色\",\"蓝色\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机主机*1、电源适配器*1、USB数据线*1、SIM卡插针*1、入门指南/三包凭证*1、高透软胶保护套*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('143', '<br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t15445/249/1312213374/1073885/a10fb407/5a4c54b7N5749238f.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t15193/49/1314990489/936806/b1660f76/5a4c54b7Ncbc4085c.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16273/244/964348595/830282/3db15448/5a4c54b7Nbeeb8e5c.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14569/200/1295930914/771324/5e7577bf/5a4c54b6N2cff2e3b.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t12778/297/2135876851/477673/7bdb3b9b/5a4c5534N3f90ea13.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16273/44/965600029/639036/d6ae424b/5a4c5534Ne4a570a2.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14686/126/1331043236/702450/28d23167/5a4c5536N2977f783.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14311/258/1309885564/804882/cf4f0fb8/5a4c5534N232bc2f8.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14638/270/1287500874/878743/4bbc8347/5a4c5534Na98a5184.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14638/274/1270917340/799063/7026fc7e/5a4c5536Nd24d6b01.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t15655/174/1129556256/745678/379fe22/5a4c5537Ne4905990.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16540/217/1169579649/824657/dfb15d7d/5a4c5539N6419e5c7.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16270/160/1149803733/887749/15ba00c2/5a4c553aN71de0131.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16246/158/1161738484/756953/b66965b5/5a4c5539N43653d47.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t12685/198/1967326773/551827/b2783c1c/5a4c5539Nea45ec2e.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t15079/234/1285720714/546786/5db54a85/5a4c554bN0cda8262.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16420/26/1135557796/584634/448ab2cb/5a4c554bN2ff6ef76.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t15832/210/1181657354/774686/d294d54c/5a4c554cNcee7378b.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14326/361/1315454106/579455/2df5bb35/5a4c5530Nc3821b41.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14524/169/1283731049/487998/50590e1a/5a4c554bNb97d3514.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t15373/25/1261746947/533322/cb5ac28f/5a4c5548N0c30d0d0.jpg\" id=\"1\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16324/354/1119165003/654063/7e8c7769/5a4c554cN3eecacaf.jpg\" id=\"1\" alt=\"\" /><br /><br /><br /><br/>', '{\"1\":\"其它\",\"2\":\"荣耀9青春版\",\"3\":2017.0,\"5\":149,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"海思（Hisilicon）\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.4,\"14\":5.0,\"15\":\"2160*1080\",\"16\":200.0,\"17\":200.0,\"18\":3000.0}', '{\"4\":[\"魅海蓝\",\"幻夜黑\",\"海鸥灰\",\"珠光白\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '手机x1；充电器x1；USB 线x1；快速指南x1；售后服务手册x1；取卡针x1；保护壳x1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('144', '<br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17194/229/146876452/1290338/88cba548/5a5eee9aN624853d4.jpg\" alt=\"\" /><br/>', '{\"1\":\"其它\",\"2\":\"DIG-AL00\",\"3\":2017.0,\"5\":138,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.6,\"14\":5.0,\"15\":\"其他\",\"16\":500.0,\"17\":1300.0,\"18\":3020.0}', '{\"4\":[\"金色\",\"银色\",\"粉色\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '手机（内置电池）、5V/1A中式充电器、USB数据线、取卡针、PC套壳、快速指南、保修卡、标签等', '本产品全国联保，享受三包服务，质保期为：一年质保');
@@ -3346,7 +2997,7 @@ INSERT INTO `tb_spu_detail` VALUES ('164', '<br /> <img id=\"65f1f5b8fa774872a4d
 INSERT INTO `tb_spu_detail` VALUES ('165', '<br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t9268/190/1360404669/201873/1548d19c/59b8935bN6223ba65.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t8665/107/1223962788/175566/dfc8e53f/59b89370Nd7780c25.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t9496/225/895508159/182985/7f26c92c/59b8936aN51a1985b.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t9328/152/1339244437/258040/b951cf95/59b89358N48c34225.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t8644/270/1366464943/256830/6a1f79e6/59b8935fN6591799b.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t7537/235/3026147116/186979/dcb6c39/59b89370Na4c4674e.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t8434/262/1368872524/216284/ea7a076a/59b8935dNb6e14bb1.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t8221/248/1370390152/274889/50495e04/59b89370Nbe0feb67.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t8911/203/1385886975/292241/eff6e8df/59b89370Naf1f5aa1.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t8923/178/1358286298/92793/cdc5d370/59b89370N5760e0c4.jpg\" /><br/>', '{\"1\":\"其它\",\"2\":\"note3\",\"3\":2017.0,\"5\":\"163\",\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙660（MSM8976Plus）\",\"10\":\"八核\",\"11\":1.65,\"14\":5.5,\"15\":\"其他\",\"16\":1600.0,\"17\":1200.0,\"18\":\"3400\"}', '{\"4\":[\"黑色\",\"蓝色\"],\"12\":[\"6GB\"],\"13\":[\"64GB\"]}', '手机*1，电源适配器*1，USB Type-C数据线*1，Type-C TO AUDIO转接线*1， 三包凭证（入门指南）*1， 插针*1、高透软胶保护套*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('166', '<p align=\"center\"><span style=\"color:#ff00;font-size: 12px;\"><strong><span style=\"font-size:xx-large;\"><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t10000/239/245279442/72180/81c9de4a/59c9cf60Nc8bdbe4b.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t11131/318/279347612/340253/250204a5/59ec46d1N776baf82.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t11830/13/289119095/244551/d06ba484/59ec46f9N599acecf.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t9694/334/1973350424/357190/d6c764a3/59ec4701N8e5a5a09.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t10123/44/2008304411/362883/69495ce9/59ec470cN692e5016.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t10402/136/2011874989/224124/55b4390/59ec470eNf60a2869.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t11071/242/299759557/583007/4a7e91b0/59ec47b1N44e31906.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t9790/334/1997459071/505032/a10a9e52/59ec47b4N50d70967.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t7282/173/3300551892/439505/9bacb075/59ec47b4N129f6bcc.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t9757/258/1985575718/422856/47d353/59ec47b3N31bbcdbf.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t10018/334/2011806304/363146/8d8e40b6/59ec47b4N94b79e0e.jpg\" /></span></strong></span><span style=\"color:#ff00;\"><strong><span style=\"font-size:xx-large;\"><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t10321/185/1693416773/1223604/8c975058/59e56683N75d322f6.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t9163/351/1787590489/286158/3c35e7bd/59c9cf72N5697845e.jpg\" /><br /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t8251/250/2248610261/240623/3a8c87a5/59c9cf87N79aae5fb.jpg\" /><br /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t10636/299/248513723/653889/50857e10/59c9cf99Naf562a6c.jpg\" />&nbsp;</span></strong></span></p><div align=\"center\"><br /></div><br/>', '{\"1\":\"其它\",\"2\":\"0\",\"3\":2017.0,\"5\":192,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"海思（Hisilicon）\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.8,\"14\":5.9,\"15\":\"其他\",\"16\":800.0,\"17\":1200.0,\"18\":3500}', '{\"4\":[\"亮黑色\",\"摩卡金色\",\"樱粉金色\",\"香槟金色\"],\"12\":[\"6GB\"],\"13\":[\"128GB\"]}', '手机（含内置电池） X 1、5A大电流华为SuperCharge充电器X 1、5A USB数据线 X 1、半入耳式线控耳机 X 1、快速指南X 1、三包凭证 X 1、取卡针 X 1、保护壳 X 1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('167', '<img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7579/2/2321505516/622309/a0927d78/59acf96aN6044fec3.jpg\" alt=\"\" />                        <br/>', '{\"1\":\"华为（HUAWEI）\",\"2\":\"DIG-AL00\",\"3\":2016.0,\"5\":138.0,\"6\":\"其它\",\"7\":\"\",\"8\":\"\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.1,\"14\":5.0,\"15\":\"其他\",\"16\":500.0,\"17\":1300.0,\"18\":\"3020\"}', '{\"4\":[\"金色\",\"银色\",\"粉色\"],\"12\":[\"3GB\"],\"13\":[\"32GB\"]}', '手机（电池内置）/中式充电器/USB数据线/快速指南/三包凭证/取卡针', '本产品全国联保，享受三包服务，质保期为：一年质保');
-INSERT INTO `tb_spu_detail` VALUES ('168', '<p><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t7183/142/770774101/196691/8a1df2e3/598414cdNf8e81a5c.jpg\"><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t6988/175/1699608880/280429/8f13983f/59840f78N6fcc0da4.jpg\"></p><p><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t8527/358/1202185606/204465/5e25162b/59b5ed49Nc31bc116.jpg\"><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t5989/131/7057770601/71438/28d220bc/59786154Nef12aa4e.jpg\"><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t7009/278/643525661/83419/29960f09/59786156Ncde99e75.jpg\"></p><p><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t5626/230/8157241738/214891/1d647b6d/59786156Nb7cde04a.jpg\"></p><p><img src=\"//img10.360buyimg.com/imgzone/jfs/t13966/75/2411579081/162962/1cebd8b3/5a3cbff1N03b68de4.jpg\"></p><p><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t5833/320/8238288663/122105/3dba9a12/59786157Nf47ec380.jpg\"></p><p><br></p><p><img src=\"//img10.360buyimg.com/imgzone/jfs/t13261/303/2414766616/144854/8d2fe0ba/5a3cbff7N02da2f21.jpg\"></p>', '{\"1\":\"其它\",\"2\":\"小米5X\",\"3\":2017,\"5\":165,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.1,\"14\":5.5,\"15\":\"其它\",\"16\":500,\"17\":1200,\"18\":3080}', '{\"4\":[\"玫瑰金\",\"红色\",\"黑色\",\"金色\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机*1、电源适配器*1、USB Type-C数据线、插针*1、三包凭证/入门指南*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
+INSERT INTO `tb_spu_detail` VALUES ('168', '<p><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t7183/142/770774101/196691/8a1df2e3/598414cdNf8e81a5c.jpg\" alt=\"\" id=\"7e8a397682d34a7b9c77083b49c2d9f3\" /><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t6988/175/1699608880/280429/8f13983f/59840f78N6fcc0da4.jpg\" alt=\"\" id=\"14b2f9f8801044d6bbd3983a5ed8868d\" /></p><p><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t8527/358/1202185606/204465/5e25162b/59b5ed49Nc31bc116.jpg\" alt=\"\" /><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t5989/131/7057770601/71438/28d220bc/59786154Nef12aa4e.jpg\" alt=\"\" id=\"9e81914c5ad74137a0dbc49f72d17e65\" /><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t7009/278/643525661/83419/29960f09/59786156Ncde99e75.jpg\" alt=\"\" id=\"32c6ba2bce714779b5115151031efc43\" /></p><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t5626/230/8157241738/214891/1d647b6d/59786156Nb7cde04a.jpg\" alt=\"\" id=\"2105b5ac61514df9b47bc40a8a2b5382\" /><br /><img src=\"//img10.360buyimg.com/imgzone/jfs/t13966/75/2411579081/162962/1cebd8b3/5a3cbff1N03b68de4.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWareDetail/jfs/t5833/320/8238288663/122105/3dba9a12/59786157Nf47ec380.jpg\" alt=\"\" id=\"29c701979e714acd8e8e9bb0d2d474ed\" /><br /><br /><img src=\"//img10.360buyimg.com/imgzone/jfs/t13261/303/2414766616/144854/8d2fe0ba/5a3cbff7N02da2f21.jpg\" alt=\"\" />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br/>', '{\"1\":\"其它\",\"2\":\"小米5X\",\"3\":2017.0,\"5\":165.0,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.1,\"14\":5.5,\"15\":\"其它\",\"16\":500.0,\"17\":1200.0,\"18\":3080.0}', '{\"4\":[\"玫瑰金\",\"红色\",\"黑色\",\"金色\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '手机*1、电源适配器*1、USB Type-C数据线、插针*1、三包凭证/入门指南*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('169', '<br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14872/102/96738620/149686/5fbce59d/5a23600aNd77aed71.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t14758/101/82152775/131041/1f90c625/5a23600aNf0e0ed34.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t15040/63/87458416/280171/99d9842a/5a23600bN541a8b2b.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12184/33/1593780740/367023/60d65f24/5a23600bNe5c74433.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12193/235/1589737893/91673/3e315857/5a23600aNb2c1ee15.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12220/11/1562252427/187236/29768c42/5a23600aN69d433dd.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t15403/58/79909825/150614/727bae03/5a23600bN065ea5fd.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t13894/261/1568576740/176071/27b30718/5a235ffaN230e4ea0.jpg\" /><br /><img alt=\"\" src=\"//img30.360buyimg.com/popWaterMark/jfs/t12229/109/1604045757/220195/2220fdba/5a23600dNfe7bb3e1.jpg\" /><br/>', '{\"1\":\"其它\",\"2\":\"荣耀V10\",\"3\":2017.0,\"5\":172,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"海思（Hisilicon）\",\"9\":\"其他\",\"10\":\"其他\",\"11\":1.1,\"14\":5.99,\"15\":\"其他\",\"16\":1300.0,\"17\":1200,\"18\":3750.0}', '{\"4\":[\"幻夜黑\",\"极光蓝\",\"沙滩金\",\"魅力红\"],\"12\":[\"6GB\"],\"13\":[\"64GB\"]}', '1手机 x 1； 2电池（内置）x 1； 4、5V4.5A SuperCharge充电器 x 1；5、三包凭证 x 1；6.Type-C数据线 x 1；7、卡座捅针 x 1；8、TPU保护壳 x 1；', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('170', '<br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16072/31/401578488/45867/75c572d1/5a30a3f9Na89fbe5d.jpg\" alt=\"\" /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5899/299/5124461279/236930/bb05a94b/595b33f1N05e54467.jpg\" alt=\"\" />><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6328/186/1978485903/242553/eb9bc1d0/595b33f3Nd55f7af2.jpg\" alt=\"\" />><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5887/106/5203239097/335106/f7080a18/595b33f9N6c05859c.jpg\" alt=\"\" />><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6100/164/3885534016/320134/1a4658f5/595b33feNc1dd20de.jpg\" alt=\"\" />>                        <br/>', '{\"1\":\"其它\",\"2\":\"A5\",\"3\":\"其它\",\"5\":120,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"联发科（MTK）\",\"9\":\"其他\",\"10\":\"四核\",\"11\":1.2,\"14\":5.0,\"15\":\"其它\",\"16\":500.0,\"17\":1200,\"18\":3060.0}', '{\"4\":[\"皓月银\",\"香槟金\",\"磨砂黑\"],\"12\":[\"2GB\"],\"13\":[\"16GB\"]}', '暂无', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('171', '<img src=\"//img11.360buyimg.com/imgzone/jfs/t17632/109/1895903340/607442/8fa337d1/5adacd6cN7a82ff91.jpg\" alt=\"\" /><img alt=\"\" src=\"//img30.360buyimg.com/imgzone/jfs/t18472/277/1123160690/421741/23df91bf/5abb6d14Nf43b0a3f.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16354/30/2670625498/109994/2cd13e09/5abb6d13N54a5e311.jpg\" /><img alt=\"\" src=\"//img12.360buyimg.com/imgzone/jfs/t18433/292/1067717634/251298/58b2444c/5abb6d13Nf6f71ce0.jpg\" /><img alt=\"\" src=\"//img14.360buyimg.com/imgzone/jfs/t16387/228/2484997465/410537/bc135adc/5abb6d15Nd8b518bf.jpg\" /><img alt=\"\" src=\"//img30.360buyimg.com/imgzone/jfs/t18043/92/1109962709/344498/f7518cb5/5abb6d15N0b0b33c6.jpg\" /><img alt=\"\" src=\"//img12.360buyimg.com/imgzone/jfs/t18238/270/1089412110/275844/4d24dea3/5abb6d15Nf9fea256.jpg\" /><img alt=\"\" src=\"//img11.360buyimg.com/imgzone/jfs/t17164/68/1091516595/277978/8dfc1174/5abb6d16Nee055d8c.jpg\" /><img alt=\"\" src=\"//img20.360buyimg.com/imgzone/jfs/t17404/5/1094837365/260644/447540ba/5abb6d17Nd9df1b16.jpg\" /><img src=\"//img11.360buyimg.com/imgzone/jfs/t18715/121/1800760269/240805/3b408e2/5ad98b10N518b378c.jpg\" alt=\"\" /><img alt=\"\" src=\"//img11.360buyimg.com/imgzone/jfs/t19402/234/1102644888/334166/bf783921/5abb6d17Nb99da8a3.jpg\" /><img alt=\"\" src=\"//img13.360buyimg.com/imgzone/jfs/t17698/270/1066165889/494604/5b93ebcd/5abb6d17Na8e5d9e8.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t18838/306/1129419701/351040/9bbb66ae/5abb6d18Nc58b5ee5.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t18838/303/1061938710/308147/22fe418a/5abb6d18N4b8ed820.jpg\" /><img alt=\"\" src=\"//img30.360buyimg.com/imgzone/jfs/t19363/311/1549724735/502419/31b0a6af/5acf19abN9162ee26.jpg\" /><img alt=\"\" src=\"//img12.360buyimg.com/imgzone/jfs/t16654/217/1097673458/195315/c61d8c4f/5abb6d18N8587ee0e.jpg\" /><img alt=\"\" src=\"//img13.360buyimg.com/imgzone/jfs/t19327/191/1096170069/300998/2a6ed56b/5abb6d17N7821e3be.jpg\" /><img alt=\"\" src=\"//img12.360buyimg.com/imgzone/jfs/t17416/128/1573884602/228429/95027b7e/5acf1823Ne105ca13.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t16891/232/1127413028/176297/985414aa/5abb6d19N69873f45.jpg\" /><img alt=\"\" src=\"//img11.360buyimg.com/imgzone/jfs/t19375/61/1095463511/314112/2bef8525/5abb6d19Nfd53ee21.jpg\" /><img alt=\"\" src=\"//img30.360buyimg.com/imgzone/jfs/t17479/146/1099032536/274087/deaf257d/5abb6d1aN83d1d06c.jpg\" /><img alt=\"\" src=\"//img11.360buyimg.com/imgzone/jfs/t17986/151/1116479429/169936/ba8502b6/5abb6d1aNc769b7c1.jpg\" /><img alt=\"\" src=\"//img20.360buyimg.com/imgzone/jfs/t17806/284/1583772583/455501/65e43f01/5acf1823Nd5b9b434.jpg\" /><img alt=\"\" src=\"//img20.360buyimg.com/imgzone/jfs/t16912/128/1120199780/315350/ecfac0db/5abb6d1aN4d917125.jpg\" /><img alt=\"\" src=\"//img10.360buyimg.com/imgzone/jfs/t17374/273/1095909405/250631/ba6743ee/5abb6d23N9741a4ca.jpg\" /><img alt=\"\" src=\"//img30.360buyimg.com/imgzone/jfs/t18733/304/1107696487/248444/7a437018/5abb6d23N8725eae4.jpg\" /><br/>', '{\"1\":\"华为（HUAWEI）\",\"2\":\"0\",\"3\":2018.0,\"5\":212,\"6\":\"其它\",\"7\":\"其他\",\"8\":\"海思（Hisilicon）\",\"9\":\"Kirin 970\",\"10\":\"八核\",\"11\":1.1,\"14\":6.1,\"15\":\"2240*1080\",\"16\":2400.0,\"17\":800.0,\"18\":2000}', '{\"4\":[\"亮黑色\",\"极光色\",\"宝石蓝\",\"樱粉金\"],\"12\":[\"6GB\"],\"13\":[\"64GB\"]}', '请输入...', '本产品全国联保，享受三包服务，质保期为：一年质保');
@@ -3361,830 +3012,759 @@ INSERT INTO `tb_spu_detail` VALUES ('179', '<img src=\"//img11.360buyimg.com/pop
 INSERT INTO `tb_spu_detail` VALUES ('180', '<link href=\"https://www.hanyi.studio/WebFonts/79a88e8b-1497-4a5f-8951-ff6ec6a5ab91/201803/css/dasongj1520519159000.css\" rel=\"stylesheet\" type=\"text/css\" /><p style=\"text-align: center;\"><span style=\"font-weight: bold;\"><span style=\"color: rgb(255, 0, 0);\"><span style=\"font-family: dasongj1520519159000;\"><span style=\"font-size:large;\">产品参数为系统选定范围，可能与实际不符，请以实际参数为准！</span></span></span></span></p><div style=\"text-align: center;\"><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16714/187/701184237/160212/810f399b/5aa14619N4174c137.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16510/291/2320308105/438674/2f0a3484/5aa14619N13cfe230.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t18256/143/688454853/205379/f2973496/5aa14619N17334dcc.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t17383/32/675065728/193525/564cceff/5aa14619N26df3977.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16912/178/700882826/348255/cc5b0c1a/5aa1461aNc4d57175.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16090/296/2308844872/217699/c6a44d19/5aa1461aNd9a0599f.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t14602/19/2439824862/102290/e1bc67aa/5aa14619Nd248accc.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t18277/139/694416680/76667/109f8450/5aa14619Nc39e29a5.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16537/215/2117914679/114942/e4c316b9/5aa1461aNd7d694dd.jpg\" alt=\"\" /><br /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t16606/237/990860201/146617/f7e1e624/5ab46275N4ab8402c.jpg\" alt=\"\" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t18826/88/726568808/120200/3d27e7bd/5aa1461aN773602d8.jpg\" alt=\"\" /><br /></div><div style=\"text-align: center;\"><br /><img src=\"//img11.360buyimg.com/popWaterMark/jfs/t18520/98/1161741729/1298830/30889010/5abe13c9Na261cf73.jpg\" alt=\"\" /><br /></div><br/>', '{\"1\":\"其它\",\"2\":\"PRO 6 Plus\",\"3\":2016.0,\"5\":\"158\",\"6\":\"其它\",\"7\":\"Android\",\"8\":\"三星（Exynos）\",\"9\":\"其他\",\"10\":\"八核\",\"11\":1.2,\"14\":5.7,\"15\":\"其它\",\"16\":500.0,\"17\":1200.0,\"18\":3400.0}', '{\"4\":[\"深空灰\",\"香槟金\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '以产品实物为准！', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('181', '<img src=\"//img10.360buyimg.com/imgzone/jfs/t16018/55/1825974292/229119/2a0d9a05/5a61d78dN1e98079e.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t15325/30/1972910726/227634/26099c5a/5a630a7aN3c21c4f3.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t18793/363/189364406/91210/cda27cd6/5a630a7aNcb48fe9f.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t16639/6/202460610/177741/67c25ecf/5a630a7aN4b54f502.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t18799/28/1105772132/273351/6c718cd8/5abb4a7bN8dcff114.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t15652/247/1881610903/404549/a46849c3/5a630a7aNaade6764.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t17632/18/191788249/161312/751359d4/5a630a7aNe49c61ea.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t14761/206/1931524688/426615/64de810c/5a630a7bN9ba906d3.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t14563/242/1946918811/328521/5fe90f42/5a630a7bN62d66add.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t16216/225/1802495355/248660/f6a3b958/5a630a7bN70346e93.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t16075/17/1774242605/124945/3849d83b/5a630a7bN0b433995.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t19603/328/188572987/315328/1ba4e4ee/5a61d6ebNbb513119.jpg\" alt=\"\" /><img src=\"//img10.360buyimg.com/imgzone/jfs/t19495/64/1507238527/774259/38cf15fb/5acd7d55Nf30c6f58.jpg\"><br/>', '{\"1\":\"vivo\",\"2\":\"Y75A\",\"3\":2017.0,\"5\":142.0,\"6\":\"其它\",\"7\":\"Android\",\"8\":\"联发科（MTK）\",\"9\":\"其他\",\"10\":\"八核\",\"11\":2.2,\"14\":5.7,\"15\":\"1440*720\",\"16\":1600.0,\"17\":1300.0,\"18\":\"3000\"}', '{\"4\":[\"红色\",\"金色\",\"磨砂黑\",\"玫瑰金\"],\"12\":[\"4GB\"],\"13\":[\"32GB\"]}', '主机*1 耳机*1 数据线*1 充电器*1 保护壳*1 保修卡*1 取卡针*1 用户快速入门指南*1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 INSERT INTO `tb_spu_detail` VALUES ('182', '<img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6796/222/774777991/436764/6dfc0a0d/597993fbNec737180.jpg\" alt=\"\" id=\"9b5f53a96daf4aa88b1f2a055c3c9c8e \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6991/62/757180031/359312/f8b81faf/597993ddN60530937.jpg\" alt=\"\" id=\"86a944df738c477fb73d339e692a15e8 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5920/246/7156027572/220026/38c1fbce/597993daNa4b5463c.jpg\" alt=\"\" id=\"e3e6e294334d4fefa793a26a9bb24e50 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6997/75/753376086/343584/283a129/597993deNaa542b2b.jpg\" alt=\"\" id=\"350e27d8b35d4b7a9bd31e28c35553b5 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6907/76/736310805/395367/ba863b86/597993deN51195d09.jpg\" alt=\"\" id=\"afbbdf8a038840489ee6982fcdd742a0 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5791/119/8336603318/194468/bfc1140a/597993dfN9d279241.jpg\" alt=\"\" id=\"e060c63116024f419a34f777ca44a6cd \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5962/293/7223000433/352731/4e419d37/597993e2N07de70a5.jpg\" alt=\"\" id=\"02bb737c80474dd697bf264ab342eb55 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5662/107/8242076195/188803/6ede6cdd/597993e0N7ed96d84.jpg\" alt=\"\" id=\"63ef839b07cd417586427f5df006cf75 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5881/107/8373812468/383632/9220ee1b/597993e0Nc8c903a1.jpg\" alt=\"\" id=\"cb545a152489499a9052e202b41ab143 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5605/29/8356771839/209761/49cfa3b3/597993e0Nc92eb45b.jpg\" alt=\"\" id=\"549994d155fc45958e44083b2ab2dd81 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6877/233/765381051/277299/a7f449f7/597993e1Ncbe69a52.jpg\" alt=\"\" id=\"8fe6d1cc3f394d61aef9cfadba17209a \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5860/332/8290367967/141384/4076b13d/597993e0Nc0787044.jpg\" alt=\"\" id=\"f43054b93de445478aae4ee44dcb4efc \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5821/85/8332247273/115117/ca529706/597993dcNa8a76a12.jpg\" alt=\"\" id=\"0b8d5b960346487c88217a24e465adfb \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5875/245/8289323488/122958/984ed729/597993dcN3dca064b.jpg\" alt=\"\" id=\"c5d76a64da0b4d909c3751d937dcbfc6 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t5737/113/8386858026/177613/4c10f280/597993dbN9a038799.jpg\" alt=\"\" id=\"8eff80eaffd8495d932fa8d05462f4a6 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6943/63/762251585/159356/c9c8bb7d/597993dbNd6c4eae4.jpg\" alt=\"\" id=\"7d569fbad3ae4aa3a63fe41a71f66ec7 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6946/70/768716994/89517/86e8bc53/597993dcNe9df8688.jpg\" alt=\"\" id=\"b69629f5878840ce862e00bb6f5c7296 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t6814/223/742862485/122307/9e54b69/597993ddN74828a06.jpg\" alt=\"\" id=\"97f589b8d7cb43c99ef935f72183dc31 \" /><br /><img src=\"//img30.360buyimg.com/popWaterMark/jfs/t7039/83/771792366/143039/3a2bd9a9/597993daN3ff9d2a0.jpg\" alt=\"\" id=\"b29347a238684140b8cf38bbd3e0c9de \" />                        <br/>', '{\"1\":\"小米（MI）\",\"2\":\"5X\",\"3\":2017.0,\"5\":\"165\",\"6\":\"其它\",\"7\":\"Android\",\"8\":\"骁龙（Snapdragon)\",\"9\":\"骁龙625（MSM8953）\",\"10\":\"八核\",\"11\":1.2,\"14\":5.5,\"15\":\"其他\",\"16\":500.0,\"17\":1200,\"18\":3000.0}', '{\"4\":[\"红色限量版 4+64GB\",\"黑色 4+64GB\",\"黑色 4+64GB 移动全网通版\",\"玫瑰金 4+64GB\",\"金色 4+64GB\",\"金色 4+64GB  移动全网通版\",\"黑色 4+32GB\",\"金色 4+32GB\"],\"12\":[\"4GB\"],\"13\":[\"64GB\"]}', '主机 x1 数据线 x1 充电器 x1 说明书 x1 保修卡 x1', '本产品全国联保，享受三包服务，质保期为：一年质保');
-INSERT INTO `tb_spu_detail` VALUES ('194', '<p class=\"ql-align-center\"><a href=\"https://sale.jd.com/act/XpbwM0G1ZaW.html\" target=\"_blank\" style=\"color: rgb(102, 102, 102);\"><img src=\"https://img30.360buyimg.com/jgsq-productsoa/jfs/t25216/239/152027926/20495/68e604c7/5b67b4d6N40446dd5.jpg\"></a></p><p class=\"ql-align-center\"><a href=\"https://sale.jd.com/act/8yaD0qZuE6VFk.html\" target=\"_blank\" style=\"color: rgb(102, 102, 102);\"><img src=\"https://img30.360buyimg.com/jgsq-productsoa/jfs/t1/5812/27/5280/46944/5b9f007eE4db4d3e6/35ccedc4dd09d024.jpg\"></a></p><p class=\"ql-align-center\"><img src=\"https://img30.360buyimg.com/cms/jfs/t1/2716/18/4215/117658/5b9b7494Ebb272707/a0c84591dacebfdb.jpg\" height=\"223\" width=\"750\"></p><p class=\"ql-align-center\"><img src=\"https://img10.360buyimg.com/imgzone/jfs/t16075/176/2114777769/60789/8bf6923a/5a938035N763463e0.jpg\" height=\"277\" width=\"750\"></p><p class=\"ql-align-center\"><img src=\"https://img30.360buyimg.com/cms/jfs/t1/4626/32/3475/220504/5b997365E80a1373f/279c244f12161cb3.jpg\" height=\"1991\" width=\"750\"><img src=\"https://img12.360buyimg.com/cms/jfs/t1/3397/21/3533/236322/5b99759aE73795787/f782e04a140c8f16.jpg\" height=\"2052\" width=\"750\"><img src=\"https://img11.360buyimg.com/cms/jfs/t1/5274/3/3465/245167/5b997365E16b81bc9/93e07e40f3af5e62.jpg\" height=\"2250\" width=\"750\"><img src=\"https://img30.360buyimg.com/cms/jfs/t1/2322/11/3524/269574/5b997365E26f81a7a/e01fc9486da9eda1.jpg\" height=\"2327\" width=\"750\"><img src=\"https://img13.360buyimg.com/cms/jfs/t1/5074/21/3432/296470/5b997364Ee966f7a0/7f424d41479db45d.jpg\" height=\"2561\" width=\"750\"><img src=\"https://img13.360buyimg.com/cms/jfs/t1/5770/18/3580/288371/5b997365Ea2c58cb4/176b9a40ccd4e56b.jpg\" height=\"2668\" width=\"750\"><img src=\"https://img11.360buyimg.com/cms/jfs/t1/227/21/3811/268132/5b997364E3d6c51b2/92d2a3a559e3baa8.jpg\" height=\"2850\" width=\"750\"><img src=\"https://img20.360buyimg.com/cms/jfs/t1/3787/5/3493/125020/5b997363E3c9f5910/ddbd08a556744630.jpg\" height=\"1486\" width=\"750\"><img src=\"https://img30.360buyimg.com/cms/jfs/t1/1687/5/3327/266718/5b997366E9cc80e69/9e40ceae1fef4466.jpg\" height=\"3376\" width=\"750\"><img src=\"https://img30.360buyimg.com/cms/jfs/t1/457/6/3849/283318/5b997363E0c5ab7a9/6f636f0a286bc87c.jpg\" height=\"2455\" width=\"750\"><img src=\"https://img10.360buyimg.com/cms/jfs/t1/397/25/3796/217624/5b9975a8E5ee578af/4d8f05a606fa5c4a.jpg\" height=\"2703\" width=\"750\"></p>', '{\"1\":\"apple\",\"2\":\"xs max\",\"3\":\"2018\",\"5\":\"208\",\"6\":\"玻璃\",\"7\":\"ios12\",\"8\":\"以官网信息为准\",\"9\":\"A12\",\"10\":\"其他\",\"11\":\"其他\",\"14\":\"6.5\",\"15\":\"2688*1242\",\"16\":\"700\",\"17\":\"双1200\",\"18\":\"以官网信息为准\"}', '{\"4\":[\"深空灰\",\"金色\",\"银色\"],\"12\":[\"其他\"],\"13\":[\"64g\",\"256\",\"512\"]}', 'iOS 12 的 iPhone、 采用闪电接头的 EarPods、 闪电转 USB 连接线、 USB 电源适配器、 资料。', '');
-INSERT INTO `tb_spu_detail` VALUES ('195', '<p><img src=\"http://image.leyou.com/group1/M00/00/00/wKgfglxBPCGARi9tAABrYaARUaw800.jpg\"></p>', '{\"1\":\"a\",\"2\":\"b\",\"3\":\"2019\",\"5\":\"100\",\"6\":\"玻璃\",\"7\":\"android\",\"8\":\"intel\",\"9\":\"i7\",\"10\":\"4\",\"11\":\"2\",\"14\":\"6\",\"15\":\"1024*768\",\"16\":\"1000\",\"17\":\"2000\",\"18\":\"1000\",\"33\":\"啊啊\"}', '{\"4\":[\"黑色\"],\"12\":[\"1G\"],\"13\":[\"100G\"]}', 'aaaa\naaaa\naaaa', 'aaa\nbbb\nccc');
-INSERT INTO `tb_spu_detail` VALUES ('196', '', '{\"1\":\"cc\",\"2\":\"cc\",\"3\":\"2018\",\"5\":\"100\",\"6\":\"cc\",\"7\":\"cc\",\"8\":\"cc\",\"9\":\"cc\",\"10\":\"cc\",\"11\":\"1\",\"14\":\"12\",\"15\":\"1024*768\",\"16\":\"1000\",\"17\":\"2000\",\"18\":\"1000\",\"33\":\"cc\"}', '{\"4\":[\"黑色\",\"白色\"],\"12\":[\"1G\"],\"13\":[\"100G\"]}', 'cc', 'cc');
-INSERT INTO `tb_spu_detail` VALUES ('197', '<p><img src=\"http://image.leyou.com/group1/M00/00/00/wKgfglxoF2yATD5rAAA86mniEXQ309.png\"></p>', '{\"1\":\"TCL\",\"2\":\"100\",\"3\":\"2018\",\"5\":\"100\",\"6\":\"玻璃\",\"7\":\"android\",\"8\":\"intel\",\"9\":\"i7\",\"10\":\"4\",\"11\":\"2\",\"14\":\"6\",\"15\":\"1024*768\",\"16\":\"1000\",\"17\":\"2000\",\"18\":\"1000\",\"33\":\"ok\"}', '{\"4\":[\"黑色\"],\"12\":[\"4G\",\"8G\"],\"13\":[\"200G\"]}', 'abc', 'bcd');
 
--- ----------------------------
--- Table structure for tb_stock
--- ----------------------------
+
 DROP TABLE IF EXISTS `tb_stock`;
 CREATE TABLE `tb_stock` (
   `sku_id` bigint(20) NOT NULL COMMENT '库存对应的商品sku id',
-  `seckill_stock` int(9) unsigned DEFAULT '0' COMMENT '可秒杀库存',
+  `seckill_stock` int(9) DEFAULT '0' COMMENT '可秒杀库存',
   `seckill_total` int(9) DEFAULT '0' COMMENT '秒杀总数量',
-  `frozen_stock` int(9) unsigned NOT NULL DEFAULT '0' COMMENT '冻结的库存数量',
-  `stock` int(9) unsigned NOT NULL COMMENT '可用的库存数量',
+  `stock` int(9) NOT NULL COMMENT '库存数量',
   PRIMARY KEY (`sku_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存表，代表库存，秒杀库存等信息';
 
--- ----------------------------
--- Records of tb_stock
--- ----------------------------
-INSERT INTO `tb_stock` VALUES ('2600242', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('2600248', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('2868393', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('2868435', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('2895136', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('2895158', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3234246', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3234250', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3250951', null, null, '90', '9970');
-INSERT INTO `tb_stock` VALUES ('3355143', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3355175', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3385376', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3604173', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3699849', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3712633', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3728945', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3749089', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3755813', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3846673', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3888216', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3893485', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3893491', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3893493', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3893495', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3893499', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3893501', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3893503', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3901917', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3904041', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3915537', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3924115', null, null, '100', '7881');
-INSERT INTO `tb_stock` VALUES ('3979765', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('3980563', null, null, '100', '100');
-INSERT INTO `tb_stock` VALUES ('4086223', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4086227', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4093555', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4093559', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4093561', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4112338', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4120319', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4120323', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4143422', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4154589', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4154593', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4154609', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4159500', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4193810', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4193814', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4207732', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4207778', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4230919', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4390094', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4432052', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4432056', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4432058', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4435312', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4436759', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4436761', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4441399', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4441415', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4483072', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4483076', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4483094', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4483102', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4483104', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4483106', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4483108', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4483110', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4483112', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4499498', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4503858', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4510570', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4510588', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4527256', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4534743', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4538887', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4554941', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4554969', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4554971', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4560453', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4560455', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4560457', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4656633', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4689601', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4689633', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4734061', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4734101', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4736261', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4736647', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4752442', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4752448', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4768465', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4787579', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4797540', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4843527', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4884236', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4884258', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4914531', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4934619', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4938556', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4938564', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4938566', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4938578', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4938582', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4938584', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4957824', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4971133', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4984050', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('4992763', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5001175', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5001209', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5005717', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5005723', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5007526', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5007530', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5007536', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5007548', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5014204', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5025959', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5025971', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5025991', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5054528', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5107321', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5107323', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5107339', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5114385', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5114395', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5114407', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5114411', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5114935', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5148101', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5148371', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5148387', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5148519', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5159242', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5159264', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5159272', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5159284', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5159286', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5178751', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5181386', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5181398', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5181404', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5260686', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5284203', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5305784', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5331985', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5357338', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5357340', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5369028', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5369030', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5396279', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5463835', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5463851', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5464265', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5481648', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5484048', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5489663', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5489665', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5489675', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5495676', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5524749', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5544014', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5544036', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5544038', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5544080', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5568865', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5570999', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5591783', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5618804', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5632389', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5646322', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5663900', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5663902', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5680524', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5706773', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5706775', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5734956', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5734960', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5782095', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5789585', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5821455', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5826214', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5826228', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5835261', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5835263', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5835283', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5835285', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5835301', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5842307', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5853575', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5853579', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5911245', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5911916', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5911946', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5911984', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5912043', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5912045', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5912091', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5924266', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5934180', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5962246', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('5996357', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6001239', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6001251', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6001253', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6001343', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6008133', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6022664', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6022742', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6055046', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6055048', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6055066', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6113024', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6113026', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6119744', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6123454', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6138299', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6224477', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6267969', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6322705', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6322713', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6322747', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6331375', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6405874', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6405876', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6405888', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6405898', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6405920', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6489716', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6494554', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6494556', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6558982', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6558984', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6560154', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6560164', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6571386', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6571398', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6577457', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6577477', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6577493', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6577495', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6577501', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6631219', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6655831', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6703015', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6703337', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6703351', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6708229', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6737464', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6755976', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6755998', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6773543', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6773559', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6773561', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6784743', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6784749', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6784894', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6784918', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6813582', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6815908', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6834226', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6932795', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6932797', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6940276', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6940298', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6946605', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6946631', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6946635', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6946647', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6999009', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('6999025', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7027273', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7027275', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7027293', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7029523', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7029535', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7029541', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7029543', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7029545', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7029547', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7070708', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7154067', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7224901', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7224923', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('7294309', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10493538594', null, null, '99', '9933');
-INSERT INTO `tb_stock` VALUES ('10493538597', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10493549401', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10521526784', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10522143816', null, null, '100', '9996');
-INSERT INTO `tb_stock` VALUES ('10573164042', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10695001327', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10710971191', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10781492357', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10781492358', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10781492359', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10804373765', null, null, '100', '9799');
-INSERT INTO `tb_stock` VALUES ('10804373766', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10932167750', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10932167751', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10955808541', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10955808542', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('10987960993', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11154856647', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11167067100', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11167077801', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11259202658', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11259202659', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11268454151', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11268454152', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11282353344', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11319391377', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11365685925', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11365685926', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11384140981', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11384443266', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11384443268', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11559074041', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11565700466', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11565700467', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11585593067', null, null, '96', '9992');
-INSERT INTO `tb_stock` VALUES ('11628154076', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11652762505', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11652762506', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11653636876', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11702600890', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11702600891', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11729113570', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11759409469', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11768718240', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11768718242', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11768718243', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11768718246', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11768718250', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11768718251', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11789883614', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11792731653', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11792731654', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11792731655', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11795379841', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11867146203', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11867146204', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11944498052', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11955374462', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('11955836791', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12047291360', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12108706493', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12140479060', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12142206646', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12153562122', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12158374789', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12260682497', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12300994819', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12318888928', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12320370716', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12320370717', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12320370718', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12320370719', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12481075493', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12494304703', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12515595317', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12613550297', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12613550298', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12613550299', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12634454898', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12671748777', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12674083885', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('12718430457', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13115261055', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13115261057', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13134026855', null, null, '100', '9997');
-INSERT INTO `tb_stock` VALUES ('13134026857', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13134026859', null, null, '100', '9983');
-INSERT INTO `tb_stock` VALUES ('13164693175', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13164693176', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13164693177', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13164693182', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13164693185', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13164693190', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13307299138', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13329237827', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13645340683', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('13933644850', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14100475483', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14100475484', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14148666638', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14236495927', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14236495928', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14236495929', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14407063446', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14542067586', null, null, '100', '9989');
-INSERT INTO `tb_stock` VALUES ('14542067587', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14542067588', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14735550210', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14735550211', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14735550212', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14749327497', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('14749327498', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15027171956', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15225637946', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15225637947', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15225637949', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15279966734', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15301488389', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15312577660', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15381011179', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15389829596', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15530279037', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15540727472', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15544727539', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15544727540', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15610845215', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15610845217', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15610845221', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15640651629', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15640651630', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15936740403', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15937340742', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15969394800', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15969469881', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('15969469882', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16057682487', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16190458373', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16190458375', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16190458376', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16278915632', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16278915633', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16278915634', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16290804947', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16290804949', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16291098318', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16291098319', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16291111802', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16291111803', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16292499472', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16336922708', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16336922709', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16516997345', null, null, '99', '9999');
-INSERT INTO `tb_stock` VALUES ('16550376678', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16579563286', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16579563292', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16749210800', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16838040449', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16844585370', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16879428902', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16879428904', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16918432677', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('16918432678', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17156951445', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17258268743', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17301293309', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17347463834', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17533747894', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17701606448', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17801600349', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17872883961', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17872883962', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17967388001', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17967388003', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17967388005', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17969544983', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('17969544984', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18130778101', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18130778102', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18134324819', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18134324820', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18167356213', null, null, '100', '9997');
-INSERT INTO `tb_stock` VALUES ('18167356215', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18167356216', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18167356217', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18180585425', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18180585426', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18180585427', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18180585428', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18300558255', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18553075586', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18662321833', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('18787246601', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('19094839248', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('19158940698', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('19583343519', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('19923880260', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20065600181', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20067198287', null, null, '97', '9980');
-INSERT INTO `tb_stock` VALUES ('20408609440', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20450803933', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20905561249', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20905561252', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20905561255', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20905561258', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20911684461', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20911684464', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20911684468', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20974338105', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20979546431', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('20979546432', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21056257654', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21056257657', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21056257660', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21056257663', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21057535328', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21057535331', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21577634824', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21656935774', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21656935775', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21656935776', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21676582420', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21676582422', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21676582424', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21676582426', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21678745116', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21678745118', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21678745119', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21678745122', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21678745124', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21681027023', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21681027025', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21681027027', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21690477583', null, null, '99', '9999');
-INSERT INTO `tb_stock` VALUES ('21690477587', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21757928932', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21759433312', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21775842541', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21877287604', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21877287605', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('21877287606', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22036204247', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22071534211', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22127120874', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22127120876', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22779356479', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22863424466', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22863424469', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22863424472', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22863424475', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22867877061', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22870158060', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22889126293', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22948805806', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22948805809', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('22948805812', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23004480395', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23166283041', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23168932405', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23168932409', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23168932410', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23168932411', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23168932413', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23168932414', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23168932415', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23168932416', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23772077510', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('23776044376', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24021085371', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24204129199', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24204145401', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24204145403', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24204145405', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24219603353', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24441650455', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24441650457', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24441650458', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24485301070', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24556226085', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24556226088', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24599558688', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24599558691', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24615967892', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24703142758', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24748737911', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24748737913', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24748737915', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24753554972', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24760292862', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('24931684413', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25259268202', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25388860570', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25388860572', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25390983397', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25435828092', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25535001663', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25535149402', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25535149404', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25535149407', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25564705408', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25573151670', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25597907142', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25597907146', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25597907150', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25597907154', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25644003916', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25667125294', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25677660433', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25713456124', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25713456125', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25724677901', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25734318775', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25861393382', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25861393383', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25861536829', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25861536830', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25861536831', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25875213046', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('25882037762', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26001271783', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26001271784', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26009533454', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26009533455', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26115383511', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26115383512', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26115750090', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26116566269', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26126724547', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26127309198', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26127309200', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26128571420', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26128571421', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26131514036', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26131514038', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26131514040', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26134956414', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26134956415', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26134956416', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26188213498', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26222067490', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26258250293', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26258250294', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26258250295', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26258388531', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26261056918', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26262075570', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26262075572', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26262849976', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26265514789', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26266538217', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26266538220', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26266538221', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26266538223', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26283310258', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26283310261', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26283310264', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26287514915', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26287514916', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26303474754', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26303474757', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26303474760', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26323390735', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26354530639', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26398117322', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399041149', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399041151', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399041153', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399041154', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399238748', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399498944', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399498946', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399498948', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399946248', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399946250', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399946253', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26399946254', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26400483774', null, null, '100', '9997');
-INSERT INTO `tb_stock` VALUES ('26400483776', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26400483780', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26402367716', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26402367718', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26402367720', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26436180238', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26436180240', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26439773183', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26439773186', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26439773188', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26509792441', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26509792443', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26509792445', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26509792447', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26594617484', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26638784502', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26642320668', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26643400038', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26643400039', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26652898174', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26652898177', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26652898180', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26652979186', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26669050046', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26669050049', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26669050050', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26716999738', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26716999740', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26804041942', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26816294479', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26816294480', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26816294483', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26816294485', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26881279026', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26881279030', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26881279032', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26881279035', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26915927071', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('26955991277', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27012005295', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27097966225', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27283827765', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021512', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021522', '0', '0', '91', '9997');
-INSERT INTO `tb_stock` VALUES ('27359021523', '0', '0', '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021524', '0', '0', '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021525', '0', '0', '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021545', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021546', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021547', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021686', null, null, '100', '10000');
-INSERT INTO `tb_stock` VALUES ('27359021687', null, null, '100', '1000');
-INSERT INTO `tb_stock` VALUES ('27359021688', null, null, '100', '1000');
-INSERT INTO `tb_stock` VALUES ('27359021689', null, null, '100', '100');
-INSERT INTO `tb_stock` VALUES ('27359021690', null, null, '100', '1000');
-INSERT INTO `tb_stock` VALUES ('27359021691', null, null, '100', '1000');
-INSERT INTO `tb_stock` VALUES ('27359021692', null, null, '100', '1000');
-INSERT INTO `tb_stock` VALUES ('27359021693', null, null, '100', '1000');
-INSERT INTO `tb_stock` VALUES ('27359021694', null, null, '100', '1000');
-INSERT INTO `tb_stock` VALUES ('27359021703', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021704', null, null, '100', '9995');
-INSERT INTO `tb_stock` VALUES ('27359021705', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021706', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021711', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021712', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021721', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021722', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021723', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021724', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021725', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021726', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021727', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021728', null, null, '100', '9999');
-INSERT INTO `tb_stock` VALUES ('27359021729', null, null, '100', '100');
-INSERT INTO `tb_stock` VALUES ('27359021730', null, null, '100', '10');
-INSERT INTO `tb_stock` VALUES ('27359021731', null, null, '100', '10');
-INSERT INTO `tb_stock` VALUES ('27359021732', null, null, '100', '100');
-INSERT INTO `tb_stock` VALUES ('27359021733', null, null, '100', '100');
 
--- ----------------------------
--- Table structure for tb_user
--- ----------------------------
+INSERT INTO `tb_stock` VALUES ('2600242', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('2600248', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('2868393', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('2868435', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('2895136', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('2895158', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3234246', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3234250', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3250951', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3355143', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3355175', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3385376', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3604173', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3699849', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3712633', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3728945', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3749089', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3755813', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3846673', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3888216', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3893485', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3893491', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3893493', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3893495', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3893499', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3893501', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3893503', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3901917', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3904041', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3915537', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3924115', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3979765', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('3980563', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4086223', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4086227', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4093555', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4093559', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4093561', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4112338', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4120319', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4120323', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4143422', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4154589', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4154593', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4154609', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4159500', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4193810', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4193814', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4207732', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4207778', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4230919', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4390094', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4432052', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4432056', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4432058', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4435312', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4436759', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4436761', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4441399', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4441415', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4483072', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4483076', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4483094', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4483102', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4483104', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4483106', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4483108', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4483110', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4483112', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4499498', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4503858', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4510570', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4510588', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4527256', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4534743', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4538887', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4554941', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4554969', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4554971', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4560453', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4560455', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4560457', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4656633', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4689601', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4689633', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4734061', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4734101', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4736261', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4736647', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4752442', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4752448', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4768465', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4787579', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4797540', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4843527', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4884236', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4884258', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4914531', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4934619', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4938556', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4938564', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4938566', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4938578', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4938582', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4938584', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4957824', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4971133', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4984050', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('4992763', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5001175', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5001209', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5005717', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5005723', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5007526', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5007530', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5007536', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5007548', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5014204', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5025959', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5025971', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5025991', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5054528', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5107321', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5107323', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5107339', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5114385', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5114395', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5114407', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5114411', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5114935', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5148101', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5148371', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5148387', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5148519', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5159242', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5159264', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5159272', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5159284', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5159286', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5178751', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5181386', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5181398', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5181404', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5260686', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5284203', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5305784', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5331985', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5357338', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5357340', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5369028', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5369030', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5396279', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5463835', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5463851', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5464265', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5481648', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5484048', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5489663', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5489665', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5489675', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5495676', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5524749', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5544014', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5544036', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5544038', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5544080', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5568865', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5570999', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5591783', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5618804', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5632389', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5646322', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5663900', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5663902', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5680524', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5706773', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5706775', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5734956', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5734960', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5782095', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5789585', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5821455', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5826214', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5826228', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5835261', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5835263', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5835283', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5835285', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5835301', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5842307', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5853575', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5853579', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5911245', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5911916', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5911946', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5911984', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5912043', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5912045', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5912091', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5924266', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5934180', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5962246', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('5996357', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6001239', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6001251', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6001253', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6001343', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6008133', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6022664', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6022742', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6055046', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6055048', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6055066', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6113024', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6113026', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6119744', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6123454', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6138299', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6224477', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6267969', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6322705', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6322713', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6322747', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6331375', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6405874', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6405876', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6405888', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6405898', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6405920', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6489716', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6494554', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6494556', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6558982', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6558984', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6560154', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6560164', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6571386', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6571398', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6577457', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6577477', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6577493', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6577495', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6577501', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6631219', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6655831', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6703015', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6703337', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6703351', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6708229', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6737464', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6755976', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6755998', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6773543', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6773559', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6773561', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6784743', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6784749', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6784894', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6784918', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6813582', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6815908', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6834226', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6932795', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6932797', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6940276', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6940298', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6946605', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6946631', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6946635', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6946647', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6999009', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('6999025', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7027273', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7027275', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7027293', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7029523', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7029535', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7029541', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7029543', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7029545', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7029547', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7070708', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7154067', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7224901', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7224923', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('7294309', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10493538594', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10493538597', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10493549401', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10521526784', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10522143816', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10573164042', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10695001327', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10710971191', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10781492357', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10781492358', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10781492359', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10804373765', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10804373766', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10932167750', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10932167751', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10955808541', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10955808542', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('10987960993', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11154856647', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11167067100', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11167077801', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11259202658', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11259202659', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11268454151', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11268454152', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11282353344', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11319391377', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11365685925', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11365685926', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11384140981', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11384443266', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11384443268', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11559074041', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11565700466', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11565700467', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11585593067', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11628154076', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11652762505', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11652762506', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11653636876', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11702600890', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11702600891', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11729113570', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11759409469', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11768718240', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11768718242', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11768718243', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11768718246', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11768718250', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11768718251', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11789883614', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11792731653', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11792731654', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11792731655', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11795379841', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11867146203', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11867146204', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11944498052', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11955374462', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('11955836791', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12047291360', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12108706493', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12140479060', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12142206646', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12153562122', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12158374789', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12260682497', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12300994819', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12318888928', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12320370716', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12320370717', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12320370718', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12320370719', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12481075493', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12494304703', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12515595317', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12613550297', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12613550298', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12613550299', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12634454898', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12671748777', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12674083885', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('12718430457', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13115261055', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13115261057', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13134026855', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13134026857', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13134026859', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13164693175', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13164693176', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13164693177', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13164693182', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13164693185', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13164693190', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13307299138', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13329237827', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13645340683', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('13933644850', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14100475483', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14100475484', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14148666638', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14236495927', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14236495928', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14236495929', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14407063446', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14509313726', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14509313727', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14542067586', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14542067587', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14542067588', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14735550210', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14735550211', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14735550212', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14749327497', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('14749327498', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15027171956', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15225637946', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15225637947', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15225637949', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15226090207', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15279966734', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15301488389', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15312577660', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15381011179', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15389829596', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15530279037', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15540727472', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15544727539', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15544727540', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15610845215', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15610845217', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15610845221', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15640651629', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15640651630', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15936740403', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15937340742', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15969394800', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15969469881', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('15969469882', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16057682487', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16190458373', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16190458375', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16190458376', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16278915632', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16278915633', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16278915634', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16290804947', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16290804949', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16291098318', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16291098319', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16291111802', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16291111803', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16292499472', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16336922708', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16336922709', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16516997345', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16550376678', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16579563286', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16579563292', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16749210800', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16838040449', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16844585370', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16879428902', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16879428904', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16918432677', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('16918432678', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17156951445', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17258268743', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17301293309', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17347463834', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17533747894', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17701606448', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17801600349', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17872883961', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17872883962', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17967388001', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17967388003', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17967388005', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17969544983', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('17969544984', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18130778101', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18130778102', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18134324819', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18134324820', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18167356213', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18167356215', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18167356216', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18167356217', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18180585425', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18180585426', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18180585427', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18180585428', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18300558255', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18553075586', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18662321833', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18726688989', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('18787246601', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('19094839248', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('19158940698', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('19583343519', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('19923880260', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20065600181', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20067198287', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20347103098', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20347103099', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20408609440', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20450803933', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20905561249', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20905561252', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20905561255', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20905561258', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20911684461', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20911684464', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20911684468', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20974338105', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20979546431', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('20979546432', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21056257654', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21056257657', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21056257660', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21056257663', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21057535328', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21057535331', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21577634824', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21656935774', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21656935775', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21656935776', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21676582420', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21676582422', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21676582424', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21676582426', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21678745116', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21678745118', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21678745119', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21678745122', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21678745124', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21681027023', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21681027025', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21681027027', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21685362090', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21685362092', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21690477583', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21690477587', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21757928932', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21759433312', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21775842541', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21877287604', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21877287605', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('21877287606', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22036204247', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22071534211', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22127120874', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22127120876', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22320392453', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22365980105', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22779356479', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22863424466', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22863424469', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22863424472', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22863424475', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22867877061', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22870158060', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22889126293', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22948805806', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22948805809', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('22948805812', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23004480395', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23166283041', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23168932405', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23168932409', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23168932410', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23168932411', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23168932413', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23168932414', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23168932415', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23168932416', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23772077510', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('23776044376', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24021085371', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24204129199', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24204145401', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24204145403', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24204145405', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24219603353', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24441650455', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24441650457', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24441650458', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24485301070', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24556226085', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24556226088', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24599558688', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24599558691', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24615967892', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24703142758', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24748737911', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24748737913', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24748737915', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24753554972', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24760292862', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('24931684413', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25259268202', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25388860570', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25388860572', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25390983397', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25435828092', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25535001663', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25535149402', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25535149404', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25535149407', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25564705408', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25573151670', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25597907142', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25597907146', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25597907150', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25597907154', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25644003916', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25667125294', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25677660433', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25713456124', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25713456125', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25724677901', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25734318775', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25861393382', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25861393383', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25861536829', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25861536830', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25861536831', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25875213046', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('25882037762', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26001271783', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26001271784', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26009533454', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26009533455', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26115383511', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26115383512', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26115750090', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26116566269', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26126724547', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26127309198', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26127309200', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26128571420', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26128571421', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26131514036', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26131514038', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26131514040', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26134956414', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26134956415', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26134956416', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26188213498', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26222067490', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26258250293', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26258250294', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26258250295', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26258388531', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26261056918', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26262075570', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26262075572', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26262849976', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26265514789', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26266538217', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26266538220', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26266538221', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26266538223', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26283310258', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26283310261', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26283310264', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26287514915', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26287514916', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26303474754', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26303474757', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26303474760', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26323390735', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26354530639', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26398117322', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399041149', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399041151', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399041153', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399041154', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399238748', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399498944', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399498946', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399498948', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399946248', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399946250', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399946253', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26399946254', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26400483774', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26400483776', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26400483780', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26402367716', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26402367718', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26402367720', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26436180238', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26436180240', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26439773183', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26439773186', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26439773188', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26509792441', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26509792443', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26509792445', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26509792447', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26594617484', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26638784502', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26642320668', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26643400038', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26643400039', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26652898174', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26652898177', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26652898180', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26652979186', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26669050046', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26669050049', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26669050050', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26716999738', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26716999740', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26804041942', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26816294479', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26816294480', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26816294483', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26816294485', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26881279026', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26881279030', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26881279032', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26881279035', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26915927071', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('26955991277', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('27012005295', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('27097966225', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('27283827765', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('27359021512', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('27359021522', '0', '0', '9999');
+INSERT INTO `tb_stock` VALUES ('27359021523', '0', '0', '9999');
+INSERT INTO `tb_stock` VALUES ('27359021524', '0', '0', '9999');
+INSERT INTO `tb_stock` VALUES ('27359021525', '0', '0', '9999');
+INSERT INTO `tb_stock` VALUES ('27359021526', '0', '0', '9999');
+INSERT INTO `tb_stock` VALUES ('27359021527', '0', '0', '9999');
+INSERT INTO `tb_stock` VALUES ('27359021528', '0', '0', '9999');
+INSERT INTO `tb_stock` VALUES ('27359021529', '0', '0', '9999');
+INSERT INTO `tb_stock` VALUES ('27359021545', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('27359021546', null, null, '9999');
+INSERT INTO `tb_stock` VALUES ('27359021547', null, null, '9999');
+
+
 DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `username` varchar(32) NOT NULL COMMENT '用户名',
+  `username` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(32) NOT NULL COMMENT '密码，加密存储',
-  `phone` varchar(11) DEFAULT NULL COMMENT '注册手机号',
+  `phone` varchar(20) DEFAULT NULL COMMENT '注册手机号',
   `created` datetime NOT NULL COMMENT '创建时间',
-  `salt` varchar(256) NOT NULL COMMENT '密码加密的salt值',
-  `image` varchar(255) DEFAULT NULL,
-  `nick_name` varchar(32) DEFAULT NULL,
+  `salt` varchar(32) NOT NULL COMMENT '密码加密的salt值',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
--- ----------------------------
--- Records of tb_user
--- ----------------------------
-INSERT INTO `tb_user` VALUES ('28', 'zhangsan', 'e21d44f200365b57fab2641cd31226d4', '13600527634', '2018-05-25 17:52:03', '05b0f203987e49d2b72b20b95e0e57d9', null, null);
-INSERT INTO `tb_user` VALUES ('30', 'leyou', '4de9a93b3f95d468874a3c1bf3b25a48', '15855410440', '2018-09-30 11:37:30', '4565613d4b0e434cb496d4eb87feb45f', null, null);
-INSERT INTO `tb_user` VALUES ('31', 'victor', '465fb1209d0e1a875745bff1842f4bf4', '13916914058', '2019-02-22 22:37:05', 'ee8d8e79-0b86-45a6-bde7-3b2b3c7994ab', 'http://www.leyou.com/img/Logo.png', '高薪就业');
-INSERT INTO `tb_user` VALUES ('32', '柯', '465fb1209d0e1a875745bff1842f4bf4', '13916914058', '2019-02-22 22:37:05', 'ee8d8e79-0b86-45a6-bde7-3b2b3c7994ab', 'http://www.leyou.com/img/Logo.png', null);
-INSERT INTO `tb_user` VALUES ('33', '开玩笑吧？', '14f989e0378a06d8bf80338d04d2e268', '13916914059', '2019-03-06 08:58:25', '7c799a7b-6efb-4ec3-8718-1389f99d2aef', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1847836714,186983283&fm=26&gp=0.jpg', '开玩笑吧？！');
 
--- ----------------------------
--- Table structure for tb_user_address
--- ----------------------------
-DROP TABLE IF EXISTS `tb_user_address`;
-CREATE TABLE `tb_user_address` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NOT NULL,
-  `address_id` bigint(20) NOT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+INSERT INTO `tb_user` VALUES ('28', 'zhangsan', 'e21d44f200365b57fab2641cd31226d4', '13600527634', '2018-05-25 17:52:03', '05b0f203987e49d2b72b20b95e0e57d9');
 
--- ----------------------------
--- Records of tb_user_address
--- ----------------------------
-INSERT INTO `tb_user_address` VALUES ('9', '31', '9', '0');
-INSERT INTO `tb_user_address` VALUES ('15', '31', '15', '0');
-INSERT INTO `tb_user_address` VALUES ('16', '31', '16', '0');
-INSERT INTO `tb_user_address` VALUES ('17', '31', '17', '1');
-
--- ----------------------------
--- Table structure for tb_user_coupon
--- ----------------------------
-DROP TABLE IF EXISTS `tb_user_coupon`;
-CREATE TABLE `tb_user_coupon` (
-  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `coupon_id` bigint(20) unsigned NOT NULL,
-  `quantity` int(11) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tb_user_coupon
--- ----------------------------
-INSERT INTO `tb_user_coupon` VALUES ('1', '31', '1', '1');
-INSERT INTO `tb_user_coupon` VALUES ('2', '31', '2', '1');
-INSERT INTO `tb_user_coupon` VALUES ('3', '31', '3', '1');
