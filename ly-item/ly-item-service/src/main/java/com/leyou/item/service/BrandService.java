@@ -81,4 +81,12 @@ public class BrandService {
     public Brand queryById(Long id) {
         return brandMapper.selectByPrimaryKey(id);
     }
+
+    public List<Brand> queryBrandByCid(Long cid) {
+        List<Brand> brandList = brandMapper.queryByCategoryId(cid);
+        if (CollectionUtils.isEmpty(brandList)) {
+            throw new LeYouException(ExceptionEnum.BRAND_NOT_FOUND);
+        }
+        return brandList;
+    }
 }

@@ -48,4 +48,14 @@ public class BrandController {
         brandService.saveBrand(brand,cids);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    /**
+     * 根据商品分类id查询品牌
+     * @param cid
+     * @return
+     */
+    @GetMapping("/cid/{cid}")
+    public ResponseEntity<List<Brand>> queryBrandByCid(@PathVariable("cid")Long cid) {
+        return ResponseEntity.ok(brandService.queryBrandByCid(cid));
+    }
 }

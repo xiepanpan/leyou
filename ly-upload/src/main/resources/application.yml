@@ -24,7 +24,7 @@ fdfs:
     width: 60
     height: 60
   tracker-list: # tracker地址
-    - 192.168.200.128:22122
+    - 192.168.217.128:22122
 #自定义的
 leyou:
   upload:

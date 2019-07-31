@@ -1,6 +1,6 @@
 package com.leyou.item.mapper;
 
-import com.leyou.item.pojo.Specification;
+import com.leyou.item.pojo.SpecParam;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -8,5 +8,5 @@ import tk.mybatis.mapper.common.Mapper;
  *  @Date: 2019/7/30 23:05
  *  @Description:  规格参数mapper
  */
-public interface SpecificationMapper extends Mapper<Specification> {
+public interface SpecParamMapper extends Mapper<SpecParam> {
 }
