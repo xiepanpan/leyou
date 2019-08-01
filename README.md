@@ -1,4 +1,6 @@
 # leyou
+先启动register 再启动其他的
+
 nginx 配置
 ```
 server {

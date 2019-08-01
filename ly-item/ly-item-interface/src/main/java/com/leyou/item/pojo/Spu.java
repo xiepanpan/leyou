@@ -35,13 +35,13 @@ public class Spu {
      * 品牌名字  不是数据库字段
      */
     @Transient
-    private String brandName;
+    private String bname;
 
     /**
      * 商品分类名 不是数据库字段
      */
     @Transient
-    private String categoryName;
+    private String cname;
 
     @Transient
     private List<Sku> skus;
