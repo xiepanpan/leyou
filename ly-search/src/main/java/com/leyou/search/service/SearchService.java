@@ -12,16 +12,20 @@ import com.leyou.search.client.GoodsClient;
 import com.leyou.search.client.SpecificationClient;
 import com.leyou.search.pojo.Goods;
 import com.leyou.search.pojo.SearchRequest;
+import com.leyou.search.pojo.SearchResult;
 import com.leyou.search.repository.GoodsRepository;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.query.FetchSourceFilter;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
@@ -36,6 +40,7 @@ import java.util.stream.Collectors;
  * @Description:
  */
 @Service
+@Slf4j
 public class SearchService {
 
     @Autowired
@@ -48,6 +53,8 @@ public class SearchService {
     SpecificationClient specificationClient;
     @Autowired
     GoodsRepository goodsRepository;
+    @Autowired
+    ElasticsearchTemplate elasticsearchTemplate;
 
     /**
      * 构建商品索引库
@@ -188,8 +195,16 @@ public class SearchService {
         nativeSearchQueryBuilder.withPageable(PageRequest.of(page,size));
         //2 过滤
         nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery("all",searchRequest.getKey()));
-        // 3 查询
-        Page<Goods> result = goodsRepository.search(nativeSearchQueryBuilder.build());
+        //3 商品分类和品牌
+        // 3.1 聚合分类
+        String categoryAggName = "category_agg";
+        nativeSearchQueryBuilder.addAggregation(AggregationBuilders.terms(categoryAggName).field("cid3"));
+        // 3.2 聚合品牌
+        String brandAggName = "brand_agg";
+        nativeSearchQueryBuilder.addAggregation(AggregationBuilders.terms(brandAggName).field("brandId"));
+
+        // 4 查询
+        AggregatedPage<Goods> result = elasticsearchTemplate.queryForPage(nativeSearchQueryBuilder.build(), Goods.class);
 
         //总条数
         long total = result.getTotalElements();
@@ -204,7 +219,33 @@ public class SearchService {
         }else {
             totalPage = (int) (total/pageSize+1);
         }
-        return new PageResult(total, totalPage,goodsList);
 
+        //5 解析聚合结果
+        Aggregations aggregations = result.getAggregations();
+        List<Category> categorys = parseCategoryAgg(aggregations.get(categoryAggName));
+        List<Brand> brands = parseBrandAgg(aggregations.get(brandAggName));
+        return new SearchResult(total, totalPage,goodsList,categorys,brands);
+
+    }
+
+    private List<Brand> parseBrandAgg(LongTerms longTerms) {
+        try {
+            List<Long> ids = longTerms.getBuckets().stream().map(b -> b.getKeyAsNumber().longValue()).collect(Collectors.toList());
+            List<Brand> brands = brandClient.queryBrandByIds(ids);
+            return brands;
+        } catch (Exception e) {
+            log.error("查询品牌异常",e);
+            return null;
+        }
+    }
+
+    private List<Category> parseCategoryAgg(LongTerms longTerms) {
+        try {
+            List<Long> ids = longTerms.getBuckets().stream().map(b -> b.getKeyAsNumber().longValue()).collect(Collectors.toList());
+            List<Category> categories = categoryClient.queryCategoryByIds(ids);
+            return categories;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
