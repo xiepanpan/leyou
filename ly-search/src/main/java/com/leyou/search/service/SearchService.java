@@ -18,10 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -181,7 +185,7 @@ public class SearchService {
         return result;
     }
 
-    public PageResult<Goods> search(SearchRequest searchRequest) {
+    public SearchResult search(SearchRequest searchRequest) {
 
         int page = searchRequest.getPage()-1;
         int size = searchRequest.getSize();
@@ -194,7 +198,8 @@ public class SearchService {
         //1 分页
         nativeSearchQueryBuilder.withPageable(PageRequest.of(page,size));
         //2 过滤
-        nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery("all",searchRequest.getKey()));
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("all", searchRequest.getKey());
+        nativeSearchQueryBuilder.withQuery(matchQueryBuilder);
         //3 商品分类和品牌
         // 3.1 聚合分类
         String categoryAggName = "category_agg";
@@ -224,8 +229,52 @@ public class SearchService {
         Aggregations aggregations = result.getAggregations();
         List<Category> categorys = parseCategoryAgg(aggregations.get(categoryAggName));
         List<Brand> brands = parseBrandAgg(aggregations.get(brandAggName));
-        return new SearchResult(total, totalPage,goodsList,categorys,brands);
 
+        //6 规格参数的聚合
+        List<Map<String,Object>> specs = null;
+        if (categorys!=null&& categorys.size()==1) {
+            specs =buildSpecificationAgg(categorys.get(0).getId(),matchQueryBuilder);
+        }
+
+        return new SearchResult(total, totalPage,goodsList,categorys,brands,specs);
+
+    }
+
+    /**
+     * 聚合规格参数
+     * @param cid
+     * @param matchQueryBuilder
+     * @return
+     */
+    private List<Map<String, Object>> buildSpecificationAgg(Long cid, QueryBuilder matchQueryBuilder) {
+        List<Map<String,Object>> specs = new ArrayList<>();
+        //查询需要聚合的规格参数
+        List<SpecParam> specParams = specificationClient.querySpecificationByCategoryId(null, cid, true);
+        // 聚合
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
+        nativeSearchQueryBuilder.withQuery(matchQueryBuilder);
+        //集合
+        for (SpecParam specParam:specParams) {
+            String name = specParam.getName();
+            nativeSearchQueryBuilder.addAggregation(AggregationBuilders.terms(name).field("specs."+name+".keyword"));
+        }
+        //获取结果
+        AggregatedPage<Goods> result = elasticsearchTemplate.queryForPage(nativeSearchQueryBuilder.build(), Goods.class);
+        //解析结果
+        Aggregations aggregations = result.getAggregations();
+        for (SpecParam specParam:specParams) {
+            String name = specParam.getName();
+            Aggregation aggregation = aggregations.get(name);
+            StringTerms stringTerms = (StringTerms)aggregations.get(name);
+            List<String> options = stringTerms.getBuckets().stream().map(bucket -> bucket.getKeyAsString()).collect(Collectors.toList());
+            //准备map
+            Map<String,Object> map = new HashMap<>();
+            map.put("k",name);
+            map.put("options",options);
+            specs.add(map);
+        }
+
+        return specs;
     }
 
     private List<Brand> parseBrandAgg(LongTerms longTerms) {
