@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -198,8 +199,9 @@ public class SearchService {
         //1 分页
         nativeSearchQueryBuilder.withPageable(PageRequest.of(page,size));
         //2 过滤
-        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("all", searchRequest.getKey());
-        nativeSearchQueryBuilder.withQuery(matchQueryBuilder);
+//        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("all", searchRequest.getKey());
+        QueryBuilder basicQuery = buildBasicQuery(searchRequest);
+        nativeSearchQueryBuilder.withQuery(basicQuery);
         //3 商品分类和品牌
         // 3.1 聚合分类
         String categoryAggName = "category_agg";
@@ -233,11 +235,32 @@ public class SearchService {
         //6 规格参数的聚合
         List<Map<String,Object>> specs = null;
         if (categorys!=null&& categorys.size()==1) {
-            specs =buildSpecificationAgg(categorys.get(0).getId(),matchQueryBuilder);
+            specs =buildSpecificationAgg(categorys.get(0).getId(),basicQuery);
         }
 
         return new SearchResult(total, totalPage,goodsList,categorys,brands,specs);
 
+    }
+
+    /**
+     * 条件过滤
+     * @param searchRequest
+     * @return
+     */
+    private QueryBuilder buildBasicQuery(SearchRequest searchRequest) {
+        //创建布尔查询
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.matchQuery("all",searchRequest.getKey()));
+        //过滤条件
+        Map<String, String> map = searchRequest.getFilter();
+        for (Map.Entry<String,String> entry:map.entrySet()) {
+            String key = entry.getKey();
+            if (!"cid3".equals(key)&&!"brandId".equals(key)) {
+                key = "specs."+key+".keyword";
+            }
+            boolQueryBuilder.filter(QueryBuilders.termQuery(key,entry.getValue()));
+        }
+        return boolQueryBuilder;
     }
 
     /**
