@@ -1,4 +1,4 @@
-package com.leyou.page;
+package com.leyou.page.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

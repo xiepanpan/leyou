@@ -41,4 +41,7 @@ public interface GoodsApi {
             @RequestParam(value = "saleable",required =false)Boolean saleable,
             @RequestParam(value = "key", required= false)String key
     );
+
+    @GetMapping("spu/{id}")
+    Spu querySpuById(@PathVariable("id")Long id);
 }
