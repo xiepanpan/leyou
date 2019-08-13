@@ -8,11 +8,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ly-upload" />
-        <module name="ly-common" />
-        <module name="ly-register" />
+        <module name="ly-user-service" />
         <module name="ly-item-service" />
         <module name="ly-gateway" />
         <module name="ly-item-interface" />
+        <module name="ly-search" />
+        <module name="ly-user-interface" />
+        <module name="ly-common" />
+        <module name="ly-page" />
       </profile>
     </annotationProcessing>
   </component>
@@ -22,8 +25,14 @@
       <module name="ly-gateway" options="-parameters" />
       <module name="ly-item-interface" options="-parameters" />
       <module name="ly-item-service" options="-parameters" />
+      <module name="ly-page" options="-parameters" />
       <module name="ly-register" options="-parameters" />
+      <module name="ly-search" options="-parameters" />
+      <module name="ly-sms" options="-parameters" />
       <module name="ly-upload" options="-parameters" />
+      <module name="ly-user" options="-parameters" />
+      <module name="ly-user-interface" options="-parameters" />
+      <module name="ly-user-service" options="-parameters" />
     </option>
   </component>
 </project>
