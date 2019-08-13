@@ -10,6 +10,7 @@ import com.leyou.item.mapper.SpuDetailMapper;
 import com.leyou.item.mapper.SpuMapper;
 import com.leyou.item.mapper.StockMapper;
 import com.leyou.item.pojo.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * @Description:  商品业务层
  */
 @Service
+@Slf4j
 public class GoodsService {
 
     @Autowired
@@ -199,7 +201,13 @@ public class GoodsService {
         saveSkuAndStock(spu);
 
         //发送mq消息
-        amqpTemplate.convertAndSend("item.update",spu.getId());
+//        amqpTemplate.convertAndSend("item.update",spu.getId());
+        try {
+            amqpTemplate.convertAndSend("item.update",spu.getId());
+        }catch (Exception e){
+            log.error("{}商品消息发送异常，商品id：{}",spu.getId(),e);
+        }
+        log.info("[发送消息]"+spu.getId()+"item.update");
     }
 
     public Spu querySpuById(Long id) {
@@ -212,5 +220,13 @@ public class GoodsService {
         //查询detail
         spu.setSpuDetail(queryDetailById(id));
         return spu;
+    }
+
+    public void sendMessage(Long id, String type) {
+        try {
+            this.amqpTemplate.convertAndSend("item." + type, id);
+        }catch (Exception e){
+            log.error("{}商品消息发送异常，商品id：{}",type,id,e);
+        }
     }
 }

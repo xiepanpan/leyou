@@ -21,7 +21,7 @@ public class ItemListener {
     private PageService pageService;
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue(name = "page.item.insert.queue",durable = "true"),
-            exchange = @Exchange(name = "ly.item.exchange",type = ExchangeTypes.TOPIC),
+            exchange = @Exchange(name = "leyou.item.exchange",type = ExchangeTypes.TOPIC),
             key = {"item.update","item.insert"}
     ))
     public void listenInsertOrUpdate(Long spuId) {
@@ -32,7 +32,7 @@ public class ItemListener {
     }
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue(name = "page.item.delete.queue",durable = "true"),
-            exchange = @Exchange(name = "ly.item.exchange",type = ExchangeTypes.TOPIC),
+            exchange = @Exchange(name = "leyou.item.exchange",type = ExchangeTypes.TOPIC),
             key = {"item.delete"}
     ))
     public void listenDelete(Long spuId) {

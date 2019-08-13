@@ -1,7 +1,7 @@
 package com.leyou.search.mq;
 
 import com.leyou.search.service.SearchService;
-import com.rabbitmq.http.client.domain.ExchangeType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -16,16 +16,18 @@ import org.springframework.stereotype.Component;
  * @Description:
  */
 @Component
+@Slf4j
 public class ItemListener {
 
     @Autowired
     private SearchService searchService;
 
-    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "search.item.insert.queue",durable = "true"),
-            exchange = @Exchange(value = "ly.item.exchange",ignoreDeclarationExceptions = "true",type = ExchangeTypes.TOPIC),
+    @RabbitListener(bindings = @QueueBinding(value = @Queue(name = "search.item.insert.queue",durable = "true"),
+            exchange = @Exchange(name = "leyou.item.exchange",type = ExchangeTypes.TOPIC),
             key = {"item.update","item.insert"}
     ))
-    public void listenInsertOrUpdate(Long spuId) {
+    public void listenInsertOrUpdate(Long spuId) throws Exception {
+        log.info("[接收消息]"+spuId);
         if (spuId==null) {
             return;
         }
@@ -33,10 +35,11 @@ public class ItemListener {
     }
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue(name = "search.item.delete.queue",durable = "true"),
-            exchange = @Exchange(name = "ly.item.exchange",type = ExchangeTypes.TOPIC),
+            exchange = @Exchange(name = "leyou.item.exchange",type = ExchangeTypes.TOPIC),
             key = {"item.delete"}
     ))
-    public void listenDelete(Long spuId) {
+    public void listenDelete(Long spuId) throws Exception{
+        log.info("[接收消息]"+spuId);
         if (spuId==null) {
             return;
         }
