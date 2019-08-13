@@ -23,6 +23,7 @@ public enum ExceptionEnum {
     UPLOAD_FILE_ERROR(500,"文件上传失败"),
     INVALID_FILE_TYPE(400,"无效的文件类型"),
     GOODS_ID_CANNOT_BE_NULL(400,"商品id不能为空"),
+    INVALID_USER_DATA_TYPE(400,"用户数据类型无效"),
     ;
     private int code;
     private String msg;
