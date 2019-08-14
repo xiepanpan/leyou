@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author: HuYi.Zhang
+ * @author: HuYi.Zhang  验证码生成工具类
  * @create: 2018-04-25 09:13
  **/
 public class NumberUtils {
