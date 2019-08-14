@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.leyou.auth</groupId>
-    <artifactId>leyou-auth</artifactId>
+    <artifactId>ly-auth</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>ly-auth-common</module>
