@@ -42,7 +42,7 @@ public class JwtUtilsTest {
 
     @Test
     public void parseToken() {
-        String token = "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MjAsInVzZXJuYW1lIjoiSmFjayIsImV4cCI6MTUzODM2OTM3N30.Vi7UJrwMu0BOHMQoSSLefzGU1ir5LG-drcvAHPjMMMBzQz1oASjoDsiuw3h0bqVUUWXjdNcpybCWVuZ8UvOXOr-Jecqjz3NF_ZDfgessRGsijIIbju0qak6Zfm09jsjnHFTZ2munFJdM0I0RsiafQtkJSiLji7QXlvjCquKJUkg";
+        String token = "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MjAsInVzZXJuYW1lIjoiSmFjayIsImV4cCI6MTU2NTgwMjU1NH0.DmxEu97h__l9-gHX_G418uu_3dEu5dn_dZQQmDJTREoOzlteRZTTHfhYk2z7uYdzLafDWkcWdrJTb6lz_1Hxhf00nLYWOXaK1WSnCBV3M_cmmXN0uZQ3SEpcR10d-Lc7RYSBDbAhHPAv9VV0kUocWczg3cP_ge45ZPa9aCyfBxg";
         UserInfo userInfo = JwtUtils.getUserInfo(publicKey, token);
         System.out.println("id:" + userInfo.getId());
         System.out.println("name:" + userInfo.getName());
