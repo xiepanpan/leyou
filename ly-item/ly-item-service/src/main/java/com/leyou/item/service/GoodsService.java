@@ -160,14 +160,18 @@ public class GoodsService {
 
         //查询库存 sku赋值库存
         List<Long> ids = skuList.stream().map(Sku::getId).collect(Collectors.toList());
+        loadStockInSku(skuList, ids);
+        return skuList;
+    }
+
+    private void loadStockInSku(List<Sku> skuList, List<Long> ids) {
         List<Stock> stockList = stockMapper.selectByIdList(ids);
         if (CollectionUtils.isEmpty(stockList)) {
             throw new LeYouException(ExceptionEnum.GOODS_STOCK_NOT_FOUND);
         }
 
-        Map<Long,Integer> stockMap = stockList.stream().collect(Collectors.toMap(Stock::getSkuId,Stock::getStock));
-        skuList.forEach(s->s.setStock(stockMap.get(s.getId())));
-        return skuList;
+        Map<Long, Integer> stockMap = stockList.stream().collect(Collectors.toMap(Stock::getSkuId, Stock::getStock));
+        skuList.forEach(s -> s.setStock(stockMap.get(s.getId())));
     }
 
     @Transactional
@@ -228,5 +232,14 @@ public class GoodsService {
         }catch (Exception e){
             log.error("{}商品消息发送异常，商品id：{}",type,id,e);
         }
+    }
+
+    public List<Sku> querySkuByIds(List<Long> ids) {
+        List<Sku> skuList = skuMapper.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(skuList)) {
+            throw new LeYouException(ExceptionEnum.GOODS_STOCK_NOT_FOUND);
+        }
+        loadStockInSku(skuList, ids);
+        return skuList;
     }
 }

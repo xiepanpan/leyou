@@ -25,6 +25,19 @@ Hibernate validation  对实体类校验
 
 
 
+商品详情页登陆状态下要把购物车信息放入Redis中 Redis的key就是用户名  因此要解析token 取得用户信息 
+
+实用技术：拦截器 前置拦截
+
+
+
+threadlocal  线程域 底层就是map结构 key是当前线程 value是需要存的值 不同线程之间不共享 保证线程安全 
+
+
+
+购物车：
+前台js对localStoreage 操作
+
 elasticsearch 地址：http://192.168.200.128:9200/
 
 
