@@ -1,7 +1,11 @@
 package com.leyou.auth.web;
 
 import com.leyou.auth.config.JwtProperties;
+import com.leyou.auth.entity.UserInfo;
 import com.leyou.auth.service.AuthService;
+import com.leyou.auth.test.JwtUtils;
+import com.leyou.common.enums.ExceptionEnum;
+import com.leyou.common.exception.LeYouException;
 import com.leyou.common.utils.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -40,6 +44,23 @@ public class AuthController {
         String token = authService.login(username,password);
         CookieUtils.setCookie(request,response,jwtProperties.getCookieName(),token,jwtProperties.getCookieMaxAge());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("verify")
+    public ResponseEntity<UserInfo> verify(@CookieValue("LY_TOKEN")String token,HttpServletRequest request,HttpServletResponse response) {
+        try {
+            //解析token
+            UserInfo userInfo = JwtUtils.getUserInfo(jwtProperties.getPublicKey(), token);
+
+            //刷新cookie
+            String newToken = JwtUtils.generateToken(userInfo, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
+            CookieUtils.setCookie(request,response,jwtProperties.getCookieName(),newToken,jwtProperties.getCookieMaxAge());
+            //返回用户信息
+            return ResponseEntity.ok(userInfo);
+        } catch (Exception e) {
+            //token已过期或被篡改
+            throw new LeYouException(ExceptionEnum.UNAUTHORIZED);
+        }
     }
 
 
