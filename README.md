@@ -21,6 +21,8 @@ Hibernate validation  对实体类校验
 
 无状态登录：jwt+RSA非对称加密
 
+网关拦截处理 使用公钥解析token 
+
 
 
 elasticsearch 地址：http://192.168.200.128:9200/
