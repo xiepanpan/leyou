@@ -62,4 +62,29 @@ public class CartService {
 
         return list;
     }
+
+    public void updateCartNum(Long skuId, Integer num) {
+        UserInfo user = UserInterceptor.getUser();
+        String key = KEY_PREFIX+user.getId();
+        String hashKey = skuId.toString();
+        //获取操作
+        BoundHashOperations<String, Object, Object> operations = redisTemplate.boundHashOps(key);
+        //判断是否存在
+        if (!operations.hasKey(hashKey)) {
+            throw new LeYouException(ExceptionEnum.CART_NOT_FOUND);
+        }
+
+        //查询购物车
+        Cart cart = JsonUtils.parse(operations.get(hashKey).toString(), Cart.class);
+        cart.setNum(num);
+        //写回Redis
+        operations.put(hashKey,JsonUtils.serialize(cart));
+    }
+
+    public void deleteCart(Long skuId) {
+        UserInfo user = UserInterceptor.getUser();
+        String key = KEY_PREFIX+user.getId();
+        //删除
+        redisTemplate.opsForHash().delete(key,skuId.toString());
+    }
 }
