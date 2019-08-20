@@ -100,7 +100,7 @@ public class GoodsController {
      * @return
      */
     @GetMapping("sku/list/{ids}")
-    public ResponseEntity<List<Sku>> querySkuBySpuId(@RequestParam("ids")List<Long> ids) {
+    public ResponseEntity<List<Sku>> querySkuByIds(@RequestParam("ids")List<Long> ids) {
         return ResponseEntity.ok(goodsService.querySkuByIds(ids));
     }
 }
