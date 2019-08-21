@@ -1,6 +1,7 @@
 package com.leyou.order.service;
 
 import com.leyou.auth.entity.UserInfo;
+import com.leyou.common.dto.CartDTO;
 import com.leyou.common.enums.ExceptionEnum;
 import com.leyou.common.exception.LeYouException;
 import com.leyou.common.utils.IdWorker;
@@ -8,7 +9,6 @@ import com.leyou.item.pojo.Sku;
 import com.leyou.order.client.AddressClient;
 import com.leyou.order.client.GoodsClient;
 import com.leyou.order.dto.AddressDTO;
-import com.leyou.order.dto.CartDTO;
 import com.leyou.order.dto.OrderDTO;
 import com.leyou.order.enums.OrderStatusEnum;
 import com.leyou.order.interceptor.UserInterceptor;
@@ -124,7 +124,9 @@ public class OrderService {
         }
 
         //减库存
+        List<CartDTO> cartDTOS = orderDTO.getCarts();
+        goodsClient.decreaseStock(cartDTOS);
 
-        return null;
+        return orderId;
     }
 }
