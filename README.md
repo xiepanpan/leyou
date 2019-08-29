@@ -172,7 +172,29 @@ web本地存储主要有两种方式：
 
 因为很多接口都需要进行登录，我们直接编写SpringMVC拦截器，进行统一登录校验。同时，我们还要把解析得到的用户信息保存起来，以便后续的接口可以使用。
 
+修改商品数量  删除商品
 
+threadlocal  线程域 底层就是map结构 key是当前线程 value是需要存的值 不同线程之间不共享 保证线程安全 
+
+### 
+
+#### 七 订单服务
+
+雪花算法生成订单id 
+
+生成订单
+
+创建订单：
+
+雪花算法实现订单号的唯一
+
+使用乐观锁减库存 update操作
+
+
+
+先创建订单 完成后再库存 巧妙解决了分布式事务。。。
+
+如果先减库存 减库存成功了 但是创建订单失败 这时候减库存无法回滚。。
 
 ## 相关配置
 
@@ -191,60 +213,7 @@ Nginx switchhost该域名 然后本地解析出虚拟机地址
 
 
 
-elastic搜索 kibana视图化
-
-阿里大于短信服务 
-
-rabbitmq：  
-
-1. 在后台商品修改时发送消息 创建或删除elastic search 文档  创建或删除商品详情页的静态html文件  
-
-2. 短信验证码  发送消息
-
-先启动register 再启动其他的
-
-全局异常拦截处理
-
-Hibernate validation  对实体类校验  
-
-无状态登录：jwt+RSA非对称加密
-
-网关拦截处理 使用公钥解析token 
-
-
-
-商品详情页登陆状态下要把购物车信息放入Redis中 Redis的key就是用户名  因此要解析token 取得用户信息 
-
-实用技术：拦截器 前置拦截
-
-
-
-threadlocal  线程域 底层就是map结构 key是当前线程 value是需要存的值 不同线程之间不共享 保证线程安全 
-
-### 订单模块
-
-创建订单：
-
-雪花算法实现订单号的唯一
-
-使用乐观锁减库存 update操作
-
-
-
-先创建订单 完成后再库存 巧妙解决了分布式事务。。。
-
-如果先减库存 减库存成功了 但是创建订单失败 这时候减库存无法回滚。。
-
-
-
-
-
-购物车：
-前台js对localStoreage 操作
-
 elasticsearch 地址：http://192.168.200.128:9200/
-
-
 
 kibana安装在到Windows中：http://127.0.0.1:5601
 
@@ -312,6 +281,7 @@ http {
     keepalive_timeout  65;
 
     #gzip  on;
+  
 
     server {
         listen       80;
@@ -322,9 +292,12 @@ http {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
         location /item {
-            proxy_pass http://192.168.200.1:8084;
-            proxy_connect_timeout 600;
-            proxy_read_timeout 600;
+	   # 先找本地
+		root html;
+	   if (!-f $request_filename) { #请求的文件不存在，就反向代理
+	       proxy_pass http://192.168.200.1:8084;
+	       break;
+	       }
         }
 
         location / {
@@ -475,6 +448,7 @@ http {
     #}
 
 }
+
 
 
 ```
